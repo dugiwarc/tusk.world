@@ -1,0 +1,127 @@
+<% include ../partials/header %>
+		<div class="search_bar">
+            <form action="/users" method="get" class="">
+                <input type="text" name="search" placeholder="User search...">
+            </form>
+            <h1 id="id-checkbox">My messages</h1>
+    </div>
+
+<% var lst = [] %>
+
+<% allusers.forEach(function(each_user){ %>
+  <% message.forEach(function(each_message){ %>
+    <% if(currentUser._id.equals(each_message.receiver.id) && each_user.equals(each_message.sender.id)){ %>
+      <% message.forEach(function(final_message){ %>
+
+        <% if(final_message.sender.equals(each_message.sender)){%>
+            <% lst.push(each_message.sender) %>
+        <% } %>
+      <% }); %>
+    <% } %>
+  <% }) %>
+<% }) %>
+
+<% function onlyUnique(value, index, self) {  %>
+<%    return self.indexOf(value) === index; %>
+<% } %>
+
+<% function removeDuplicates(originalArray, prop) { %>
+<%      var newArray = []; %>
+<%      var lookupObject  = {}; %>
+<% %>
+<%     for(var i in originalArray) { %>
+<%        lookupObject[originalArray[i][prop]] = originalArray[i]; %>
+<%     } %>
+<% %>
+<%     for(i in lookupObject) { %>
+<%         newArray.push(lookupObject[i]); %>
+<%     } %>
+<%      return newArray; %>
+<% } %>
+
+<% var a = removeDuplicates(lst, "id"); %>
+
+<div class="m_window">
+<div class="m_contacts">
+<% a.forEach(function(hombre){ %>
+  <ul class="message">Messages received from <%= hombre.username %>
+    <% message.forEach(function(message){ %>
+        <% if((message.sender.id.equals(hombre.id) && message.receiver.id.equals(currentUser._id)) || (message.sender.id.equals(currentUser._id) && message.receiver.id.equals(hombre.id))){ %>
+          <li><%= message.text %></li>
+        <% } %>
+    <% }); %>
+        <li><form class="add-item" action="/users/<%= hombre.id %>/messages" method="post">
+        <input type="text" name="message[text]"  placeholder="text">
+        <button type="submit" value="+ Add Item"></button>
+      </form></li>
+        </ul>
+
+  <% }); %>
+</div>
+<div class="m_chat">
+  <ul class="list2">
+  </ul>
+</div>
+</div>
+
+<script>
+const addItems = document.querySelector('.add-item');
+const itemsList = document.querySelector('.list2');
+var items = [];
+
+$('body').on('submit', addItems, function(event){
+  const text = $('[name^=message]');
+//   $('td[name=tcol1]') // matches exactly 'tcol1'
+
+// $('td[name^=tcol]') // matches those that begin with 'tcol'
+
+// $('td[name$=tcol]') // matches those that end with 'tcol'
+
+// $('td[name*=tcol]') // matches those that contain 'tcol'
+  event.preventDefault();
+    const item = {
+      text: text,
+      done: false
+    };
+    console.log(text[1].value);
+    items.push(text[1].value);
+    populateList(items, itemsList);
+    $('.add-item').trigger("reset");
+  });
+
+  function populateList(plates = [], platesList)
+  {
+    platesList.innerHTML = plates.map((plate, i)=>{
+      return `
+        <li>
+          ${plate.text}
+        </li>
+      `;
+    }).join('');
+  }
+
+
+
+  $('body').on('click', '.message', function() {
+    items = [];
+    $('.list2').empty();
+    $(this).addClass('selected');
+    // $('.list2').append($('.selected > li'));
+    $(".selected > li")
+      .clone()
+      .appendTo(".list2");
+      const msg_log = $(".selected > li");
+      for(i = 0; i<4; i++){
+        items.push(msg_log[i]);
+      }
+
+    // $('.selected').append($('.list2 > li'));
+    // setTimeout(()=>{ $('.selected').append($('.list2 > li')); $(this).removeClass('selected'); }, 1000);
+    $(this).removeClass('selected');
+});
+</script>
+
+
+
+
+<% include ../partials/footer %>
