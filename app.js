@@ -26,14 +26,89 @@ var favorRoutes = require('./routes/favors');
 var indexRoutes = require('./routes/index');
 var messRoutes = require('./routes/messages');
 var revRoutes = require('./routes/reviews');
-var miscRoutes = require('./routes/misc');
+var miscRoutes = require('./routes/misc'); 
 
 var app = express();
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", { useNewUrlParser: true });
+var debug = require('debug')('tusk:server');
+var http = require('http');
+/**
+ * Get port from environment and store in Express.
+ */
+
+
+/**
+ * Create HTTP server.
+ */
+
+var server = app.listen(3000);
+var io = require('socket.io').listen(server);
+
+
+
+
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", { useNewUrlParser: true }, function(err, db){
+  if(err)
+  {
+    throw err;
+  }
+  console.log("Connected!");
+
+  io.on('connection', function(socket){
+    let chat = db.collection('chats');
+
+    // Create function to send status
+    sendStatus = function(s){
+      socket.emit('status', s);
+    }
+
+    // Get chats from mongo collection
+    chat.find().limit(100).sort({ _id: 1 }).toArray(function (err, res){
+      if(err){
+        throw err;
+      } else {
+        console.log("Messages retrieved");
+      }
+
+      // emit the messages
+      socket.emit('output', res);
+    });
+
+    // Handle input events
+    socket.on('input', function(data){
+      let sender = data.sender;
+      let message = data.message;
+      let receiver = data.receiver; 
+ 
+      // check for name and message
+      if(sender == '' || message == ''){
+        // send error status 
+        sendStatus('Please enter a name and message');
+      } else {
+        // Insert message
+        chat.insert({sender: sender, message: message, receiver: receiver}, function(){
+          io.emit('output', [data]);
+
+          // Send status object 
+          sendStatus({
+            message: 'Message sent',
+            clear: true
+          });
+        });
+      }
+    });
+    // Handle clear
+    socket.on('clear', function(data){
+      // Remove all chats from collection
+      chat.remove({}, function(){
+        // Emit cleared
+        socket.emit('cleared');
+      });
+    });
+  });
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 
 // view engine setup
@@ -63,6 +138,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+
+app.use(function (req, res, next) {
+  req.io = io;
+  next();
+});
 
 app.use(async function (req, res, next) {
   res.locals.currentUser = req.user;
@@ -99,6 +179,7 @@ app.use(messRoutes);
 app.use(revRoutes);
 app.use(miscRoutes);
 
+
 app.post('/charge', function (req, res) {
   var amount = 500;
 
@@ -119,9 +200,9 @@ app.post('/charge', function (req, res) {
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -132,6 +213,91 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
+}); 
 
-module.exports = app;
+
+/**
+ * Module dependencies.
+ */
+
+var debug = require('debug')('tusk:server');
+var http = require('http');
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT);
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

@@ -1,27 +1,119 @@
 <% include ./partials/header %>
 
     <div id="landing-header">
- 		<h1 id="welcome">Welcome to Tusk!</h1>
-         <a href="/convo">Test</a>
+        <h1 id="welcome">Welcome to Tusk!</h1>
+            <a href="/convo">Test</a>
 		<div class="search_bar">
             <form action="/favors" method="get" class="">
                 <input type="text" name="search" placeholder="Favor search...">
                 <input type="submit" value="search" class="button">
             </form>
         </div>
-
-
- <script>
-
-
-// mapboxgl.accessToken = 'pk.eyJ1IjoiZHVnaXdhcmMiLCJhIjoiY2pxbnJ2OTFxMDNrdjQybXdvdjJjemQ1OSJ9.VIaDlmEN5MtmbksrlqAFbw';
-// var map = new mapboxgl.Map({
-//   container: 'map',
-//   center: [-122.420679, 37.772537],
-//   zoom: 13,
-//   style: 'mapbox://styles/mapbox/streets-v9'
-// });
-// </script>
     </div>
 
+
+    <script>
+        (function(){
+            var element = function(id){
+                return document.getElementById(id);
+            }
+            // Get Elements
+            var status = element('status');
+            var messages = element('messages');
+            var textarea = element('textarea');
+            var username = element('username');
+            var clearBtn = element('clear');
+
+            // Set default status
+            var statusDefault = status.textContent;
+
+            var setStatus = function(s){
+                // Set status
+                status.textContent = s;
+
+                if(s !== statusDefault){
+                    var delay = setTimeout(function(){
+                        setStatus(statusDefault);
+                    }, 4000);
+                }
+            }
+
+            // Connect to socket.io
+            var socket = io.connect('http://127.0.0.1:3000');
+            console.log(socket);
+            console.log("yoo");
+            if(socket !== undefined){
+                console.log('Connected to socket');
+                socket.on('output', function(data){
+                    // console.log(data);
+                    if(data.length){
+                        for(var x = 0;x < data.length; x++){
+                            var message = document.createElement('div');
+                            message.setAttribute('class', 'chat-message');
+                            message.textContent = data[x].name + ": " + data[x].message;
+                            if(data[x].name === "mark"){
+                                console.log("yo");
+                            }
+                            messages.appendChild(message);
+                            messages.insertBefore(message, messages.firstChild);
+                        }
+                    }
+                });
+
+                // Get status from server
+                socket.on('status', function(data){
+                    // get message status
+                    setStatus((typeof data === 'object') ? data.message : data);
+                
+                    // If status is clear, clear text
+                    if(data.clear){
+                        textarea.value = '';
+                    }
+                });
+
+                // Handle Input 
+                textarea.addEventListener('keydown', function(event){
+                    if(event.which === 13 && event.shiftKey == false){
+                        // emit to server input
+                        socket.emit('input', {
+                                sender: username.value,
+                                message: textarea.value,
+                                receiver: username.value
+                        });
+
+                        event.preventDefault();
+                    }   
+                });
+
+                clearBtn.addEventListener('click', function(){
+                    socket.emit('clear');
+                });
+
+                socket.on('cleared', function(){
+                    messages.textContent = '';
+                });
+            }
+
+        })();
+
+        // $(function(){
+        //     var socket = io.connect({
+        //         transports: ['websocket'],
+        //         upgrade: false
+        //     });
+        //     var $messageForm = $('#messageForm');
+        //     var $message = $('#message');
+        //     var $chat = $('#chat');
+
+        //     $messageForm.submit(function(e){
+        //         e.preventDefault();
+        //         socket.emit('send message', $message.val());
+        //         $message.val('');
+        //     });
+        //     socket.on('new message', function(data){
+        //         $chat.append('<div class="well">' + data.msg + '</div>');
+        //     });
+
+        // });
+    </script>
 <% include partials/footer %>

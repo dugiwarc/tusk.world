@@ -3,7 +3,7 @@
             <form action="/users" method="get" class="">
                 <input type="text" name="search" placeholder="User search...">
             </form>
-            <h1 id="id-checkbox">My messages</h1>
+            <h1 id="h1hell"><%= user.username %>>My messages</h1>
     </div>
 
 <% var lst = [] %>
@@ -50,12 +50,36 @@
           <li><%= message.text %></li>
         <% } %>
     <% }); %>
-        <li><form class="add-item" action="/users/<%= hombre.id %>/messages" method="post">
-        <input type="text" name="message[text]"  placeholder="text">
-        <button type="submit" value="+ Add Item"></button>
-      </form></li>
+        <li>
+        <form class="add-item" action="/users/<%= hombre.id %>/messages" method="post">
+          <input type="text" name="message[text]"  placeholder="text">
+          <button id="test" type="submit" value="+ Add Item"></button>
+        </form></li>
         </ul>
+        <script>
+// var btn = document.getElementById('test');
+// var yolo = $('[name^=message]').val();
 
+// $('body').on('submit', function(event){
+
+//   console.log("heyooo");
+//   console.log(yolo);
+//   event.preventDefault();
+//       $.ajax({
+//         url: '/users/<%= hombre.id %>/messages',
+//         type: 'POST',
+//         dataType: 'json',
+//         data: {
+//           text: $('[name^=message]').val()
+//         },
+//         success: console.log(data)
+
+//     });
+
+
+//     $('.add-item').trigger("reset");
+//   });
+  </script>
   <% }); %>
 </div>
 <div class="m_chat">
@@ -64,31 +88,61 @@
 </div>
 </div>
 
+<div class="user_Container">
+<% allusers.forEach(function(user){ %>
+  <span class="user_select" id="user_select"><%= user.username %></span>
+<% }) ;%>
+<h3>User you will be texting is:<span class="current" id="current"></span></h3>
+</div>
+
+<script>
+
+
+  $('body').on('click', '.user_select', function(){
+    $('.current').html('');
+    $(this).addClass('selected');
+    console.log($('.selected').text());
+    $('.current').append($('.selected').text());
+    $(this).removeClass('selected');
+  });
+
+  </script>
+
+
+        <div class="container" style="margin-bottom:300px;">
+            <div class="row">
+                <div class="col-md-6 offset-md-3 col-sm-12">
+                    <h1 class="text-center"><%= currentUser.username%>>MongoChat><%= user.username%>
+                        <button id="clear" class="btn btn-danger">Clear</button>
+                        <button id="getM" style="background: red">Get Milk</button>
+                    </h1>
+                    <div id="status"></div>
+                        <div id="chat">
+                            <input type="text" id="username" class="form-control" placeholder="Enter name:  ">
+                            <div class="card">
+                                <div id="messages" class="card-block">
+
+                                </div>
+                            </div>
+                            <br>
+                            <textarea id="textarea" class="form-control" placeholder="Enter message: "></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
 <script>
 const addItems = document.querySelector('.add-item');
 const itemsList = document.querySelector('.list2');
 var items = [];
 
-$('body').on('submit', addItems, function(event){
-  const text = $('[name^=message]');
-//   $('td[name=tcol1]') // matches exactly 'tcol1'
-
-// $('td[name^=tcol]') // matches those that begin with 'tcol'
-
-// $('td[name$=tcol]') // matches those that end with 'tcol'
-
-// $('td[name*=tcol]') // matches those that contain 'tcol'
-  event.preventDefault();
-    const item = {
-      text: text,
-      done: false
-    };
-    console.log(text[1].value);
-    items.push(text[1].value);
-    populateList(items, itemsList);
-    $('.add-item').trigger("reset");
-  });
-
+// $('body').on('submit', addItems, function(event){
+//   console.log("hey");
+// });
+  
   function populateList(plates = [], platesList)
   {
     platesList.innerHTML = plates.map((plate, i)=>{
@@ -111,7 +165,7 @@ $('body').on('submit', addItems, function(event){
       .clone()
       .appendTo(".list2");
       const msg_log = $(".selected > li");
-      for(i = 0; i<4; i++){
+      for(i = 0; i < 4; i++){
         items.push(msg_log[i]);
       }
 
@@ -119,8 +173,117 @@ $('body').on('submit', addItems, function(event){
     // setTimeout(()=>{ $('.selected').append($('.list2 > li')); $(this).removeClass('selected'); }, 1000);
     $(this).removeClass('selected');
 });
+
+
+
+
+
 </script>
 
+    <script>
+        (function(){
+            var element = function(id){
+                return document.getElementById(id);
+            }
+            // Get Elements
+            var status = element('status');
+            var messages = element('messages');
+            var textarea = element('textarea');
+            var username = element('username');
+            var clearBtn = element('clear');
+            var getM     = element('getM');
+            var content  = element('current');
+            var clickable = element('user_select');
+
+            // Set default status
+            var statusDefault = status.textContent;
+
+            var setStatus = function(s){
+                // Set status
+                status.textContent = s;
+
+                if(s !== statusDefault){
+                    var delay = setTimeout(function(){
+                        setStatus(statusDefault);
+                    }, 4000);
+                }
+            }
+
+            // Connect to socket.io
+            var socket = io.connect('http://127.0.0.1:3000');
+
+
+            if(socket !== undefined){
+                console.log('Connected to socket');
+                socket.on('output', function(data){
+                    // console.log(data);
+                getM.addEventListener('click', getMail);
+                content.addEventListener('click', getMail);
+
+                function consolee(){
+                  console.log("Hello");
+                }
+
+                    function getMail(){
+                      messages.innerText = "";
+                    if(data.length){
+                        for(var x = 0;x < data.length; x++){
+                            var message = document.createElement('div');
+                            message.setAttribute('class', 'chat-message');
+                            message.textContent = data[x].sender + ": " + data[x].message;
+                            if((data[x].sender === content.innerText && data[x].receiver === <%- JSON.stringify(currentUser.username)%> ) || (data[x].receiver === content.innerText && data[x].sender === <%- JSON.stringify(currentUser.username)%>)){
+                                console.log("yo");
+                                messages.appendChild(message);
+                                messages.insertBefore(message, messages.firstChild);
+                            } else {
+                              console.log("sender" + data[x].sender);
+                              console.log(content.innerText);
+                            }
+                        }
+                    }
+                  }
+
+
+                });
+
+
+
+                // Get status from server
+                socket.on('status', function(data){
+                    // get message status
+                    setStatus((typeof data === 'object') ? data.message : data);
+                
+                    // If status is clear, clear text
+                    if(data.clear){
+                        textarea.value = '';
+                    }
+                });
+
+                // Handle Input 
+                textarea.addEventListener('keydown', function(event){
+                    if(event.which === 13 && event.shiftKey == false){
+                        // emit to server input
+                        socket.emit('input', {
+                                sender: <%- JSON.stringify(currentUser.username)%>,
+                                message: textarea.value,
+                                receiver: content.innerText
+                        });
+
+                        event.preventDefault();
+                    }   
+                });
+
+                clearBtn.addEventListener('click', function(){
+                    socket.emit('clear');
+                });
+
+                socket.on('cleared', function(){
+                    messages.textContent = '';
+                });
+            }
+
+        })();
+    </script>
 
 
 

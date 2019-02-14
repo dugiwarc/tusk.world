@@ -10,11 +10,24 @@ var nodemailer    = require('nodemailer');
 var User          = require('../models/user');
 var crypto        = require('crypto');
 var fs            = require('fs');
-var cities        = require('all-the-cities');
+var users = [];
+var connections = [];
 
 
 router.get("/", function(req, res){
-  // res.send('this will be the landing page!');
+  req.io.sockets.on('connection', function (socket) {
+    connections.push(socket);
+    console.log('Connected: %s sockets connected', connections.length);
+
+    socket.on('disconnect', ()=>{
+      socket.removeAllListeners();
+    });
+
+      socket.on('send message', function(data){
+        console.log(data);
+        req.io.sockets.emit('new message', {msg: data});
+      });
+    });
   res.render("landing", {keyPublishable});
 });
 
@@ -246,5 +259,21 @@ function calculateAverage(reviews) {
   });
   return sum / reviews.length;
 }
+
+
+
+router.get('/yolo', function (req, res) {
+  res.render('iochat');
+  console.log("efe");
+  req.io.sockets.on('connection', function(socket){
+    connections.push(socket);
+    console.log('Connected: %s sockets connected', connections.length);
+  });
+});
+
+
+
+
+
 
 module.exports = router;

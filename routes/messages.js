@@ -26,7 +26,6 @@ router.post("/users/:id/messages", function (req, res) {
         } else {
             Message.create(req.body.message, async function (err, message) {
                 if (err) {
-                    
                     console.log(err);
                 } else {
                     let newNotification = {
@@ -46,7 +45,7 @@ router.post("/users/:id/messages", function (req, res) {
                     message.save();
                     user.messages.push(message);
                     user.save();
-                    res.redirect("/users/" + req.params.id + "/messages");
+                    res.redirect("back");
                 }
             });
             // Conversation.create()

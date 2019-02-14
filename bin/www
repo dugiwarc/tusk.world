@@ -7,7 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('tusk:server');
 var http = require('http');
-
 /**
  * Get port from environment and store in Express.
  */
@@ -18,7 +17,6 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
 
 /**
@@ -31,7 +29,7 @@ server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
- */
+ */ 
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
@@ -88,3 +86,4 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
