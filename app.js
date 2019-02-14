@@ -50,7 +50,17 @@ var http = require('http');
 
 
 var server = app.listen(3000);
-var io = require('socket.io').listen(server, {log: false, origins: '*:*'});
+
+var options = {
+  allowUpgrades: true,
+  transports: ['polling', 'websocket'],
+  pingTimeout: 9000,
+  pingInterval: 3000,
+  cookie: 'mycookie',
+  httpCompression: true,
+  origins: '*:*'
+};
+var io = require('socket.io').listen(server, options);
 
 
 
