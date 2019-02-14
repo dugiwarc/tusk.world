@@ -18,6 +18,7 @@ var flash = require('connect-flash');
 var keyPublishable = 'pk_test_K3VJ6ZLvLKdhLaJTglAd65Qk';
 var keySecret = 'sk_test_97z59dQM80mu9pVrQKxwaWyD';
 var stripe = require('stripe')(keySecret);
+var cors = require('cors');
 var mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 var geocodingClient = mbxGeocoding({ accessToken: 'pk.eyJ1IjoiZHVnaXdhcmMiLCJhIjoiY2pydDdmdjFtMGZlNjRhdGNreWQ1aW5mZSJ9.IJrnij1QFJbk2r_618xlUg' });
 
@@ -36,7 +37,7 @@ var app = express();
 //   res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
 //   next();
 // });
-
+app.use(cors());
 var debug = require('debug')('tusk:server');
 var http = require('http');
 /**
