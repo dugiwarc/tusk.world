@@ -210,7 +210,7 @@ var items = [];
             }
 
             // Connect to socket.io
-            var socket = io.connect('http://tusk.world/');
+            var socket = io.connect('http://tusk.world/', { transport : ['websocket']});
 
 
             if(socket !== undefined){
