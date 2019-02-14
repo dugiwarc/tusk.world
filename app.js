@@ -41,16 +41,9 @@ var http = require('http');
  * Create HTTP server.
  */
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
 
 var server = app.listen(3000);
 var io = require('socket.io').listen(server);
-
-io.set('origins', '*:*');
 
 
 
@@ -60,15 +53,15 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", {
     throw err;
   }
   console.log("Connected!");
-
+  
   io.on('connection', function(socket){
     let chat = db.collection('chats');
-
+    
     // Create function to send status
     sendStatus = function(s){
       socket.emit('status', s);
     }
-
+    
     // Get chats from mongo collection
     chat.find().limit(100).sort({ _id: 1 }).toArray(function (err, res){
       if(err){
@@ -76,17 +69,17 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", {
       } else {
         console.log("Messages retrieved");
       }
-
+      
       // emit the messages
       socket.emit('output', res);
     });
-
+    
     // Handle input events
     socket.on('input', function(data){
       let sender = data.sender;
       let message = data.message;
       let receiver = data.receiver; 
- 
+      
       // check for name and message
       if(sender == '' || message == ''){
         // send error status 
@@ -95,7 +88,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", {
         // Insert message
         chat.insert({sender: sender, message: message, receiver: receiver}, function(){
           io.emit('output', [data]);
-
+          
           // Send status object 
           sendStatus({
             message: 'Message sent',
@@ -151,6 +144,11 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.use(async function (req, res, next) {
   res.locals.currentUser = req.user;
   // if anyone is logged in via passport
@@ -164,7 +162,7 @@ app.use(async function (req, res, next) {
       }).populate('interest_notifications', null, {
         isRead: false
       }).exec();
-
+      
       res.locals.notifications = user.notifications.reverse();
       res.locals.message_notifications = user.message_notifications.reverse();
       res.locals.interest_notifications = user.interest_notifications.reverse();
@@ -189,16 +187,16 @@ app.use(miscRoutes);
 
 app.post('/charge', function (req, res) {
   var amount = 500;
-
+  
   stripe.customers.create({
     email: req.body.stripeEmail,
     source: req.body.stripeToken
   })
-
-    .then(customer =>
-      stripe.charges.create({
-        amount,
-        description: "Sample Charge",
+  
+  .then(customer =>
+    stripe.charges.create({
+      amount,
+      description: "Sample Charge",
         currency: "usd",
         customer: customer.id
       }))
