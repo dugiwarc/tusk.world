@@ -50,7 +50,7 @@ var http = require('http');
  */
 
 
-var server = app.listen(3000);
+var server = app.listen('http://tusk.world/');
 
 var options = {
   allowUpgrades: true,
