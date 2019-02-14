@@ -50,7 +50,7 @@ var http = require('http');
  */
 
 
-var server = app.listen(port);
+var server = app.listen(80);
 
 var options = {
   allowUpgrades: true,
