@@ -2,7 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var logger = require('morgan'); 
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -18,7 +18,6 @@ var flash = require('connect-flash');
 var keyPublishable = 'pk_test_K3VJ6ZLvLKdhLaJTglAd65Qk';
 var keySecret = 'sk_test_97z59dQM80mu9pVrQKxwaWyD';
 var stripe = require('stripe')(keySecret);
-var cors = require('cors');
 var mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 var geocodingClient = mbxGeocoding({ accessToken: 'pk.eyJ1IjoiZHVnaXdhcmMiLCJhIjoiY2pydDdmdjFtMGZlNjRhdGNreWQ1aW5mZSJ9.IJrnij1QFJbk2r_618xlUg' });
 
@@ -30,21 +29,7 @@ var revRoutes = require('./routes/reviews');
 var miscRoutes = require('./routes/misc'); 
 
 var app = express();
-app.use(cors());
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Origin", req.headers.origin);
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
-  );
-  if ("OPTIONS" == req.method) {
-    res.send(200);
-  } else {
-    next();
-  }
-});
+
 var debug = require('debug')('tusk:server');
 var http = require('http');
 /**
@@ -56,19 +41,9 @@ var http = require('http');
  * Create HTTP server.
  */
 
+var server = app.listen(3000);
+var io = require('socket.io').listen(server);
 
-var server = app.listen(port);
-
-var options = {
-  allowUpgrades: true,
-  transports: ['polling', 'websocket'],
-  pingTimeout: 9000, 
-  pingInterval: 3000,
-  cookie: 'mycookie',
-  httpCompression: true,
-  origins: '*:*'
-};
-var io = require('socket.io').listen(server, options);
 
 
 
@@ -78,15 +53,15 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", {
     throw err;
   }
   console.log("Connected!");
-  
+
   io.on('connection', function(socket){
     let chat = db.collection('chats');
-    
+
     // Create function to send status
     sendStatus = function(s){
       socket.emit('status', s);
     }
-    
+
     // Get chats from mongo collection
     chat.find().limit(100).sort({ _id: 1 }).toArray(function (err, res){
       if(err){
@@ -94,17 +69,17 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", {
       } else {
         console.log("Messages retrieved");
       }
-      
+
       // emit the messages
       socket.emit('output', res);
     });
-    
+
     // Handle input events
     socket.on('input', function(data){
       let sender = data.sender;
       let message = data.message;
       let receiver = data.receiver; 
-      
+ 
       // check for name and message
       if(sender == '' || message == ''){
         // send error status 
@@ -113,7 +88,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", {
         // Insert message
         chat.insert({sender: sender, message: message, receiver: receiver}, function(){
           io.emit('output', [data]);
-          
+
           // Send status object 
           sendStatus({
             message: 'Message sent',
@@ -182,7 +157,7 @@ app.use(async function (req, res, next) {
       }).populate('interest_notifications', null, {
         isRead: false
       }).exec();
-      
+
       res.locals.notifications = user.notifications.reverse();
       res.locals.message_notifications = user.message_notifications.reverse();
       res.locals.interest_notifications = user.interest_notifications.reverse();
@@ -207,16 +182,16 @@ app.use(miscRoutes);
 
 app.post('/charge', function (req, res) {
   var amount = 500;
-  
+
   stripe.customers.create({
     email: req.body.stripeEmail,
     source: req.body.stripeToken
   })
-  
-  .then(customer =>
-    stripe.charges.create({
-      amount,
-      description: "Sample Charge",
+
+    .then(customer =>
+      stripe.charges.create({
+        amount,
+        description: "Sample Charge",
         currency: "usd",
         customer: customer.id
       }))
@@ -251,7 +226,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || 3000);
+var port = normalizePort(process.env.PORT);
 app.set('port', port);
 
 /**

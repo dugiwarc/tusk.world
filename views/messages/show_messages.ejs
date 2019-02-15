@@ -210,7 +210,7 @@ var items = [];
             }
 
             // Connect to socket.io
-            var socket = io.connect('http://localhost:3000');
+            var socket = io.connect('http://127.0.0.1:3000');
 
 
             if(socket !== undefined){
@@ -219,6 +219,10 @@ var items = [];
                     // console.log(data);
                 getM.addEventListener('click', getMail);
                 content.addEventListener('click', getMail);
+
+                function consolee(){
+                  console.log("Hello");
+                }
 
                     function getMail(){
                       messages.innerText = "";
@@ -233,7 +237,7 @@ var items = [];
                                 messages.insertBefore(message, messages.firstChild);
                             } else {
                               console.log("sender" + data[x].sender);
-                              console.log(content.innerText);
+                              console.log("receiver" + data[x].receiver);
                             }
                         }
                     }
