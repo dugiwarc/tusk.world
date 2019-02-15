@@ -210,15 +210,7 @@ var items = [];
             }
 
             // Connect to socket.io
-            var socket = io.connect('http://tusk.world:80',{
-  allowUpgrades: true,
-  transports: ['polling', 'websocket'],
-  pingTimeout: 9000,
-  pingInterval: 3000,
-  cookie: 'mycookie',
-  httpCompression: true,
-  origins: '*:*'
-});
+            var socket = io.connect('http://tusk.world/');
 
 
             if(socket !== undefined){
