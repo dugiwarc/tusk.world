@@ -2,7 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan'); 
+var logger = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -29,6 +29,13 @@ var revRoutes = require('./routes/reviews');
 var miscRoutes = require('./routes/misc'); 
 
 var app = express();
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+  next();
+});
 
 var debug = require('debug')('tusk:server');
 var http = require('http');
@@ -36,13 +43,14 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
+var server = http.createServer(app);
 
 /**
  * Create HTTP server.
  */
 
-var server = app.listen(3000);
-var io = require('socket.io').listen(server);
+
+var io = require('socket.io').listen(server).sockets;
 
 
 
@@ -53,15 +61,17 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", {
     throw err;
   }
   console.log("Connected!");
-
+  
   io.on('connection', function(socket){
+    // socket.set("transports", ["xhr-polling"]);
+    // socket.set("polling duration", 10);
     let chat = db.collection('chats');
-
-    // Create function to send status
+    
+    // Create function to send status 
     sendStatus = function(s){
       socket.emit('status', s);
     }
-
+    
     // Get chats from mongo collection
     chat.find().limit(100).sort({ _id: 1 }).toArray(function (err, res){
       if(err){
@@ -69,17 +79,17 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", {
       } else {
         console.log("Messages retrieved");
       }
-
+      
       // emit the messages
       socket.emit('output', res);
     });
-
+    
     // Handle input events
     socket.on('input', function(data){
       let sender = data.sender;
       let message = data.message;
       let receiver = data.receiver; 
- 
+      
       // check for name and message
       if(sender == '' || message == ''){
         // send error status 
@@ -88,7 +98,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", {
         // Insert message
         chat.insert({sender: sender, message: message, receiver: receiver}, function(){
           io.emit('output', [data]);
-
+          
           // Send status object 
           sendStatus({
             message: 'Message sent',
@@ -157,7 +167,7 @@ app.use(async function (req, res, next) {
       }).populate('interest_notifications', null, {
         isRead: false
       }).exec();
-
+      
       res.locals.notifications = user.notifications.reverse();
       res.locals.message_notifications = user.message_notifications.reverse();
       res.locals.interest_notifications = user.interest_notifications.reverse();
@@ -182,16 +192,16 @@ app.use(miscRoutes);
 
 app.post('/charge', function (req, res) {
   var amount = 500;
-
+  
   stripe.customers.create({
     email: req.body.stripeEmail,
     source: req.body.stripeToken
   })
-
-    .then(customer =>
-      stripe.charges.create({
-        amount,
-        description: "Sample Charge",
+  
+  .then(customer =>
+    stripe.charges.create({
+      amount,
+      description: "Sample Charge",
         currency: "usd",
         customer: customer.id
       }))
@@ -220,28 +230,29 @@ app.use(function(err, req, res, next) {
  * Module dependencies.
  */
 
-var debug = require('debug')('tusk:server');
-var http = require('http');
+// var debug = require('debug')('tusk:server');
+// var http = require('http');
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT);
-app.set('port', port);
+// var port = normalizePort(process.env.PORT);
+// app.set('port', port);
 
 /**
  * Create HTTP server.
  */
-var server = http.createServer(app);
+
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(process.env.PORT || 3000);
 server.on('error', onError);
 server.on('listening', onListening);
 
+port = 3000;
 /**
  * Normalize a port into a number, string, or false.
  */

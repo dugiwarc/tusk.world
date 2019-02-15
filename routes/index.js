@@ -15,19 +15,19 @@ var connections = [];
 
 
 router.get("/", function(req, res){
-  req.io.sockets.on('connection', function (socket) {
-    connections.push(socket);
-    console.log('Connected: %s sockets connected', connections.length);
+  // req.io.sockets.on('connection', function (socket) {
+  //   connections.push(socket);
+  //   console.log('Connected: %s sockets connected', connections.length);
 
-    socket.on('disconnect', ()=>{
-      socket.removeAllListeners();
-    });
+  //   socket.on('disconnect', ()=>{
+  //     socket.removeAllListeners();
+  //   });
 
-      socket.on('send message', function(data){
-        console.log(data);
-        req.io.sockets.emit('new message', {msg: data});
-      });
-    });
+  //     socket.on('send message', function(data){
+  //       console.log(data);
+  //       req.io.sockets.emit('new message', {msg: data});
+  //     });
+  //   });
   res.render("landing", {keyPublishable});
 });
 

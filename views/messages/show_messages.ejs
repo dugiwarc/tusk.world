@@ -210,38 +210,38 @@ var items = [];
             }
 
             // Connect to socket.io
-            var socket = io.connect('http://127.0.0.1:3000');
+            var socket = io();
 
 
             if(socket !== undefined){
                 console.log('Connected to socket');
                 socket.on('output', function(data){
                     // console.log(data);
-                getM.addEventListener('click', getMail);
-                content.addEventListener('click', getMail);
+                // getM.addEventListener('click', getMail);
+                // content.addEventListener('click', getMail);
 
                 function consolee(){
                   console.log("Hello");
                 }
 
-                    function getMail(){
-                      messages.innerText = "";
+                    // function getMail(){
+                      // messages.innerText = "";
                     if(data.length){
                         for(var x = 0;x < data.length; x++){
                             var message = document.createElement('div');
                             message.setAttribute('class', 'chat-message');
                             message.textContent = data[x].sender + ": " + data[x].message;
-                            if((data[x].sender === content.innerText && data[x].receiver === <%- JSON.stringify(currentUser.username)%> ) || (data[x].receiver === content.innerText && data[x].sender === <%- JSON.stringify(currentUser.username)%>)){
+                            // if((data[x].sender === content.innerText && data[x].receiver === <%- JSON.stringify(currentUser.username)%> ) || (data[x].receiver === content.innerText && data[x].sender === <%- JSON.stringify(currentUser.username)%>)){
                                 console.log("yo");
                                 messages.appendChild(message);
                                 messages.insertBefore(message, messages.firstChild);
-                            } else {
-                              console.log("sender" + data[x].sender);
-                              console.log("receiver" + data[x].receiver);
-                            }
+                            // } else {
+                              // console.log("sender" + data[x].sender);
+                              // console.log("receiver" + data[x].receiver);
+                            // }
                         }
                     }
-                  }
+                  // }
 
 
                 });
