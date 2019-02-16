@@ -52,6 +52,7 @@ router.post("/register",async function(req, res){
     surname: req.body.surname,
     email: req.body.email,
     username: req.body.username,
+    image: '/pics/default_pic.jpg',
     gender: req.body.gender,
     coordinates: coordinates,
     city: req.body.location

@@ -36,8 +36,7 @@
 
   <div class='middle-section'>
 
-    <div class="main-container">
-  
+
       <section class="bio">
     
         <div class="profile-photo">
@@ -68,12 +67,23 @@
                 <img src="/pics/bookmark.png">
               </a>
             </div>
+            <% user.reviews.forEach(function(review){ %>
+              <% if(review.author.id.equals(currentUser._id)){ %>
+                <div class="social-icons">
+                  <a id="toggle-edit-form">
+                    <img src="/pics/review.png">
+                  </a>
+                </div>
+              <% } else { %>
+                <div class="social-icons">
+                  <a id="leave_review">
+                    <img src="/pics/review.png">
+                  </a>
+                </div>
+              <% } %>
+              <% }); %>
 
-            <div class="social-icons">
-              <a href="/users/<%= user._id %>/reviews/new">
-                <img src="/pics/review.png">
-              </a>
-            </div>
+
 
             <div class="social-icons">
               <a href="/users/<%= user._id %>/messages/new">
@@ -124,22 +134,20 @@
             <span class="fa fa-star <% if (user.rating > 4.5) { %> checked <% } %>"></span>
             <em>(total reviews: <%= user.reviews.length %>)</em>
           </p>
+        <% } %>
       </div>
-
-    </div>
-</section>
-
-
+  </section>
+  
   <% if(!(currentUser._id.equals(user._id))){ %>
     
     <div class="connect-me">
-
+      
       <div class="follow-me">
         <a href="/follow/<%= user._id %>">
           Follow Me
         </a>
       </div>
-
+      
       <div class="hire-me">
         <p>
           <form action="/users/<%= user._id %>/conversation/..." method="get">
@@ -147,46 +155,112 @@
           </form>
         </p>
       </div>
-
+      
     </div>
-  <% } %>
-
-
-</div>
-</div>
-  <div class="right-section">
-  <div class="user_reviews">
-      <% user.reviews.slice(0, 5).forEach(function(review){ %>
-      <div class="row">
-      <div class="review_left_section">
-          <div class="stars">
-        <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
-    </div>
-    <div class="review_left_text">Review by: <strong><%= review.author.username %></strong></div>
-    <div class="review_left_text"><span><em><%= review.updatedAt.toDateString() %></em></span></div>
-    </div>
-    <div class="review_middle_section">
-          <p>
-              <%= review.text %>
-          </p>
-      </div>
-  </div>               
-      <div class="review_left_section">
-  <% if(currentUser && review.author.id.equals(currentUser._id)){ %>
-  <a href="/users/<%=user._id %>/reviews/<%=review._id %>/edit" class="button">Edit</a>
-  <form id="delete-form" action="/users/<%=user._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
-      <input type="submit" class="button" value="Delete">
-  </form>
-  <% } %>
-      </div>
-  <% }); %>
-  </div>
-  <div id='map'></div>
-  <div class="button_see_all">
-      <h4><a href="/users/<%= user._id %>/reviews">See all reviews</a></h4>
-  </div>
-  <% } %>
+    <% } %>
+          <div class="form_container">
+          <% if(!(currentUser._id.equals(user._id))){ %>
+            <div class="sibling_1 review_form">
+          <form class="form_flex" action="/users/<%= user._id %>/reviews" method="POST">
+            <div>
+              <textarea class="text_area" name="review[body]" required></textarea>
+            </div>
+            <div id="form_flex_sub">
+              <div>
+              <fieldset class="starability-basic">
+              <!-- <button class="clear-rating" type="button">Clear Rating</button> -->
+              <input type="radio" id="rate0" class="input-no-rate" name="review[rating]" value="0" checked
+                aria-label="No rating." />
+              <input type="radio" id="rate1" name="review[rating]" value="1" />
+              <label for="rate1" title="Terrible">1 star</label>
+              <input type="radio" id="rate2" name="review[rating]" value="2" />
+              <label for="rate2" title="Not good">2 stars</label>
+              <input type="radio" id="rate3" name="review[rating]" value="3" />
+              <label for="rate3" title="Average">3 stars</label>
+              <input type="radio" id="rate4" name="review[rating]" value="4" />
+              <label for="rate4" title="Very good">4 stars</label>
+              <input type="radio" id="rate5" name="review[rating]" value="5" />
+              <label for="rate5" title="Amazing">5 stars</label>
+            </fieldset>
+            </div>
+            <div>
+              <input type="submit">
+              </div>
+            </div>
+            </form>
           </div>
+            <div class="sibling review_form">
+            <% user.reviews.forEach(function(review) { %>
+            <% if(review.author.id.equals(currentUser._id)){ %>
+
+              <form class="form_flex_2" action="/users/<%= user._id %>/reviews/<%= review.id %>?_method=PUT" method="POST">
+                <div>
+                  <textarea class="text_area" name="review[text]" required><%= review.text %></textarea>
+                </div>
+                            <div id="form_flex_sub">
+                              <div>
+                  <fieldset class="starability-basic">
+                  <!-- <button class="clear-rating" type="button">Clear Rating</button> -->
+                  <input type="radio" id="edit-rate0" class="input-no-rate" name="review[rating]" value="0" checked
+                    aria-label="No rating." />
+                  <input type="radio" id="edit-rate1" name="review[rating]" value="1" />
+                  <label for="edit-rate1" title="Terrible">1 star</label>
+                  <input type="radio" id="edit-rate2" name="review[rating]" value="2" />
+                  <label for="edit-rate2" title="Not good">2 stars</label>
+                  <input type="radio" id="edit-rate3" name="review[rating]" value="3" />
+                  <label for="edit-rate3" title="Average">3 stars</label>
+                  <input type="radio" id="edit-rate4" name="review[rating]" value="4" />
+                  <label for="edit-rate4" title="Very good">4 stars</label>
+                  <input type="radio" id="edit-rate5" name="review[rating]" value="5" />
+                  <label for="edit-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+                </div>
+                <div>
+                  <form id="delete-form" action="/users/<%=user._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+                    <input type="submit" class="button" value="Delete">
+                  </form>
+                  <input type="submit" class="button" value="Update">
+                </div>
+              </div>
+                </form>
+              <% } %>
+              <% }); %>
+            </div>
+          <% } %>
+          </div>
+
+
+</div>
+<div class="right-section">
+<div class="user_reviews">
+
+  <% user.reviews.slice(0, 5).forEach(function(review){ %>
+  <div class="row">
+    <div class="review_left_section">
+        <div class="stars">
+      <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
+  </div>
+  <div class="review_left_text">Review by: <strong><%= review.author.username %></strong></div>
+  <div class="review_left_text"><span><em><%= review.updatedAt.toDateString() %></em></span></div>
+  </div>
+  <div class="review_middle_section">
+        <p>
+            <%= review.text %>
+        </p>
+    </div>
+</div>               
+    <div class="review_left_section">
+    </div>
+<% }); %>
+</div>
+<div id='map'></div>
+<div class="button_see_all">
+    <h4><a href="/users/<%= user._id %>/reviews">See all reviews</a></h4>
+</div>
+        </div>
+</div>
+
+
           </div>
     </div>
 </div>
@@ -215,6 +289,16 @@
     .addTo(map);
 
 </script>
+<script>
+  $("#leave_review").click(function(){
+    $(".sibling_1").toggle(".review_form");
+  });
+
+  $("#toggle-edit-form").click(function(){
+    $(".sibling").toggle(".review_form");
+  });
+</script>
+
 <% } else { %>
   <div class="success">
     You need to log in to view this page

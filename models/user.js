@@ -13,7 +13,10 @@ var userSchema = new mongoose.Schema({
   },
   email: String,
   coordinates: Array,
-  image: String,
+  image: {
+    type: String,
+    default: "/pics/default_pic.jpg"
+  },
   city: String,
   interested_city: String,
   imageId: String,

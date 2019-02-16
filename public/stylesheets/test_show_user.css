@@ -15,19 +15,56 @@ html {
   order: -1;
 }
 
+#add_review
+{
+    display: flex;
+    flex-direction: column;
+}
+
 .right_side a {
     margin-left: 15px;
 }
 
+.edit-review-form {
+  display: none;
+}
+
+.add_review
+{
+    visibility: hidden;
+}
+
+
+.clear-rating {
+  display: block;
+}
+.middle-section
+{
+    width: 550px;
+    align-self: center;
+}
+
+textarea.text_area
+{
+    outline: 0;
+    border: 0;
+    resize: none;
+    width: 97%;
+    margin: 5px 5px;
+}
+
+
+
 .user_profile {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background-color: #FFB840;
     font-family: "Lucida Grande", "Open Sans", sans-serif;
     width: 100%;
     color: rgb(150, 150, 150);
     margin-top: 100px;
+    margin-bottom: 200px;
 }
 
 .mapboxgl-popup {
@@ -113,8 +150,9 @@ ul
     align-items: center;
     z-index: 1;
     width: 100px;
-    height: 524px;
+    height: 555px;
     background-color: rgb(37, 37, 37);
+    margin: 0 10px;
     
 }
 
@@ -124,7 +162,7 @@ ul
     justify-content: space-evenly;
     flex-direction: column;
     width: 500px;
-    height: 530px;
+    height: 555px;
     margin-left: 10px;
     background-color: rgb(37, 37, 37);
     border-color: black;
@@ -371,6 +409,7 @@ h6 {
 @media only screen and (max-width: 1200px) {
 .user_profile
 {
+    margin-top: 300px;
     flex-direction: column;
 }
 
