@@ -15,12 +15,18 @@
   <%= favor.task %>
 </div>
 <hr>
-<div class="favor_description">
-<img src="../pics/favor.png">
-<hr class="lower_border">
-<p><%= favor.description %></p>
-<p>Put a bird on it gastropub cliche franzen lomo. Air plant godard butcher succulents, bushwick VHS thundercats tbh etsy pinterest whatever vegan lumbersexual pop-up. Salvia hammock 90's swag umami blue bottle cronut edison bulb raclette forage cloud bread letterpress vape scenester. Bushwick bicycle rights occupy vegan, truffaut asymmetrical chartreuse thundercats mumblecore chambray everyday carry butcher. Beard vaporware taiyaki fanny pack post-ironic mlkshk.</p>
+<div class="favor_image">
+  <img src="../pics/favor-01.png">
 </div>
+<div class="favor_description">
+<span class="favor_description_location">
+  <%= favor.location %>
+</span>
+<div class="favor_description_desc">
+  <p><%= favor.description %></p>
+  <p>Put a bird on it gastropub cliche franzen lomo. Air plant godard butcher succulents, bushwick VHS thundercats tbh etsy pinterest whatever vegan lumbersexual pop-up. Salvia hammock 90's swag umami blue bottle cronut edison bulb raclette forage cloud bread letterpress vape scenester. Bushwick bicycle rights occupy vegan, truffaut asymmetrical chartreuse thundercats mumblecore chambray everyday carry butcher. Beard vaporware taiyaki fanny pack post-ironic mlkshk.</p>
+</div>
+  </div>
 <div class="redpill_bluepill">
 <div id="red_pill"><a href="/favors/<%= favor.id %>/interests" action="get">Show Interest</a></div>
 <div id="blue_pill"><a href="/negotiations" action="get">Negotiate</a></div>

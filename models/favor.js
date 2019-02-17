@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var favorSchema = new mongoose.Schema({
   task: String,
   price: String,
+  location: String,
   description: String,
   image: {
     type: String,

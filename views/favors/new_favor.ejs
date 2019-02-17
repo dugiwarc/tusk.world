@@ -16,15 +16,18 @@
   <form id="favor_contact" action="/users/<%= user._id %>/favors" method="post" enctype="multipart/form-data">
     <h3 id="fav_h3">Quick Favor</h3>
     <fieldset>
-      <input placeholder="Your Task" type="text" name="favor[task]" tabindex="1" required autofocus>
+      <input placeholder="Your Task" type="text" name="task" tabindex="1" required autofocus>
     </fieldset>
     <fieldset>
       <input placeholder="Upload an image" type="file" id="image" name="image" accept="image/*">
     </fieldset>
     <fieldset>
-      <input placeholder="Your Price" type="text" name="favor[price]" min="0.0" tabindex="2" required>
+      <input placeholder="Your Price" type="text" name="price" min="0.0" tabindex="2" required>
     </fieldset>
-      <textarea class="favor_textarea" rows="2" name="favor[description]" placeholder="Auto expanding text area"></textarea>
+    <fieldset>
+      <input placeholder="Location" type="text" name="location" required>
+    </fieldset>
+      <textarea class="favor_textarea" rows="2" name="description" placeholder="Auto expanding text area"></textarea>
     <fieldset>
       <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
     </fieldset>

@@ -29,7 +29,8 @@ router.post("/users/:id/reviews", middleware.isLoggedIn, middleware.checkReviewE
     user.notifications.push(notification);                        
     review.author.id = req.user._id;
     review.author.username = req.user.username;
-    // let review.user = user;
+    review.user = user.id;
+    review.user.username = user.username;
     review.save();
     user.reviews.push(review);
     user.rating = calculateAverage(user.reviews);

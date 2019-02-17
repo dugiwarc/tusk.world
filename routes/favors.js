@@ -2,6 +2,7 @@ var express       = require('express');
 var multer        = require('multer');
 var passport      = require('passport');
 var Favor         = require('../models/favor');
+var Location      = require('../models/location');
 var User          = require('../models/user');
 var Notification  = require('../models/notification');
 var middleware    = require("../middleware");
@@ -85,7 +86,15 @@ router.post("/users/:id/favors", middleware.isLoggedIn, upload.single('image'), 
       //     id: req.user._id,
       //     username: req.user.username                            
       //   }
-        Favor.create(req.body.favor, async function (err, favor) {
+        var newFavor = new Favor({
+          task: req.body.task,
+          price: req.body.price,
+          // image: req.body.image,
+          location: req.body.location,
+          description: req.body.description
+        });
+
+        Favor.create(newFavor, async function (err, favor) {
           if (err) {
             console.log(err);
           } else {
@@ -100,7 +109,21 @@ router.post("/users/:id/favors", middleware.isLoggedIn, upload.single('image'), 
               follower.notifications.push(notification);
               follower.save();
             }
+
+            location = await Location.findOne({name:req.body.location});
+            console.log("LOCATION" + location);
+
+            location.followers.forEach(async function(follower){
+                console.log("=======");
+                console.log("FOLLOWER" + follower);
+                let follo = await User.findById(follower);
+                console.log("FOLLO" + follo);
+                let notification = await Notification.create(newNotification);
+                follo.notifications.push(notification);
+                follo.save();
+              });
             favor.author.id = req.user._id;
+            console.log(favor.author.id);
             favor.author.username = req.user.username;
             favor.author.task = req.body.task;
             req.user.posted_favors.push(favor);
@@ -122,10 +145,9 @@ router.post("/users/:id/favors", middleware.isLoggedIn, upload.single('image'), 
 });
 
 // finds favor/outputs edit page
-router.get("/favors/:id/edit", middleware.checkFavorOwnership, function (req, res) {
-  Favor.findById(req.params.id, function(err, foundFavor){
-    res.render("favors/edit", {favor: foundFavor});
-  });
+router.get("/favors/:id/edit", middleware.checkFavorOwnership, async function (req, res) {
+  let favor = await Favor.findById(req.params.id);
+  res.render("favors/edit", {favor});
 });
 
 // finds the favor and updates it's contents with the inputted data

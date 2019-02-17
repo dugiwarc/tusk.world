@@ -10,6 +10,7 @@ var nodemailer    = require('nodemailer');
 var User          = require('../models/user');
 var crypto        = require('crypto');
 var fs            = require('fs');
+var Location      = require('../models/location');
 var users = [];
 var connections = [];
 
@@ -46,6 +47,7 @@ router.post("/register",async function(req, res){
         .send();
   var coordinates = response.body.features[0].geometry.coordinates;
   console.log(coordinates);
+  console.log()
   // res.send("Signing you up");
   var newUser = new User({
     name: req.body.name,
@@ -60,12 +62,37 @@ router.post("/register",async function(req, res){
   // if(req.body.adminCode === '1111'){
     //   newUser.isAdmin = true;
     // }
-    User.register(newUser, req.body.password,function(err, user){
 
-      if(err){
-        req.flash("error", "That didn't work.");
-        console.log(err);
+  var newLocation = new Location({
+    name: req.body.location,
+    coordinates: coordinates
+
+  });
+
+  
+  
+  User.register(newUser, req.body.password, async function(err, user){
+    
+    if(err){
+      req.flash("error", "That didn't work.");
+      console.log(err);
+    }
+      let location_name = req.body.location;
+      console.log("Location name: " + location_name);
+      let location = await Location.findOne({name:location_name});
+      if(location){
+        console.log("LOCATION FOUND" + location);
+        location.followers.push(user);
+        location.save();
+      } else {
+        console.log("LOCATION CREATED");
+        let newly_created_location = Location.create(newLocation);
+        let location = await Location.findOne({name:location_name});
+        location.followers.push(user);
+        location.save();
       }
+      // location.followers.push(user);
+      // location.save();
       passport.authenticate("local")(req, res, function(){
       req.flash("success", "Welcome to Tusk!");
       res.redirect("/favors");

@@ -143,11 +143,12 @@ router.put("/users/:id", middleware.checkUserOwnership, upload.single('image'),f
 // show user profile
 router.get("/users/:id",async function(req, res){
   try {
+    let review = await Review.find({});
     let user = await User.findById(req.params.id).populate({
       path: 'reviews',
       options: {sort: {createdAt: -1}} // sorting the populated reviews array to show the latest first
     }).populate('followers').populate('messages').exec();
-    res.render('users/test_show_user', { user });
+    res.render('users/test_show_user', { user, review });
   } catch(err) {
     req.flash('error', err.message);
     return res.redirect('back');

@@ -67,21 +67,17 @@
                 <img src="/pics/bookmark.png">
               </a>
             </div>
-            <% user.reviews.forEach(function(review){ %>
-              <% if(review.author.id.equals(currentUser._id)){ %>
-                <div class="social-icons">
-                  <a id="toggle-edit-form">
+
+            <div class="social-icons">
+
+                    <a id="leave_review">
+                      <img src="/pics/review.png">
+                    </a>
+
+                      <a id="toggle-edit-form">
                     <img src="/pics/review.png">
                   </a>
                 </div>
-              <% } else { %>
-                <div class="social-icons">
-                  <a id="leave_review">
-                    <img src="/pics/review.png">
-                  </a>
-                </div>
-              <% } %>
-              <% }); %>
 
 
 
@@ -163,7 +159,7 @@
             <div class="sibling_1 review_form">
           <form class="form_flex" action="/users/<%= user._id %>/reviews" method="POST">
             <div>
-              <textarea class="text_area" name="review[body]" required></textarea>
+              <textarea class="text_area" name="review[text]" required></textarea>
             </div>
             <div id="form_flex_sub">
               <div>

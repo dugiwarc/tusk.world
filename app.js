@@ -9,6 +9,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var methodOverride = require('method-override');
 var Favor = require('./models/favor');
+var Location = require('./models/location');
 var User = require('./models/user');
 var Message = require('./models/message');
 var Review = require('./models/review');
