@@ -7,7 +7,7 @@
 <div class="blur review_form">
 </div>
     <div class="sibling_1 review_form">
-    <div class="form_container">
+      <div class="form_container">
           <form class="form_flex" action="/users/<%= user._id %>/reviews" method="POST">
             <span class="review_header">You are leaving a review for <%= user.name %></span>
             <div>
@@ -151,37 +151,36 @@
             </div>
 
             <div class="social-icons">
+            <% var useree_reviews=[]%>
                   <% review.forEach(function(review){ %>
-                  <% if(review.author.id.equals(currentUser.id) && review.user.equals(user._id)){%>
-
-                  <% console.log("Hereeeeo")%>
-
-                  <a id="toggle-edit-form">
-                    <img src="/pics/review.png">
-                  </a>
+                  <% if(review.user.equals(user._id)){%>
+                  <% useree_reviews.push(review.author.username);%>
                   <%} %>
                   <% }); %>
+                  <%console.log("fafasfasfasfafasfasfafasfasf");%>
+                  <%console.log(useree_reviews);%>
+                  <%console.log(currentUser.username);%>
 
-                  <% if(user.reviews == 0){ %>
-                    <a id="leave_review">
+                  <% if(useree_reviews.includes(currentUser.username)){ %>
+                    <a id="toggle-edit-form">
                     <img src="/pics/review.png">
                   </a>
-                  <% } %>
+                  <% } else {%>
+                  <% console.log("NONE");%>
+                  <%} %>
+
+                  
+
 
                   <% var user_reviews=["2"];%>
                   <% review.forEach(function(review){ %>
                   <% if(review.user.equals(user._id)){%>
                     <% user_reviews.push(review.author.username)%>
-                    <%console.log(review.author.username)%>
                   <% } %>
                   <% }); %>
 
-                  <% console.log(user_reviews)%>
-                  <% console.log(currentUser.id)%>
                   <% if(user_reviews.includes(currentUser.username)){ %>
-                  <% console.log("IT INCLUDES");%>
                   <% } else { %>
-                  <% console.log("IT DOESN't");%>
                   <a id="leave_review">
                     <img src="/pics/review.png">
                   </a>
@@ -339,11 +338,11 @@
 
   $(".blur").click(function(){
     $(".blur").toggle(".review_form");
-    if($(".sibling1").hasClass("review_form")){
-      $(".sibling1").toggle(".review_form");
+    if($(".sibling_1").is(':visible')){
+      $(".sibling_1").toggle(".review_form");
     }
-        if($(".sibling").hasClass("review_form")){
-      $(".sibling").toggle(".review_form");
+    if($(".sibling").hasClass("review_form")){
+      $(".sibling").is(':visible');
     }
   });
 </script>
