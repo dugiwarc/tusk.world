@@ -80,19 +80,19 @@ router.post("/register",async function(req, res){
       let location_name = req.body.location;
       console.log("Location name: " + location_name);
       let location = await Location.findOne({name:location_name});
-      if(location){
+      if(location)
+      {
         console.log("LOCATION FOUND" + location);
         location.followers.push(user);
         location.save();
-      } else {
+      } 
+      else 
+      {
+        var newly_c = await Location.create(newLocation);
         console.log("LOCATION CREATED");
-        let newly_created_location = Location.create(newLocation);
-        let location = await Location.findOne({name:location_name});
-        location.followers.push(user);
-        location.save();
+        newly_c.followers.push(user);
+        newly_c.save();
       }
-      // location.followers.push(user);
-      // location.save();
       passport.authenticate("local")(req, res, function(){
       req.flash("success", "Welcome to Tusk!");
       res.redirect("/favors");

@@ -12,6 +12,7 @@ body {
 
 .sibling
 {
+align-self: center;
     height: 82px;
     position: absolute;
     width: 530px;
@@ -21,6 +22,7 @@ body {
 
 .sibling_1
 {
+  align-self: center;
     height: 82px;
     position: absolute;
     width: 530px;
@@ -31,14 +33,15 @@ body {
 
 .form_flex
 {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .form_flex_2
 {
-  display: flex;
-  flex-direction: column;
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
 }
 
 #form_flex_sub
@@ -48,13 +51,22 @@ body {
     margin: 0 10px;
 }
 
+.review_header
+{
+    color: white;
+    font-family: 'Lobster';
+    font-size: 35px;
+    margin-bottom: 30px;
+}
+
 .form_container
 {
-  position: relative;
-  height: 82px;
-    padding: 10px;
+    transform: translateY(50%);
+    position: relative;
+    height: 164px;
+    padding: 38px;
     background-color: #202020;
-    margin-top: 10px;
+    z-index: 4;
 }
 
 
@@ -72,7 +84,7 @@ body {
 }
 
 .btn-link {
-  color: grey;
+  color: white;
   border: none;
   outline: none;
   background: none;
@@ -735,35 +747,79 @@ h1 {
     justify-content: space-around;
     min-height: 200px;
     max-height: 200px;
-    min-width: 200px;
-    max-width: 15%;  
+    min-width: 300px;
+    max-width: 300px;
+    transition: .2s;
+    filter: opacity(.95);
+    z-index: 0;
 }
 
-.favor_box a {
-  display: flex;
-    font-family: 'Candal', sans-serif;
+.favor_box:hover
+{
+  transform: scale(1.05);
+  transition: .2s;
+      -webkit-box-shadow: 0.5px 8px 5px -8px black;
+    -moz-box-shadow: 0.5px 8px 5px -8px black;
+    box-shadow: 0.5px 8px 5px -8px black;
+    margin: 0 5px;
+    filter: opacity(1);
+    z-index: 1;
+}
 
+.favor_box_more_info {
+  display: flex;
+  font-family: monospace;
   justify-content: center;
   align-items: center;
-  background: #202020;
-  padding: 3px 5px;
+  background: salmon;
+  padding: 10px 15px;
+  transition: .5s;
 }
 
-.favor_box h2 {
+.favor_box_more_info:hover
+{
+  background: coral;
+  transition: .5s;
+}
+
+.favor_box_bar
+{
+  margin: 0 30px;
+}
+
+.favor_box_price_and_location
+{
+  display: flex;
+  background: rgb(135, 188, 62);
+      padding: 5px 30px;
+      font-family: monospace;
+          -webkit-box-shadow: 0.5px 8px 5px -8px black;
+    -moz-box-shadow: 0.5px 8px 5px -8px black;
+    box-shadow: 0.5px 8px 5px -8px black;
+}
+
+.favor_box_header
+{
+color: white;
+margin-top: 15px;
+    background: #202020;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Bowlby One SC', cursive;
+    font-family: 'Montserrat', cursive;
+    /* font-family: 'Londrina Solid', cursive; */
     text-align: center;
     max-width: 80%;
     min-width: 80%;
-    min-height: 80px;
-    font-size: large;
-    max-height: 150px;
-    background: olivedrab;
-    color: black;
-    padding: 15px 15px;
+    /* min-height: 80px; */
+    font-size: 25px;
+    height: 47px;
+    padding: 18px 15px;
+    -webkit-box-shadow: 0.5px 8px 5px -8px black;
+    -moz-box-shadow: 0.5px 8px 5px -8px black;
+    box-shadow: 0.5px 8px 5px -8px black;
 }
+
 
 #landing-header {
   padding-top: 20vh;
@@ -814,25 +870,47 @@ h1 {
     transform: translateY(100px);
     will-change: opacity;
     display: none;
-    min-width: 200px;
-    margin-top: 20px;
   }
-
+  
   .trigger-enter .dropdown {
     display: block;
   }
-
+  
   .trigger-enter-active .dropdown {
     opacity: 1;
   }
+  
+  .notifications
+  {
+    min-width: 150px;
+    margin-top: 20px;
+  }
+
+  .profile
+  {
+    margin-top: 20px;
+  }
+  
+  .blur 
+  {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 3;
+    opacity: .6;
+    background: wheat;
+    transition: 1s;
+
+  }
 
   .dropdownBackground {
-    /* width: 100px; */
-    /* height: 100px; */
+    width: 100px;
+    height: 100px;
     position: absolute;
-    background: white;
-    /* border-radius: 4px; */
-    /* box-shadow: 0 50px 100px rgba(50, 50, 93, .1), 0 15px 35px rgba(50, 50, 93, .15), 0 5px 15px rgba(0, 0, 0, .1); */
+    background: #fff;
+    -webkit-box-shadow: 0.5px 8px 5px -8px black;
+    -moz-box-shadow: 0.5px 8px 5px -8px black;
+    box-shadow: 0.5px 8px 5px -8px black;
     transition: all 0.3s, opacity 0.1s, transform 0.2s;
     transform-origin: 50% 0;
     display: flex;

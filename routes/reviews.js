@@ -88,6 +88,7 @@ router.put("/users/:id/reviews/:review_id", middleware.checkReviewOwnership, fun
 
 
 router.delete("/users/:id/reviews/:review_id", middleware.checkReviewOwnership, function (req, res) {
+    console.log(req.params.review_id);
     Review.findByIdAndRemove(req.params.review_id, function (err) {
         if (err) {
             console.log(err);

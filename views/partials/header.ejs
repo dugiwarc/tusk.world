@@ -30,7 +30,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC|Candal|Changa+One|Lilita+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC|Candal|Changa+One|Lilita+One|Londrina+Solid" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Lobster" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:700i" rel="stylesheet">
 
@@ -68,7 +68,7 @@
         <% if(notifications.length > 0 || message_notifications.length > 0 || interest_notifications.length > 0){ %>
           <li class="trig"> 
             <a><img src="/pics/full_inbox.png"></a>
-            <ul class="dropdown courses">
+            <ul class="dropdown notifications">
           <% notifications.forEach(function(notification) { %>
               <li>
                 <a href="/notifications/<%= notification.id %>"><%= notification.username %> created a favor </a>
@@ -91,7 +91,7 @@
 
           <li class="trig">
             <a><img src="/pics/empty_inbox.png"></a>
-            <ul class="dropdown dropdown3">
+            <ul class="dropdown notifications">
               <li>
                 <span class="code">No new notifications</span>
                 <a href="#"></a>
@@ -109,7 +109,7 @@
               <% } else { %>
                 <a href="/users/<%= currentUser.id %>/"><img src="/pics/user_female.png"></a>
               <% } %>
-                <ul class="dropdown dropwdown3">
+                <ul class="dropdown profile">
                   <li>
                     <a href="">Edit Profile</a>
                   </li>

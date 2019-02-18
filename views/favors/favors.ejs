@@ -21,11 +21,10 @@
 
 <% } else { %>
 <% favors.forEach(function(favor){ %>
-<div class="favor_box" style="background-color: #<%= (Math.random()*0xFFFFFF<<0).toString(16) %>">
-  <h2>
-    <%= favor.task %>
-  </h2>
-    <a href="/favors/<%= favor._id %>">More Info</a>
+<div class="favor_box">
+  <span class="favor_box_header"><%= favor.task %></span>
+  <span class="favor_box_price_and_location"><%= favor.price %>$ <span class="favor_box_bar">|</span> <%= favor.location %></span>
+  <span class="favor_box_more_info"><a href="/favors/<%= favor._id %>">More Info</a></span>
 </div>
 <% }); %>
 <% } %> 
@@ -35,15 +34,46 @@
 <script>
 
 var colors = [
-	"rgb(135, 188, 62)",
-	"rgb(219, 75, 118)",
-	"rgb(222, 110, 121)",
-	"rgb(228, 100, 117)",
+  "#BFD8D2",
+  "#FEDCD2",
+  "#DF744A",
+  "#DCB239",
+  "#94618E",
+  "#CD5360",
+  "#B37D4E",
+  "#438496",
+  "#F7CE3E",
+  "#F7882F",
+  "#6B7A8F",
+  "#F7C331",
+  "#FF533D",
+  "#A4D555",
+  "#88BBD6",
+  "#FA7C92",
+  "#6C648B",
+  "#AF473C",
+  "#CDA34F",
+  "#636B46",
+  "#6E7376",
+  "#4ABDAC",
+  "#414141",
+  "#FF6A5C",
+  "#EAB126",
+  "#1B7B34",
+  "#57652A",
+  "#B5e582",
+  "#C06014",
+  "#874C62"
 ]
-var squares = document.querySelectorAll(".box");
+var squares = document.querySelectorAll(".favor_box");
 
-for(var i = 0; i < squares.length; i++){
-	squares[i].style.background = colors[i]
+for(var i = 0, c = 0; i < squares.length; i++, c++){
+  console.log(c, i);
+  squares[i].style.background = colors[c];
+  if(c == colors.length - 1)
+  {
+    c = 0;
+  }
 }
 
 </script> 
