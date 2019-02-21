@@ -826,9 +826,15 @@ a img:hover {
   height: 40px;
 }
 
+.search-form.active
+{
+  margin-top: -30px;
+  transition: .7s ease;
+}
 #welcome_sub.active
 {
-  height: 160px;
+  /* height: 160px; */
+  transform: translateY(70px);
   transition: 2s ease;
 }
 
