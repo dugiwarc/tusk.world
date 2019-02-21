@@ -130,7 +130,7 @@ router.get('/forgot', function (req, res) {
 });
 
 router.get('/chat', function (req, res) {
-  res.render('reviews/chat_test');
+  res.render('reviews/contact');
 });
 
 router.post('/chat', function (req, res) {

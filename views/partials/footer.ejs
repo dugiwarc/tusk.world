@@ -2,42 +2,68 @@
 
 
 <script>
-  const triggers = document.querySelectorAll('.cool > li.trig');
-  const background  = document.querySelector('.dropdownBackground');
-  const nav  = document.querySelector('.nav');
+// navigation bar settings
 
-  function handleEnter() {
-    this.classList.add('trigger-enter');
-    setTimeout(() => this.classList.contains('trigger-enter') && this.classList.add('trigger-enter-active'), 150);
-    background.classList.add('open');
+    const triggers = document.querySelectorAll('.cool > li.trig');
+    const background  = document.querySelector('.dropdownBackground');
+    const nav  = document.querySelector('.nav');
+
+    function handleEnter() {
+        this.classList.add('trigger-enter');
+        setTimeout(() => this.classList.contains('trigger-enter') && this.classList.add('trigger-enter-active'), 150);
+        background.classList.add('open');
 
     const dropdown = this.querySelector('.dropdown');
     const dropdownCoords = dropdown.getBoundingClientRect();
     const navCoords = nav.getBoundingClientRect();
 
     const coords = {
-      height: dropdownCoords.height,
-      width: dropdownCoords.width,
-      top: dropdownCoords.top - navCoords.top,
-      left: dropdownCoords.left - navCoords.left
+        height: dropdownCoords.height,
+        width: dropdownCoords.width,
+        top: dropdownCoords.top - navCoords.top,
+        left: dropdownCoords.left - navCoords.left
     };
 
     background.style.setProperty('width', `${coords.width}px`);
     background.style.setProperty('height', `${coords.height}px`);
     background.style.setProperty('transform', `translate(${coords.left}px, ${coords.top}px)`);
-  }
+    }
 
-  function handleLeave() {
+    function handleLeave() {
     this.classList.remove('trigger-enter', 'trigger-enter-active');
     background.classList.remove('open');
-  }
+    }
 
-  triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
-  triggers.forEach(trigger => trigger.addEventListener('mouseleave', handleLeave));
-</script>
+    triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
+    triggers.forEach(trigger => trigger.addEventListener('mouseleave', handleLeave));
 
-<script>
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// search bar settings
+
+    $('input').dblclick(function(e){
+        if (e) {
+            $(this).prop('checked', false);
+        }
+    });
+
+    $('.search-input').focus(function(){
+        $(this).parent().addClass('focus');
+            }).blur(function(){
+                $(this).parent().removeClass('focus');
+    });
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+$('.3').on('click', function(){
+    $('.square').toggleClass('changed', 1500);
+});
 </script>
 </body>
 </html>

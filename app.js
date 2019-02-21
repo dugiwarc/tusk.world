@@ -56,10 +56,11 @@ var io = require('socket.io').listen(server).sockets;
 
 
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusky", { useNewUrlParser: true }, function(err, db){
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_world", { useNewUrlParser: true }, function(err, db){
   if(err)
   {
     throw err;
+    console.log("Error");
   }
   console.log("Connected!");
   

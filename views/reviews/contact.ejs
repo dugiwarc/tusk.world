@@ -1,0 +1,34 @@
+<% include ../partials/header %>
+
+<section>
+<div class="contact_form">
+
+  <div class="enquiry_div">
+    <span class="enquiry_header_span">Let's talk</span>
+  </div>
+
+  <form action="/chat" method="post">
+
+    <div class="enquiry_h_div">
+      <label for="name"><span class="enquiry_h_span">Name*</span></label>
+      <input  id="name" type="text" name="enquiry[name]" required>
+    </div>
+
+    <div class="enquiry_h_div">
+      <label for="email"><span class="enquiry_h_span">Email*</span></label>
+      <input id="email" type="email" name="enquiry[email]" required>
+    </div>
+      
+    <div class="enquiry_h_div">
+      <label for="message"><span class="enquiry_h_span">What can we help you with?*</span></label>
+      <textarea id="textarea" name="enquiry[message]" required></textarea>
+    </div>
+
+    <button type="submit">Send</button>                   
+
+  </form>
+
+</div>
+</section>
+
+<% include ../partials/footer %>

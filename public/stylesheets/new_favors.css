@@ -2,20 +2,7 @@
 
 
 
-textarea.favor_textarea {
-    font-family: "Roboto", sans-serif;
-    outline: 0;
-    background: #f2f2f2;
-    width: -webkit-fill-available;
-    border: 0;
-    margin: 0 0 15px;
-    padding: 15px;
-    /* box-sizing: border-box; */
-    font-size: 14px;
-    resize: none;
-    min-height: 30px;
-    max-height: 200px;
-}
+
 
 .favor_container {
     max-width: 400px;

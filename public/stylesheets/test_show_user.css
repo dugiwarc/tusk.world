@@ -144,6 +144,7 @@ ul
     background-color: rgba(215, 145, 8, 0.9);
 }
 
+
 .left-section {
     display: flex;
     flex-direction: column;
@@ -407,7 +408,52 @@ h6 {
 }
 
 
+
+
+@media only screen and (max-width: 1600px)
+{
+    #home 
+    {
+        margin: 0 50px;
+    }
+    
+    #welcome
+    {
+        font-size: 7rem;
+        overflow: auto;
+        padding: 10px;
+        margin: -40px 0 40px 0;
+    }
+}
+
+
 @media only screen and (max-width: 1200px) {
+    
+    
+    #welcome
+    {
+        font-size: 5rem;
+        overflow: auto;
+        padding: 10px;
+        margin: -40px 0 40px 0;
+    }
+    
+    li.right_li
+    {
+        transition: .3s;
+        transform: scale(.7);
+        margin: 0 -35px;
+        transition: .3s;
+    }
+    
+    li.left_li
+{
+    transition: .3s;
+    transform: scale(.7);
+    margin: 0 -35px;
+    transition: .3s;
+}
+
 .user_profile
 {
     /* margin-top: 300px; */
@@ -436,4 +482,84 @@ h6 {
 {
     margin-top: 10px;
 }
+}
+
+
+@media only screen and (max-width: 775px)
+{
+
+.search_bar
+{
+    margin-top: 55px;
+    transition: .3s;
+}
+
+li.right_li
+{
+    transition: .3s;
+    transform: scale(.7) translateY(145px) translateX(240px);
+    margin: 0 -35px;
+    transition: .3s;
+}
+
+li.left_li
+{
+    transition: .3s;
+    transform: scale(.7) translateY(145px) translateX(-240px);
+    margin: 0 -35px;
+    transition: .3s;
+}
+
+.form
+{
+    margin-top: 50px;
+}
+    #welcome
+    {
+        margin-top: 30px;
+    }
+}
+
+@media only screen and (max-height: 450px)
+{
+    #welcome
+    {
+        margin-top: 40px !important;
+    }
+}
+
+
+@media only screen and (max-width: 500px)
+{
+
+    .form
+    {
+        transform: scale(.8);
+        margin-top: 70px;
+    }
+
+    #welcome
+    {
+        font-size: 4rem;
+    overflow: auto;
+    padding: 10px;
+    margin: 4px 0 6px 0;
+    }
+
+li.right_li
+{
+    transition: .3s;
+    transform: scale(.7) translateY(145px) translateX(390px);
+    margin: 0 -35px;
+    transition: .3s;
+}
+
+li.left_li
+{
+    transition: .3s;
+    transform: scale(.7) translateY(215px) translateX(-390px);
+    margin: 0 -35px;
+    transition: .3s;
+}
+
 }

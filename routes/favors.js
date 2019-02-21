@@ -32,34 +32,29 @@ cloudinary.config({
 });
 
 // finds all favors and outputs them on the page
-router.get("/favors", function(req, res){
-  if(req.query.search) {
+router.get("/favors",async function(req, res){
+  if(req.query.search_users) 
+  {
     const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-    Favor.find({$or:[{task: regex},{"author.username": regex}]}, function (err, allfavors) {
-      if (err) {
-        console.log(err);
-      } else {
-          var noMatch;
-          if(allfavors.length < 1){
-            noMatch = "Is it clouds you were looking for?";
-          }
-          res.render("favors/favors", {
-          favors: allfavors,
-          noMatch: noMatch
-        });
-      }
-    });
-  } else {
-      Favor.find({}, function (err, allfavors) {
-        if (err) {
-          console.log(err);
-        } else {
-          res.render("favors/favors", {
-            favors: allfavors
-          });
-        }
-      });
-}
+    var favors = await Favor.find({$or:[{"author.username": regex}]});
+    res.render("favors/favors", { favors });
+  }
+  else if (req.query.search_favors)
+  {
+    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    var favors = await Favor.find({ $or: [{ task: regex }] });
+    res.render("favors/favors", { favors });
+  } 
+  else if (req.query.search_locations) {
+    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    var favors = await Favor.find({ $or: [{ location: regex }] });
+    res.render("favors/favors", { favors });
+  } 
+  else 
+  {
+    var favors = await Favor.find({});
+    res.render("favors/favors", { favors });
+  }
 });
   
 // finds the favor and outputs it's show page 
