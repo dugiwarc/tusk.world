@@ -560,11 +560,6 @@ justify-content: center;
   display: flex;
 }
 
-section
-{
-  height: 200vh;
-  margin-bottom: 100px;
-}
 
 .bottom_section
 {
