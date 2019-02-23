@@ -79,7 +79,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
       if(err){
         throw err;
       } else {
-        console.log("Messages retrieved");
+        // console.log("Messages retrieved");
       }
       
       // emit the messages
@@ -93,9 +93,9 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
       let receiver = data.receiver; 
       
       // check for name and message
-      if(sender == '' || message == ''){
+      if(receiver == ''){
         // send error status 
-        sendStatus('Please enter a name and message');
+        sendStatus('Please make sure you have selected a receiver');
       } else {
         // Insert message
         chat.insert({sender: sender, message: message, receiver: receiver}, function(){
