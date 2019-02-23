@@ -61,9 +61,34 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$('.3').on('click', function(){
-    $('.square').toggleClass('changed', 1500);
-});
+
+// hint animation user status
+
+    $('.hint').hover(function(){
+        $('.hint_span').addClass('show');
+    },function(){
+        $('.hint_span').removeClass('show');
+    });
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// hint animations sidebar
+
+    $('#ls_messages').hover(function(){
+        $('#ls_messages_info').addClass('show');
+    },function(){
+        $('#ls_messages_info').removeClass('show');
+    });
+
+    $('#add_new_favor').hover(function(){
+        $('#add_new_favor_info').addClass('show');
+    },function(){
+        $('#add_new_favor_info').removeClass('show');
+    });
 </script>
 </body>
 </html>

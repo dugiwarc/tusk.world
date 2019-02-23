@@ -122,7 +122,6 @@ router.post("/users/:id/favors", middleware.isLoggedIn, upload.single('image'), 
             favor.author.username = req.user.username;
             favor.author.task = req.body.task;
             req.user.posted_favors.push(favor);
-            favor.image = '/pics/settings.png';
             favor.save();
             user.favors.push(favor);
             user.posted_favors.push(favor);

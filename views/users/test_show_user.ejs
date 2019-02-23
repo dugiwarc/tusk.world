@@ -88,18 +88,25 @@
   <% if((currentUser._id.equals(user._id))){ %>
 
     <div class='left-section'>
+      <span id="ls_messages">
+        <a href="/users/<%= user._id %>/messages">
+          <img src="/pics/inbox.png">
+        </a>
+        <div id="ls_messages_info">Chat box</div>
+      </span>
+    
+      <span id="add_new_favor">
+        <a href="/users/<%= user._id %>/favors/new">
+          <img src="/pics/new_favor.png">    
+        </a>
+        <div id="add_new_favor_info">Ask for a Favor</div>
+      </span>
 
-      <a href="/users/<%= user._id %>/messages">
-        <img src="/pics/inbox.png">
-      </a>
-
-      <a href="/users/<%= user._id %>/favors/new">
-        <img src="/pics/new_favor.png">    
-      </a>
-
-      <a href="/users/<%= user._id %>/favors">
-        <img src="/pics/favors.png">
-      </a>
+      <span id="add_interest">
+        <a href="/users/<%= user._id %>/favors">
+          <img src="/pics/favors.png">
+        </a>
+      </span>
 
       <a href="/users/<%= user._id %>/edit">
         <img src="/pics/edit.png">
@@ -131,8 +138,8 @@
 
         <div class="details">
           <div class="tiny-details">
-            <h4><%= user.name %> <%= user.surname %></h4>
-            <h5>Software Developer</h5>
+            <span id="profile_name"><%= user.name %> <%= user.surname %></span>
+            <span><span id="name_username"><%= user.status %></span><span class="hint_parent"><i class="fas fa-info-circle hint"/></i><div class="hint_span">This user has not uploaded any certifications</div></span></span>
 
             <div class="location">
               <h6><%= user.city %></h6>
@@ -214,20 +221,11 @@
           </p>
         </div>
 
-        <div class="Following">
-          <p>
-            <a href="#">Interests<span class="count"><br/><%= user.interests.length%></span>
-            </a>
-          </p>
-        </div>
-
       </div>
 
       <div class="description">
         <% if (user.rating === 0) { %>
-          <h5>
-            <em>No reviews yet.</em>
-          </h5>
+          <span id="no_reviews">No reviews yet.<span>
         <% } else { %>
         <p>Current user rating: <strong><%= user.rating.toFixed(2) %></strong></p>
           <p>
@@ -275,8 +273,8 @@
         <div class="stars">
       <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
   </div>
-  <div class="review_left_text">Review by: <strong><%= review.author.username %></strong></div>
-  <div class="review_left_text"><span><em><%= review.updatedAt.toDateString() %></em></span></div>
+  <div class="review_left_text">Review by: <strong><a href="/users/<%= review.author.id %>"><%= review.author.username %></a></strong></div>
+  <div class="review_left_text"><span><%= review.updatedAt.toDateString() %></span></div>
   </div>
   <div class="review_middle_section">
         <p>

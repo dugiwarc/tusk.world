@@ -54,6 +54,10 @@ var userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  status: {
+    type: String,
+    default: 'Anthropos'
+  },
   phone_number: String,
   gender: String,
   username: String,
