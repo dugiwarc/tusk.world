@@ -62,17 +62,17 @@
                 console.log('Connected to socket');
                 socket.on('output', function(data){
                     console.log("Magic");
+                    textarea.value = '';
                   data.forEach(function(data){
 
                     if((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) || (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)){
-                            var message = document.createElement('div');
-                            message.setAttribute('class', 'chat-message');
-                            message.textContent = data.sender + ": " + data.message;
-                            messages.appendChild(message);
-                            messages.insertBefore(message, messages.firstChild);
-                            }
-                            })
-
+                      var message = document.createElement('div');
+                      message.setAttribute('class', 'chat-message');
+                      message.textContent = data.sender + ": " + data.message;
+                      messages.appendChild(message);
+                      messages.insertBefore(message, messages.firstChild);
+                    }
+                  })
                   var recipients = [];
 
                   data.forEach(function(penpal){
@@ -83,12 +83,9 @@
                       recipients.push(penpal.sender);
                     }
                   });
-                  
-
                     var unique = recipients.filter((v, i, a) => a.indexOf(v) === i);
                     var contacts = document.getElementById('chat_container_contacts');
                     contacts.innerHTML= "";
-                    console.log("UNIQUE LENGTH" + unique.length);
                     for(var i = 0; i < unique.length; i++)
                     {
                       var message = document.createElement('div');
@@ -96,18 +93,15 @@
                       message.textContent = unique[i];
                       contacts.appendChild(message);
                     }
-                    
                     $('.user_select').click(function(){
-                      console.log("clicked");
                       var a = $(this).text();
                       content.textContent = a;
                       getMail(a);
                     });
 
                     function getMail(a){
-
-                    messages.innerText = "";
-                    if(data.length){
+                        messages.innerText = "";
+                      if(data.length){
                         for(var x = 0;x < data.length; x++){
                             var message = document.createElement('div');
                             message.setAttribute('class', 'chat-message');
@@ -115,12 +109,10 @@
                             if((data[x].sender === a && data[x].receiver === <%- JSON.stringify(currentUser.username)%> ) || (data[x].receiver === a && data[x].sender === <%- JSON.stringify(currentUser.username)%>)){
                                 messages.appendChild(message);
                                 messages.insertBefore(message, messages.firstChild);
-                            } else {
-                              console.log("sender" + data[x].sender);
-                              console.log("receiver" + data[x].receiver);
                             }
                         }
                     }
+
                   }
 
 

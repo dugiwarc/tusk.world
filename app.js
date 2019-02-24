@@ -99,7 +99,16 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
       } else {
         // Insert message
         chat.insert({sender: sender, message: message, receiver: receiver}, function(){
-          io.emit('output', [data]);
+          chat.find().limit(100).sort({ _id: 1 }).toArray(function (err, res) {
+            if (err) {
+              throw err;
+            } else {
+              // console.log("Messages retrieved");
+            }
+
+            // emit the messages
+            socket.emit('output', res);
+          });
           
           // Send status object 
           sendStatus({
