@@ -20,14 +20,16 @@ var keyPublishable = 'pk_test_K3VJ6ZLvLKdhLaJTglAd65Qk';
 var keySecret = 'sk_test_97z59dQM80mu9pVrQKxwaWyD';
 var stripe = require('stripe')(keySecret);
 var mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
-var geocodingClient = mbxGeocoding({ accessToken: 'pk.eyJ1IjoiZHVnaXdhcmMiLCJhIjoiY2pydDdmdjFtMGZlNjRhdGNreWQ1aW5mZSJ9.IJrnij1QFJbk2r_618xlUg' });
+var geocodingClient = mbxGeocoding({
+  accessToken: 'pk.eyJ1IjoiZHVnaXdhcmMiLCJhIjoiY2pydDdmdjFtMGZlNjRhdGNreWQ1aW5mZSJ9.IJrnij1QFJbk2r_618xlUg'
+});
 
 var userRoutes = require('./routes/users');
 var favorRoutes = require('./routes/favors');
 var indexRoutes = require('./routes/index');
 var messRoutes = require('./routes/messages');
 var revRoutes = require('./routes/reviews');
-var miscRoutes = require('./routes/misc'); 
+var miscRoutes = require('./routes/misc');
 
 var app = express();
 app.use(function (req, res, next) {
@@ -56,50 +58,88 @@ var io = require('socket.io').listen(server).sockets;
 
 
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_world", { useNewUrlParser: true }, function(err, db){
-  if(err)
-  {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_world", {
+  useNewUrlParser: true
+}, function (err, db) {
+  if (err) {
     throw err;
     console.log("Error");
   }
   console.log("Connected!");
-  
-  io.on('connection', function(socket){
+
+  io.on('connection', function (socket) {
     // socket.set("transports", ["xhr-polling"]);
     // socket.set("polling duration", 10);
     let chat = db.collection('chats');
-    
+
     // Create function to send status 
-    sendStatus = function(s){
+    sendStatus = function (s) {
       socket.emit('status', s);
     }
-    
+
     // Get chats from mongo collection
-    chat.find().limit(100).sort({ _id: 1 }).toArray(function (err, res){
-      if(err){
+    chat.find().limit(100).sort({
+      _id: 1
+    }).toArray(function (err, res) {
+      if (err) {
         throw err;
       } else {
         // console.log("Messages retrieved");
       }
-      
+
       // emit the messages
       socket.emit('output', res);
     });
-    
+
+    User.find({}, function (err, res) {
+      if (err) {
+        throw err;
+      } else {
+        console.log("users retrieved");
+        socket.emit('user_output', res);
+      }
+    });
+
+
+    socket.on('input_user_search', async function (data) {
+      console.log("hello");
+      let username = data.username;
+      console.log(username);
+      const regex = new RegExp(escapeRegex(username), 'gi');
+      var users = await User.find({
+        "username": regex
+      });
+      socket.emit('user_output_search', users);
+    });
+
+
     // Handle input events
-    socket.on('input', function(data){
+    socket.on('input', async function (data) {
       let sender = data.sender;
       let message = data.message;
-      let receiver = data.receiver; 
-      
+      let receiver = data.receiver;
+
       // check for name and message
-      if(receiver == ''){
+      if (receiver == 'Filter for an user') {
         // send error status 
         sendStatus('Please make sure you have selected a receiver');
       } else {
+        var newMessage = new Message({
+          sender: sender,
+          text: message,
+          receiver: receiver
+        });
         // Insert message
-        chat.insert({sender: sender, message: message, receiver: receiver}, function(){
-          chat.find().limit(100).sort({ _id: 1 }).toArray(function (err, res) {
+        var a = await Message.create(newMessage);
+        a.save();
+        chat.insert({
+          sender: sender,
+          message: message,
+          receiver: receiver
+        }, function () {
+          chat.find().limit(100).sort({
+            _id: 1
+          }).toArray(function (err, res) {
             if (err) {
               throw err;
             } else {
@@ -109,7 +149,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
             // emit the messages
             socket.emit('output', res);
           });
-          
+
           // Send status object 
           sendStatus({
             message: 'Message sent',
@@ -119,9 +159,9 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
       }
     });
     // Handle clear
-    socket.on('clear', function(data){
+    socket.on('clear', function (data) {
       // Remove all chats from collection
-      chat.remove({}, function(){
+      chat.remove({}, function () {
         // Emit cleared
         socket.emit('cleared');
       });
@@ -129,7 +169,9 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
   });
 });
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 
 // view engine setup
@@ -140,7 +182,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride("_method"));
 // app.use(logger('dev'));
 // app.use(express.json());
-app.use(require('body-parser').urlencoded({ extended: false }));
+app.use(require('body-parser').urlencoded({
+  extended: false
+}));
 app.use(flash());
 app.use(cookieParser());
 
@@ -178,7 +222,7 @@ app.use(async function (req, res, next) {
       }).populate('interest_notifications', null, {
         isRead: false
       }).exec();
-      
+
       res.locals.notifications = user.notifications.reverse();
       res.locals.message_notifications = user.message_notifications.reverse();
       res.locals.interest_notifications = user.interest_notifications.reverse();
@@ -203,16 +247,16 @@ app.use(miscRoutes);
 
 app.post('/charge', function (req, res) {
   var amount = 500;
-  
+
   stripe.customers.create({
-    email: req.body.stripeEmail,
-    source: req.body.stripeToken
-  })
-  
-  .then(customer =>
-    stripe.charges.create({
-      amount,
-      description: "Sample Charge",
+      email: req.body.stripeEmail,
+      source: req.body.stripeToken
+    })
+
+    .then(customer =>
+      stripe.charges.create({
+        amount,
+        description: "Sample Charge",
         currency: "usd",
         customer: customer.id
       }))
@@ -226,7 +270,7 @@ app.post('/charge', function (req, res) {
 // });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -234,7 +278,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-}); 
+});
 
 
 /**
@@ -293,9 +337,9 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === 'string' ?
+    'Pipe ' + port :
+    'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -318,8 +362,12 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  var bind = typeof addr === 'string' ?
+    'pipe ' + addr :
+    'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
