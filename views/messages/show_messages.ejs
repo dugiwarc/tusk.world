@@ -17,8 +17,8 @@
         <div class="chat_header">
         You are texting with <span id="content"></span>
         </div>
-        <div id="messages">
-        </div>
+          <div id="messages">
+          </div>
         <div>
         <textarea id="textarea" class="chat_textarea" placeholder="Enter message: "></textarea>
         </div>
@@ -100,20 +100,22 @@
               
             });
 
+
+
             socket.on('output', function (data) {
         
               console.log("Magic");
               textarea.value = '';
               data.forEach(function (data) {
 
-                if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
-                  (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)) {
+                // if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
+                  // (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)) {
                   var message = document.createElement('div'); 
                   message.setAttribute('class', 'chat-message');
-                  message.textContent = data.sender + ": " + data.text;
+                  message.textContent = data.sender + ": " + data.message;
                   messages.appendChild(message);
                   messages.insertBefore(message, messages.firstChild);
-                }
+                // }
               });
 
               var recipients = [];
@@ -125,6 +127,7 @@
                   recipients.push(penpal.sender);
                 }
               });
+
               var unique = recipients.filter((v, i, a) => a.indexOf(v) === i);
               var contacts = document.getElementById('chat_container_contacts');
               contacts.innerHTML = "";
@@ -134,11 +137,12 @@
                 message.textContent = unique[i];
                 contacts.appendChild(message);
               }
-              $('.user_select').click(function () {
-                var a = $(this).text();
-                content.textContent = a;
-                getMail(a, day_2);
-              });
+
+              // $('.user_select').click(function () {
+              //   var a = $(this).text();
+              //   content.textContent = a;
+              //   getMail(a, data);
+              // });
 
 
             });
@@ -168,6 +172,8 @@
                 event.preventDefault();
               }
             });
+
+
 
             input.addEventListener('keydown', function (event) {
               if (event.which === 13 && event.shiftKey == false) {
