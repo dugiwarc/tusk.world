@@ -15,81 +15,80 @@
         <div class="chat_container_contacts" id="chat_container_contacts"></div>
         <div class="chat_container_window">
         <div class="chat_header">
-          You are texting with <span id="content"></span>
+        You are texting with <span id="content"></span>
         </div>
         <div id="messages">
         </div>
         <div>
-          <textarea id="textarea" class="chat_textarea" placeholder="Enter message: "></textarea>
+        <textarea id="textarea" class="chat_textarea" placeholder="Enter message: "></textarea>
         </div>
-      </div>
-      </div>
-      </div>
-      
-      
-<script>
-      
-      ////////////////////////////////////////////////////////////////////////////
-      
-      ////////////////////////////////////////////////////////////////////////////
-
-
-      const day = [];
-      const day_2 = [];
-
-      <% allusers.forEach(function(user){ %>
-        day.push(<%- JSON.stringify(user.username)%>);
-      <% }); %>
-
-      <% message.forEach(function(message){ %>
-        day_2.push(<%- JSON.stringify(message)%>);
-      <% }); %>
-
-
+        </div>
+        </div>
+        </div>
+        
+        
+        <script>
+        
+        ////////////////////////////////////////////////////////////////////////////
+        
+        ////////////////////////////////////////////////////////////////////////////
+        const day = [];
+        const day_2 = [];
+        
+        
+        
+        <% allusers.forEach(function(user){ %>
+          day.push(<%- JSON.stringify(user.username)%>);
+        <% }); %>
   
-        (function () {
-          var element = function (id) {
+        <% message.forEach(function(message){ %>
+          day_2.push(<%- JSON.stringify(message)%>);
+        <% }); %>
+        
+        
+      (function () {
+        var element = function (id) {
             return document.getElementById(id);
           }
           // Get Elements
           var status = element('status'),
-            messages = element('messages'),
-            textarea = element('textarea'),
-            username = element('username'),
-            clearBtn = element('clear'),
-            getM = element('getM'),
-            content = element('content'),
-            input = element('input'),
-            search_results = element('search_results');
-
+          messages = element('messages'),
+          textarea = element('textarea'),
+          username = element('username'),
+          clearBtn = element('clear'),
+          getM = element('getM'),
+          content = element('content'),
+          input = element('input'),
+          search_results = element('search_results');
+          
           // Set default status
           var statusDefault = status.textContent;
-
+          
           var setStatus = function (s) {
             // Set status
             status.textContent = s;
-
+            
             if (s !== statusDefault) {
               var delay = setTimeout(function () {
                 setStatus(statusDefault);
               }, 2000);
             }
           }
-
+          
           ///////////////////////
-
+          
           // Connect to socket.io
-
+          
           ///////////////////////
-
+          
           var socket = io();
-
+          
           if (socket !== undefined) {
-
+            
             console.log('Connected to socket');
-
+            
             socket.on('user_output_search', function (data) {
-
+              
 
               for (var i = 0; i < data.length; i++) {
                 var result = document.createElement('div');
@@ -98,23 +97,24 @@
                 result.textContent = data[i].username;
                 search_results.appendChild(result);
               }
-
+              
             });
 
             socket.on('output', function (data) {
+        
               console.log("Magic");
               textarea.value = '';
               data.forEach(function (data) {
 
                 if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
                   (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)) {
-                  var message = document.createElement('div');
+                  var message = document.createElement('div'); 
                   message.setAttribute('class', 'chat-message');
-                  message.textContent = data.sender + ": " + data.message;
+                  message.textContent = data.sender + ": " + data.text;
                   messages.appendChild(message);
                   messages.insertBefore(message, messages.firstChild);
                 }
-              })
+              });
 
               var recipients = [];
 

@@ -132,9 +132,10 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
         // Insert message
         var a = await Message.create(newMessage);
         a.save();
+        var all_messages = await Message.find({});
         chat.insert({
           sender: sender,
-          message: message,
+          message: message, 
           receiver: receiver
         }, function () {
           chat.find().limit(100).sort({
@@ -145,13 +146,14 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
             } else {
               // console.log("Messages retrieved");
             }
-
+            
             // emit the messages
             socket.emit('output', res);
           });
 
           // Send status object 
           sendStatus({
+            all_messages,
             message: 'Message sent',
             clear: true
           });
