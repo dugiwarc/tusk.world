@@ -3,10 +3,6 @@
   padding: 0;
 }
 
-html {
-  height: 100%;
-}
-
 body {
   height: 100%;
   display: flex;
@@ -1281,18 +1277,18 @@ a.button {
   border-top-color: #e24040;
 }
 
-
-
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
-
 html {
   overflow: scroll;
   overflow-x: hidden;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+
 }
 
 ::-webkit-scrollbar {
   width: 0px;
+  height: 0px;
   /* remove scrollbar space */
+  display: none;
   background: transparent;
   /* optional: just make scrollbar invisible */
 }
@@ -1608,21 +1604,23 @@ ul {
 
 .chat_header
 {
-      background: #303030;
-      height: 50px;
-      justify-content: flex-start;
-      display: flex;
-      align-items: center;
-      font-size: 25px;
-      color: navajowhite;
-      font-family: fantasy;
-      padding: 0 25px;
+    background: #303030;
+    height: 50px;
+    padding: 0 18px;
+    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    color: navajowhite;
+    box-sizing: content-box;
+    font-family: 'montserrat';
 }
 
 #show_messages_form
 {
-  transform: translateX(-700px);
-}
+    transform: translate(-180px, -100px);
+    z-index: 3;
+  }
 
 .chat_container {
   position: relative;

@@ -112,7 +112,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
 
 
     // Handle input events
-    socket.on('input', function (data) {
+    socket.on('input',async function (data) {
       let sender = data.sender;
       let message = data.message;
       let receiver = data.receiver;
@@ -122,27 +122,21 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
         // send error status 
         sendStatus('Please make sure you have selected a receiver');
       } else {
-        // var newMessage = new Message({
-        //   sender: sender,
-        //   text: message,
-        //   receiver: receiver
-        // });
-        // // Insert message
-        // var a = Message.create(newMessage);
-        // a.save();
-        // var all_messages = Message.find({});
-        chat.insert({
+        var newMessage = new Message({
           sender: sender,
-          message: message, 
+          text: message,
           receiver: receiver
-        }, function () {
-          io.emit('output', [data]);
-          // Send status object 
-          sendStatus({
-            message: 'Message sent',
-            clear: true
-          });
         });
+        // Insert message
+        var a = await Message.create(newMessage);
+        a.save();
+        var all_messages = await Message.find({});
+        io.emit('output', [data]);
+
+            sendStatus({
+              message: 'Message sent',
+              clear: true
+            });
       }
     });
     // Handle clear

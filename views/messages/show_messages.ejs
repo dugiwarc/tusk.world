@@ -15,7 +15,7 @@
         <div class="chat_container_contacts" id="chat_container_contacts"></div>
         <div class="chat_container_window">
         <div class="chat_header">
-        You are texting with <span id="content"></span>
+        You are texting with: <span id="content"> </span>
         </div>
           <div id="messages">
           </div>
@@ -33,18 +33,10 @@
         
         ////////////////////////////////////////////////////////////////////////////
         const day = [];
-        const day_2 = [];
-        
-        
         
         <% allusers.forEach(function(user){ %>
           day.push(<%- JSON.stringify(user.username)%>);
         <% }); %>
-  
-        <% message.forEach(function(message){ %>
-          day_2.push(<%- JSON.stringify(message)%>);
-        <% }); %>
-        
         
       (function () {
         var element = function (id) {
@@ -86,7 +78,7 @@
           if (socket !== undefined) {
             
             console.log('Connected to socket');
-            
+            console.log(day);
             socket.on('user_output_search', function (data) {
               
 
@@ -104,18 +96,17 @@
 
             socket.on('output', function (data) {
         
-              console.log("Magic");
               textarea.value = '';
               data.forEach(function (data) {
 
-                // if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
-                  // (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)) {
+                if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
+                (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)) {
                   var message = document.createElement('div'); 
                   message.setAttribute('class', 'chat-message');
                   message.textContent = data.sender + ": " + data.message;
                   messages.appendChild(message);
                   messages.insertBefore(message, messages.firstChild);
-                // }
+                }
               });
 
               var recipients = [];
@@ -127,10 +118,12 @@
                   recipients.push(penpal.sender);
                 }
               });
-
-              var unique = recipients.filter((v, i, a) => a.indexOf(v) === i);
+              console.log(recipients);
+              var unique = day.filter((v, i, a) => a.indexOf(v) === i);
               var contacts = document.getElementById('chat_container_contacts');
+
               contacts.innerHTML = "";
+              
               for (var i = 0; i < unique.length; i++) {
                 var message = document.createElement('div');
                 message.setAttribute('class', 'user_select');
@@ -138,11 +131,12 @@
                 contacts.appendChild(message);
               }
 
-              // $('.user_select').click(function () {
-              //   var a = $(this).text();
-              //   content.textContent = a;
-              //   getMail(a, data);
-              // });
+              $('.user_select').click(function () {
+                var a = $(this).text();
+                content.textContent = a;
+                console.log("ey");
+                getMail(a, data);
+              });
 
 
             });
@@ -200,7 +194,12 @@
 
 
         function getMail(a, data) {
+          data = [];
+          <% message.forEach(function(message){ %>
+            data.push(<%- JSON.stringify(message)%>)
+          <% }) %>
           messages.innerText = "";
+
           if (data.length) {
             for (var x = 0; x < data.length; x++) {
               var message = document.createElement('div');
@@ -251,8 +250,8 @@
           content.textContent = a;
           console.log("It's working, ay?");
           console.log(a);
-          getMail(a, day_2);
-          search_results.innerHTML = "";
+          getMail(a, day);
+          // search_results.innerHTML = "";
           // alert("yeahhhh!!! but this doesn't work for me :(");
         });
 
