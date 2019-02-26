@@ -8,6 +8,7 @@ body {
   display: flex;
   margin: 0;
   background-color: #FFB840;
+  /* background-color: lightblue; */
   flex-direction: column;
   align-items: center;
   min-width: 350px;
@@ -652,7 +653,7 @@ a img:hover {
   align-items: center;
   justify-content: center;
   font-size: 50px;
-  background: #202020;
+  background: #151515;
   color: white;
   min-width: 237px;
   height: 120px;
@@ -824,9 +825,14 @@ a img:hover {
 }
 
 #welcome {
-  font-family: 'Lobster', sans-serif;
-  font-size: 137px;
-  margin: -42px 0 77px 0;
+    font-family: 'Lobster',
+    sans-serif;
+    color: white;
+    font-size: 137px;
+    padding: 0 150px;
+    background-color: #151515;
+    margin: -42px 0 77px 0;
+    box-shadow: 0 8px 6px -6px black;
 }
 
 #welcome_sub {
@@ -854,7 +860,7 @@ a img:hover {
 
 
 .welcome_sub_suggestions {
-  background: black;
+  background: #151515;
   opacity: 0;
   color: white;
   text-align: center;
@@ -862,11 +868,19 @@ a img:hover {
   font-family: monospace;
   transition: .4s;
   margin: 5px 0;
+  max-width: 220px;
 }
 
 
-
-
+#look_for_a_favor
+{
+color: white;
+font-size: 1.5rem;
+font-family: monospace;
+box-shadow: 0 8px 6px -6px black;
+background: maroon;
+padding: 5px 10px;
+}
 
 h1 {
   text-align: center;
@@ -1612,7 +1626,7 @@ video
 #filter_video
 {
   background-image: url('../pics/polka.png');
-  background-size: 3%;
+  background-size: 4%;
   background-repeat: repeat;
   height: 100vh;
   width: 100%;

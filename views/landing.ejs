@@ -9,8 +9,9 @@
 </div>
 <section>
     <div id="landing-header">
-        <span id="welcome">Welcome to Tusk!</span>
-        <div id="welcome_sub"><span id="look_for_a_favor">Looking for a favor?</span>
+        <span id="welcome">Hello, traveler</span>
+        <div id="welcome_sub">
+            <span id="look_for_a_favor">Are you looking for a favor?</span>
             <div id="welcome_sub_dropdown">
                 <div class="welcome_sub_suggestions">Locations</div>
                 <div class="welcome_sub_suggestions">Professions</div>
@@ -95,7 +96,7 @@
 
     <script>
     $('#look_for_a_favor').hover(function(){
-        $(this).text("You can look for: ");
+        $(this).text("You can search for");
         $(".welcome_sub_suggestions").each(function (index) {
             $(this).css('transition-delay', (index * 2000) + 'ms');
         });
