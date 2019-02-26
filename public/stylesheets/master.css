@@ -1621,12 +1621,14 @@ video
     width: 100%;
     position: absolute;
     z-index: -5;
+    height: 100vh;
+    overflow: auto;
 }
 
 #filter_video
 {
   background-image: url('../pics/polka.png');
-  background-size: 4%;
+  background-size: 3%;
   background-repeat: repeat;
   height: 100vh;
   width: 100%;
