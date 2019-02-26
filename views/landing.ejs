@@ -1,15 +1,23 @@
 <% include ./partials/header %>
+<div id="welcome_video">
+    <!--<img src="pics/delete_account.png"-->
+    <video playsinline autoplay muted loop>
+        <source src="pics/wlcm.mp4" type="video/mp4">
+    </video>
+</div>
+<div id="filter_video">
+</div>
 <section>
     <div id="landing-header">
         <span id="welcome">Welcome to Tusk!</span>
-            <div id="welcome_sub"><span id="look_for_a_favor">Looking for a favor?</span>
-                <div id="welcome_sub_dropdown">
-                    <div class="welcome_sub_suggestions">Locations</div>
-                    <div class="welcome_sub_suggestions">Professions</div>
-                    <div class="welcome_sub_suggestions">Tasks</div>
-                </div>            
-            </div>
-		    <div>
+        <div id="welcome_sub"><span id="look_for_a_favor">Looking for a favor?</span>
+            <div id="welcome_sub_dropdown">
+                <div class="welcome_sub_suggestions">Locations</div>
+                <div class="welcome_sub_suggestions">Professions</div>
+                <div class="welcome_sub_suggestions">Tasks</div>
+            </div>            
+        </div>
+	<div>
                 <form class="search-form" action="/favors" method="get" autocomplete="off">
 
                         <input type="search_all" value="" placeholder="Search..." class="search-input" name="search">

@@ -1597,6 +1597,29 @@ ul {
 
 }
 
+video
+{
+  width: 100%;
+}
+
+#welcome_video
+{
+    width: 100%;
+    position: absolute;
+    z-index: -5;
+}
+
+#filter_video
+{
+  background-image: url('../pics/polka.png');
+  background-size: 3%;
+  background-repeat: repeat;
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  z-index: -2;
+}
+
 #add_new_favor_info.show {
   opacity: 1;
   transition: .6s ease;
