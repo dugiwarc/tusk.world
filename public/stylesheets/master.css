@@ -1618,7 +1618,7 @@ video
 
 #welcome_video
 {
-    width: 100%;
+    width: 2500px;
     position: absolute;
     z-index: -5;
     height: 100vh;
@@ -1628,7 +1628,7 @@ video
 #filter_video
 {
   background-image: url('../pics/polka.png');
-  background-size: 3%;
+  background-size: 4%;
   background-repeat: repeat;
   height: 100vh;
   width: 100%;
@@ -1854,6 +1854,10 @@ video
   margin: 10px 0 20px 0;
 }
 
+#landing_page
+{
+  position: relative;
+}
 
 
 
@@ -1861,6 +1865,7 @@ video
   #home {
     margin: 0 50px;
   }
+  
 
   #welcome {
     font-size: 7rem;
@@ -1873,8 +1878,16 @@ video
 
 @media only screen and (max-width: 1200px) {
 
-  body {
-    display: block;
+
+
+  #filter_video
+  {
+    background-image: url(../pics/polka.png);
+    background-size: 5%;
+    background-repeat: repeat;
+    width: 100%;
+    position: absolute;
+    z-index: -2;
   }
 
   #welcome {
@@ -1925,10 +1938,15 @@ video
   .right-section {
     margin-top: 100px;
   }
+
 }
 
 
 @media only screen and (max-width: 775px) {
+  #filter_video
+  {
+    background-size: 9%;
+  }
 
   .search_bar {
     margin-top: 55px;
@@ -1954,7 +1972,7 @@ video
   }
 
   #welcome {
-    margin-top: 30px;
+    /* margin-top: 30px; */
   }
 }
 
@@ -1976,21 +1994,39 @@ video
     font-size: 4rem;
     overflow: auto;
     padding: 10px;
-    margin: 4px 0 6px 0;
+    margin: -20px 0 6px 0;
   }
 
   li.right_li {
     transition: .3s;
-    transform: scale(.7) translateY(145px) translateX(390px);
+    transform: scale(.7) translateY(135px) translateX(390px);
     margin: 0 -35px;
     transition: .3s;
   }
 
   li.left_li {
     transition: .3s;
-    transform: scale(.7) translateY(215px) translateX(-390px);
+    transform: scale(.7) translateY(205px) translateX(-390px);
     margin: 0 -35px;
     transition: .3s;
+  }
+
+  .search-form
+  {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 350px;
+    height: 40px;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translate(-50%, -50%) scale(.8);
+    background: #fff;
+    transition: all 0.3s ease;
+  }
+
+  #filter_video
+  {
+    background-size: 10%;
   }
 
 }
