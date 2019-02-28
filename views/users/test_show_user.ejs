@@ -164,9 +164,6 @@
                   <% useree_reviews.push(review.author.username);%>
                   <%} %>
                   <% }); %>
-                  <%console.log("fafasfasfasfafasfasfafasfasf");%>
-                  <%console.log(useree_reviews);%>
-                  <%console.log(currentUser.username);%>
 
                   <% if(useree_reviews.includes(currentUser.username)){ %>
                     <a id="toggle-edit-form">
@@ -242,14 +239,26 @@
   
   <% if(!(currentUser._id.equals(user._id))){ %>
     
+  <% var fools = []; %>
     <div class="connect-me">
+      <% user.followers.forEach(function(follower){ %>
+      <% fools.push(follower.username)%>
+        <% if(follower.username == currentUser.username){ %>
+        <div class="follow-me">
+          <a href="/unfollow/<%= user._id %>">
+            Unfollow Me
+          </a>
+        </div>
+        <% } %>
+        <% }); %>
       
+      <% if (!(fools.includes(currentUser.username))){%>
       <div class="follow-me">
-        <a href="/follow/<%= user._id %>">
+          <a href="/follow/<%= user._id %>">
           Follow Me
-        </a>
-      </div>
-      
+          </a>
+          </div>
+      <% } %>
       <div class="hire-me">
         <p>
           <form action="/users/<%= user._id %>/conversation/..." method="get">

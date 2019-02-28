@@ -30,6 +30,10 @@ var userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Notification'
     }],
+  follow_notifications: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Notification'
+  }],
     followers: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
@@ -50,10 +54,6 @@ var userSchema = new mongoose.Schema({
       }],
   name: String,
   qualifications: String,
-  isVerified: {
-    type: Boolean,
-    default: false
-  },
   status: {
     type: String,
     default: 'Anthropos'

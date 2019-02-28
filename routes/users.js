@@ -157,43 +157,73 @@ router.get("/users/:id",async function(req, res){
 
 // event: follow_link
 router.get('/follow/:id', middleware.isLoggedIn, async function(req, res){
-  try {
+  try 
+  {
     let user = await User.findById(req.params.id);
     user.followers.push(req.user._id);
+    let newNotification = {
+      username: req.user.username,
+      followerId: req.user._id
+    };
+    let notification = await Notification.create(newNotification);
+    user.follow_notifications.push(notification);
     user.save();
     req.flash('success', 'Successfully followed ' + user.username + '!');
     res.redirect('back');
-  } catch(err) {
+  } 
+  catch(err) 
+  {
     req.flash('error', err.message);
     res.redirect('back');
   }
 });
 
-// router.get('/follow_city/:id', middleware.isLoggedIn, async function(req, res){
-//   try {
-//     let city = await City.findBy(req.city._id);
-
-//   }
-// });
-
-// view all notifications
-router.get('/notifications', middleware.isLoggedIn, async function(req, res){
+router.get('/unfollow/:id', middleware.isLoggedIn, async function (req, res) {
   try {
+    let user = await User.findById(req.params.id);
+
+    for (var i = 0; i < user.followers.length; i++) {
+      if (user.followers[i].equals(req.user._id)) {
+        user.followers.splice(i, 1);
+      }
+    }
+    console.log(user.followers.length);
+    user.save();
+    req.flash('success', 'Successfully unfollowed ' + user.username + '!');
+    res.redirect('back');
+  } catch (err) {
+    req.flash('error', err.message);
+    res.redirect('back');
+  }
+});
+
+router.get('/notifications', middleware.isLoggedIn, async function(req, res){
+  try 
+  {
     let user = await User.findById(req.user._id).populate({
       path: 'notifications',
-      options: { sort: { "_id": -1 }}
+      options: {
+        sort: {
+          "_id": -1
+        }
+      }
     }).populate({
-            path: 'message_notifications',
-              options: {
-                sort: {
-                  "_id": -1
-                }
-              }
+      path: 'message_notifications',
+      options: {
+        sort: {
+          "_id": -1
+        }
+      }
     }).exec();
     let allNotifications = user.notifications;
     let allmessageNotifications = user.message_notifications;
-    res.render('notifications/index', { allNotifications, allmessageNotifications });
-  } catch(err) {
+    res.render('notifications/index', {
+      allNotifications,
+      allmessageNotifications
+    });
+  } 
+  catch (err) 
+  {
     req.flash('error', err.message);
     res.redirect('back');
   }
@@ -201,12 +231,15 @@ router.get('/notifications', middleware.isLoggedIn, async function(req, res){
 
 // handle notifications
 router.get('/notifications/:id', middleware.isLoggedIn, async function(req, res){
-  try {
+  try 
+  {
     let notification = await Notification.findById(req.params.id);
     notification.isRead = true;
     notification.save();
     res.redirect(`/favors/${notification.favorId}`);
-  } catch(err) { 
+  } 
+  catch(err) 
+  { 
     req.flash('error', err.message);
     res.redirect('back');
   }
@@ -236,32 +269,46 @@ router.get('/interest_notifications/:id', middleware.isLoggedIn, async function 
   }
 });
 
+router.get('/follower_notifications/:id', middleware.isLoggedIn, async function (req, res) {
+  try {
+    let notification = await Notification.findById(req.params.id);
+    notification.isRead = true;
+    notification.save();
+    res.redirect(`/users/${notification.followerId}`);
+  } catch (err) {
+    req.flash('error', err.message);
+    res.redirect('back');
+  }
+});
+
 
 // user profile delete
-router.delete("/users/:id", middleware.checkUserOwnership, function(req, res){
-  User.findByIdAndRemove(req.params.id, function(err, user){
-    if(err){
-      res.redirect("/users");
-    } else {
-      // deletes all messages associated with the user
-      Message.remove({"_id":{$in: user.messages}}, function(err){
-        if(err){
-          console.log(err);
-          return res.redirect("/users");
+router.delete("/users/:id", middleware.checkUserOwnership, async function(req, res){
+  try 
+  {
+      let user = await User.findByIdAndRemove(req.params.id);
+      Message.remove({
+        "_id": {
+          $in: user.messages
         }
-        Review.remove({"_id": {$in: user.reviews}}, function(err){
-          if(err){
-            console.log(err);
-            return res.redirect("/users");
-          }
-          user.remove();
-          req.flash("success", "User deleted successfully!");
-          res.redirect("/favors");
-        });
       });
-    }
-  });   
+      Review.remove({
+        "_id": {
+          $in: user.reviews
+        }
+      });
+      user.remove();
+      req.flash("success", "User deleted successfully!");
+      res.redirect("/favors");
+  }
+  catch (err)
+  {
+    req.flash("error", "Something went wrong!");
+    res.redirect('back');
+  }
 });
+
+
 
 function calculateAverage(reviews) {
   if (reviews.length === 0) {

@@ -6,6 +6,7 @@ var notificationSchema = new mongoose.Schema({
     reviewId: String,
     favorId: String,
     interestId: String,
+    followerId: String,
     isRead: {
         type: Boolean,
         default: false

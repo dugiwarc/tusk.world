@@ -202,11 +202,15 @@ app.use(async function (req, res, next) {
         isRead: false
       }).populate('interest_notifications', null, {
         isRead: false
+      }).populate('follow_notifications', null, {
+        isRead: false
       }).exec();
 
       res.locals.notifications = user.notifications.reverse();
       res.locals.message_notifications = user.message_notifications.reverse();
       res.locals.interest_notifications = user.interest_notifications.reverse();
+      res.locals.follow_notifications = user.follow_notifications.reverse();
+
     } catch (err) {
       console.log(err.message);
     }

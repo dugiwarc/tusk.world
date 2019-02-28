@@ -62,7 +62,7 @@
       <% } else { %>
 
 
-        <% if(notifications.length > 0 || message_notifications.length > 0 || interest_notifications.length > 0){ %>
+        <% if(notifications.length > 0 || message_notifications.length > 0 || interest_notifications.length > 0 || follow_notifications.length > 0){ %>
           <li class="trig right_li"> 
 
             <a><img src="/pics/full_inbox.png"></a>
@@ -83,6 +83,12 @@
           <% interest_notifications.forEach(function(interest_notification) { %>
               <li>
                 <a href="/interest_notifications/<%= interest_notification.id %>"><%= interest_notification.username %> showed an interest</a>
+              </li>
+          <% });%>
+
+          <% follow_notifications.forEach(function(follow_notification) { %>
+              <li>
+                <a href="/follower_notifications/<%= follow_notification.id %>"><%= follow_notification.username %> followed you</a>
               </li>
           <% });%>
 

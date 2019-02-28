@@ -82,48 +82,16 @@ router.get("/users/:id/messages", middleware.isLoggedIn, function (req, res) {
     });
     });
 
-// messages form
-router.get("/users/:id/messages/new", middleware.isLoggedIn, function (req, res) {
-    // find user by id
-    Message.find({}, function (err, message) {
-        if (err) {
-            console.log(err);
-        } else {
-            User.findById(req.params.id, function (err, user) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.render("messages/new_message", {
-                        user: user,
-                        message: message
-                    });
-                }
-            });
-        }
-    });
+router.get("/users/:id/messages/new", middleware.isLoggedIn, async function (req, res) {
+    var message = await Message.find({});
+    var user = await User.findById(req.params.id);
+    res.render("messages/new_message", { user, message });
 });
 
-// router.get('/chat', function(req, res){
-//     res.render('../public/chat');
-// });
-
-router.get("/users/:id/conversation/:conversation_id", function (req, res) {
-    Message.find({}, function (err, message) {
-        if (err) {
-            console.log(err);
-        } else {
-            User.findById(req.params.id, function (err, user) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.render("messages/convo", {
-                        user: user,
-                        message: message
-                    });
-                }
-            });
-        }
-    });
+router.get("/users/:id/conversation/:conversation_id",async function (req, res) {
+    var message = await Message.find({});
+    var user = await User.findById(req.params.id);
+    res.render("messages/convo", { user, message});
 });
 
 function calculateAverage(reviews) {
