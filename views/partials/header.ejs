@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="/stylesheets/drumkit.css">
     <link rel="stylesheet" href="/stylesheets/new_favors.css">
     <link rel="stylesheet" href="/stylesheets/login_page.css">
-    <link rel="stylesheet" href="/stylesheets/bootstrap.css">
     <link rel="stylesheet" href="/stylesheets/master.css">
     <link rel="stylesheet" href="/stylesheets/web_cam_fun.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:800|Didact+Gothic|Lobster|Staatliches|Montserrat:900" rel="stylesheet">
@@ -86,10 +85,15 @@
               </li>
           <% });%>
 
+          <% let follow_array = []; %>
           <% follow_notifications.forEach(function(follow_notification) { %>
-              <li>
-                <a href="/follower_notifications/<%= follow_notification.id %>"><%= follow_notification.username %> followed you</a>
-              </li>
+          <% if(!(follow_array.includes(follow_notification.username))){ %>
+          <li>
+          <a href="/follower_notifications/<%= follow_notification.id %>"><%= follow_notification.username %> followed you</a>
+          </li>
+          <% } else { %>
+          <% } %>
+          <% follow_array.push(follow_notification.username);%>
           <% });%>
 
             </ul>

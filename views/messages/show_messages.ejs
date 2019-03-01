@@ -35,7 +35,7 @@
         const day = [];
         
         <% allusers.forEach(function(user){ %>
-          day.push(<%- JSON.stringify(user.username)%>);
+            day.push(<%- JSON.stringify(user.username)%>);
         <% }); %>
         
       (function () {
@@ -51,6 +51,7 @@
           getM = element('getM'),
           content = element('content'),
           input = element('input'),
+          chat_container = element('chat_container_contacts'),
           search_results = element('search_results');
           
           // Set default status
@@ -78,16 +79,16 @@
           if (socket !== undefined) {
             
             console.log('Connected to socket');
-            console.log(day);
             socket.on('user_output_search', function (data) {
               
 
               for (var i = 0; i < data.length; i++) {
                 var result = document.createElement('div');
-                result.setAttribute('class', 'user_select hook');
+                result.setAttribute('class', 'user_select');
                 day.push(data[i].username);
                 result.textContent = data[i].username;
                 search_results.appendChild(result);
+                chat_container.appendChild(result);
               }
               
             });
@@ -95,7 +96,7 @@
 
 
             socket.on('output', function (data) {
-        
+              console.log("data"+data);
               textarea.value = '';
               data.forEach(function (data) {
 
@@ -119,11 +120,10 @@
                 }
               });
               console.log(recipients);
-              var unique = day.filter((v, i, a) => a.indexOf(v) === i);
+              var unique = recipients.filter((v, i, a) => a.indexOf(v) === i);
               var contacts = document.getElementById('chat_container_contacts');
 
               contacts.innerHTML = "";
-              
               for (var i = 0; i < unique.length; i++) {
                 var message = document.createElement('div');
                 message.setAttribute('class', 'user_select');
@@ -134,7 +134,6 @@
               $('.user_select').click(function () {
                 var a = $(this).text();
                 content.textContent = a;
-                console.log("ey");
                 getMail(a, data);
               });
 
@@ -152,15 +151,23 @@
               }
 
             });
-
+            
             // Handle Input 
             textarea.addEventListener('keydown', function (event) {
               if (event.which === 13 && event.shiftKey == false) {
                 // emit to server input
+                <% allusers.forEach(function(dude){%>
+                  if (<%-JSON.stringify(dude.username)%> === content.textContent){
+                    var a = <%-JSON.stringify(dude._id)%>
+                  }
+                <% }) %>
+                console.log(a);
                 socket.emit('input', {
                   sender: <%- JSON.stringify(currentUser.username)%>,
                   message: textarea.value,
-                  receiver: content.textContent
+                  receiver: content.textContent,
+                  sender_id: <%- JSON.stringify(currentUser._id)%>,
+                  receiver_id: a
                 });
 
                 event.preventDefault();
@@ -248,10 +255,8 @@
         $('body').on('click', '.name', function (e) {
           var a = $(this).text();
           content.textContent = a;
-          console.log("It's working, ay?");
-          console.log(a);
           getMail(a, day);
-          // search_results.innerHTML = "";
+          search_results.innerHTML = "";
           // alert("yeahhhh!!! but this doesn't work for me :(");
         });
 

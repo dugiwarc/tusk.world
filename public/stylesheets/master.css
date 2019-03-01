@@ -899,8 +899,7 @@ h1 {
 }
 
 .warning {
-  position: absolute;
-  top: 175px;
+  margin-top: 25px;
   height: 20px;
   width: 100%;
   align-self: center;
@@ -1629,7 +1628,7 @@ video
 #filter_video
 {
   background-image: url('../pics/polka.png');
-  background-size: 3%;
+  background-size: 4%;
   background-repeat: repeat;
   height: 100vh;
   width: 100%;
@@ -1914,7 +1913,7 @@ video
 
 
   .user_profile {
-    /* margin-top: 300px; */
+    margin-top: -150px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -1952,6 +1951,11 @@ video
   .search_bar {
     margin-top: 55px;
     transition: .3s;
+  }
+
+  .chat_container
+  {
+    transform: scale(.8);
   }
 
   li.right_li {

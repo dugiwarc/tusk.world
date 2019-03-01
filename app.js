@@ -68,8 +68,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
   console.log("Connected!");
 
   io.on('connection', function (socket) {
-    // socket.set("transports", ["xhr-polling"]);
-    // socket.set("polling duration", 10);
+
     let chat = db.collection('chats');
 
     // Create function to send status 
@@ -116,6 +115,9 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
       let sender = data.sender;
       let message = data.message;
       let receiver = data.receiver;
+      let sender_id = data.sender_id;
+      let receiver_id = data.receiver_id;
+
 
       // check for name and message
       if (receiver == 'Filter for an user') {
@@ -125,18 +127,20 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
         var newMessage = new Message({
           sender: sender,
           text: message,
-          receiver: receiver
+          receiver: receiver,
+          sender_id: sender_id,
+          receiver_id: receiver_id
         });
         // Insert message
         var a = await Message.create(newMessage);
         a.save();
-        var all_messages = await Message.find({});
+        // var all_messages = await Message.find({});
         io.emit('output', [data]);
 
-            sendStatus({
-              message: 'Message sent',
-              clear: true
-            });
+            // sendStatus({
+            //   message: 'Message sent',
+            //   clear: true
+            // });
       }
     });
     // Handle clear
