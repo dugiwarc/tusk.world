@@ -2,123 +2,147 @@
 
 <% if(currentUser){%>
 
-    <% if(!(currentUser._id.equals(user._id))){ %>
+<% if(!(currentUser._id.equals(user._id))){ %>
 
 <div class="blur review_form">
 </div>
-    <div class="sibling_1 review_form">
-      <div class="form_container">
-          <form class="form_flex" action="/users/<%= user._id %>/reviews" method="POST">
-            <span class="review_header">You are leaving a review for <%= user.name %></span>
-            <div>
-              <textarea class="text_area" name="review[text]" required></textarea>
-            </div>
-            <div id="form_flex_sub">
-              <div>
-              <fieldset class="starability-basic">
-              <!-- <button class="clear-rating" type="button">Clear Rating</button> -->
-              <input type="radio" id="rate0" class="input-no-rate" name="review[rating]" value="0" checked
-                aria-label="No rating." />
-              <input type="radio" id="rate1" name="review[rating]" value="1" />
-              <label for="rate1" title="Terrible">1 star</label>
-              <input type="radio" id="rate2" name="review[rating]" value="2" />
-              <label for="rate2" title="Not good">2 stars</label>
-              <input type="radio" id="rate3" name="review[rating]" value="3" />
-              <label for="rate3" title="Average">3 stars</label>
-              <input type="radio" id="rate4" name="review[rating]" value="4" />
-              <label for="rate4" title="Very good">4 stars</label>
-              <input type="radio" id="rate5" name="review[rating]" value="5" />
-              <label for="rate5" title="Amazing">5 stars</label>
-            </fieldset>
-            </div>
-            <div>
-              <input type="submit">
-              </div>
-            </div>
-            </form>
-          </div>
-          </div>
+<div class="sibling_1 review_form">
+  <div class="form_container">
+    <form class="form_flex" action="/users/<%= user._id %>/reviews" method="POST">
+      <span class="review_header">You are leaving a review for
+        <%= user.name %></span>
+      <div>
+        <textarea class="text_area" name="review[text]" required></textarea>
+      </div>
+      <div id="form_flex_sub">
+        <div>
+          <fieldset class="starability-basic">
+            <!-- <button class="clear-rating" type="button">Clear Rating</button> -->
+            <input type="radio" id="rate0" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+            <input type="radio" id="rate1" name="review[rating]" value="1" />
+            <label for="rate1" title="Terrible">1 star</label>
+            <input type="radio" id="rate2" name="review[rating]" value="2" />
+            <label for="rate2" title="Not good">2 stars</label>
+            <input type="radio" id="rate3" name="review[rating]" value="3" />
+            <label for="rate3" title="Average">3 stars</label>
+            <input type="radio" id="rate4" name="review[rating]" value="4" />
+            <label for="rate4" title="Very good">4 stars</label>
+            <input type="radio" id="rate5" name="review[rating]" value="5" />
+            <label for="rate5" title="Amazing">5 stars</label>
+          </fieldset>
+        </div>
+        <div>
+          <input type="submit">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
 
-          <div class="sibling review_form">
-          <div class="form_container">
-            <span class="review_header">You are editing a review for <%= user.name %></span>
+<div class="sibling review_form">
+  <div class="form_container">
+    <span class="review_header">You are editing a review for
+      <%= user.name %></span>
 
-            <% user.reviews.forEach(function(review) { %>
-            <% if(review.author.id.equals(currentUser._id)){ %>
+    <% user.reviews.forEach(function(review) { %>
+    <% if(review.author.id.equals(currentUser._id)){ %>
 
-              <form class="form_flex_2" action="/users/<%= user._id %>/reviews/<%= review.id %>?_method=PUT" method="POST">
-                <div>
-                  <textarea class="text_area" name="review[text]" required><%= review.text %></textarea>
-                </div>
-                            <div id="form_flex_sub">
-                              <div>
-                  <fieldset class="starability-basic">
-                  <!-- <button class="clear-rating" type="button">Clear Rating</button> -->
-                  <input type="radio" id="edit-rate0" class="input-no-rate" name="review[rating]" value="0" checked
-                    aria-label="No rating." />
-                  <input type="radio" id="edit-rate1" name="review[rating]" value="1" />
-                  <label for="edit-rate1" title="Terrible">1 star</label>
-                  <input type="radio" id="edit-rate2" name="review[rating]" value="2" />
-                  <label for="edit-rate2" title="Not good">2 stars</label>
-                  <input type="radio" id="edit-rate3" name="review[rating]" value="3" />
-                  <label for="edit-rate3" title="Average">3 stars</label>
-                  <input type="radio" id="edit-rate4" name="review[rating]" value="4" />
-                  <label for="edit-rate4" title="Very good">4 stars</label>
-                  <input type="radio" id="edit-rate5" name="review[rating]" value="5" />
-                  <label for="edit-rate5" title="Amazing">5 stars</label>
-                </fieldset>
-                </div>
-                <div>
-                <input type="submit" class="button" value="Update">
-                </form>
-                <form id="delete-form" action="/users/<%=user._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
-                <input type="submit" class="button" value="Delete">
-                </form>
-                </div>
-                </div>
-              <% } %>
-              <% }); %>
-            </div>
-            </div>
+    <form class="form_flex_2" action="/users/<%= user._id %>/reviews/<%= review.id %>?_method=PUT" method="POST">
+      <div>
+        <textarea class="text_area" name="review[text]" required><%= review.text %></textarea>
+      </div>
+      <div id="form_flex_sub">
+        <div>
+          <fieldset class="starability-basic">
+            <!-- <button class="clear-rating" type="button">Clear Rating</button> -->
+            <input type="radio" id="edit-rate0" class="input-no-rate" name="review[rating]" value="0" checked
+              aria-label="No rating." />
+            <input type="radio" id="edit-rate1" name="review[rating]" value="1" />
+            <label for="edit-rate1" title="Terrible">1 star</label>
+            <input type="radio" id="edit-rate2" name="review[rating]" value="2" />
+            <label for="edit-rate2" title="Not good">2 stars</label>
+            <input type="radio" id="edit-rate3" name="review[rating]" value="3" />
+            <label for="edit-rate3" title="Average">3 stars</label>
+            <input type="radio" id="edit-rate4" name="review[rating]" value="4" />
+            <label for="edit-rate4" title="Very good">4 stars</label>
+            <input type="radio" id="edit-rate5" name="review[rating]" value="5" />
+            <label for="edit-rate5" title="Amazing">5 stars</label>
+          </fieldset>
+        </div>
+        <div>
+          <input type="submit" class="button" value="Update">
+    </form>
+    <form id="delete-form" action="/users/<%=user._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+      <input type="submit" class="button" value="Delete">
+    </form>
+  </div>
+</div>
+<% } %>
+<% }); %>
+</div>
+</div>
 
-            <% } %>
+<% } %>
+<div class="blur review_form">
+</div>
+<div id="delete_guard" class="hide">
+  <div>
+    <span>Type in your username to confirm deletion: </span>
+    <span id="non_valid_submit"></span>
+  </div>
+  <div>
+    <form id="submit_deletion" action="/users/<%= user._id %>?_method=DELETE" method="post">
+      <input type="text">
+      <input type="submit">
+      <span class="cancel">Cancel</span>
+    </form>
+  </div>
+</div>
+
+<% if((currentUser._id.equals(user._id))){ %>
+
+<div id="progress_bar">
+  <span id="profile_completion_span">Profile Completion</span>
+  <div id="progress_bar_base"></div>
+  <div id="progress_bar_25"><div id="percentage_amount">25%</div></div>
+
+</div>
 <div class='user_profile'>
+<% } %>
 
   <% if((currentUser._id.equals(user._id))){ %>
 
-    <div class='left-section'>
-      <span id="ls_messages">
-        <a href="/users/<%= user._id %>/messages">
-          <img src="/pics/inbox.png">
-        </a>
-        <div id="ls_messages_info">Chat box</div>
-      </span>
-    
-      <span id="add_new_favor">
-        <a href="/users/<%= user._id %>/favors/new">
-          <img src="/pics/new_favor.png">    
-        </a>
-        <div id="add_new_favor_info">Ask for a Favor</div>
-      </span>
-
-      <span id="add_interest">
-        <a href="/users/<%= user._id %>/favors">
-          <img src="/pics/favors.png">
-        </a>
-      </span>
-
-      <a href="/users/<%= user._id %>/edit">
-        <img src="/pics/edit.png">
+  <div class='left-section'>
+    <span id="ls_messages">
+      <a href="/users/<%= user._id %>/messages">
+        <img src="/pics/inbox.png">
       </a>
+      <div id="ls_messages_info">Chat box</div>
+    </span>
 
-      <form action="/users/<%= user._id %>?_method=DELETE" method="post">
-        <button class="btn-link"> 
-          <img src="/pics/delete_account.png">
-        </button>
-      </form>
+    <span id="add_new_favor">
+      <a href="/users/<%= user._id %>/favors/new">
+        <img src="/pics/new_favor.png">
+      </a>
+      <div id="add_new_favor_info">Ask for a Favor</div>
+    </span>
 
-    </div>
+    <span id="add_interest">
+      <a href="/users/<%= user._id %>/favors">
+        <img src="/pics/favors.png">
+      </a>
+    </span>
+
+    <a href="/users/<%= user._id %>/edit">
+      <img src="/pics/edit.png">
+    </a>
+
+    <a href="#" id="delete_user">
+        <img src="/pics/delete_account.png">
+    </a>
+
+  </div>
   <% } %>
 
 
@@ -126,138 +150,147 @@
   <div class='middle-section'>
 
 
-      <section class="bio">
-    
-        <div class="profile-photo">
-        
-          <div class='profile_img'> 
-            <img src="<%= user.image %>"  alt="prem" />
-          </div>
-      
+    <section class="bio">
+
+      <div class="profile-photo">
+
+        <div class='profile_img'>
+          <img src="<%= user.image %>" alt="prem" />
         </div>
 
-        <div class="details">
-          <div class="tiny-details">
-            <span id="profile_name"><%= user.name %> <%= user.surname %></span>
-            <span><span id="name_username"><%= user.status %></span><span class="hint_parent"><i class="fas fa-info-circle hint"/></i><div class="hint_span">This user has not uploaded any certifications</div></span></span>
+      </div>
 
-            <div class="location">
-              <h6><%= user.city %></h6>
-            </div>
+      <div class="details">
+        <div class="tiny-details">
+          <span id="profile_name">
+            <%= user.name %>
+            <%= user.surname %></span>
+          <span><span id="name_username">
+              <%= user.status %></span><span class="hint_parent"><i class="fas fa-info-circle hint" /></i>
+              <div class="hint_span">This user has not uploaded any certifications</div>
+            </span></span>
 
+          <div class="location">
+            <h6>
+              <%= user.city %>
+            </h6>
           </div>
 
-      <% if(!(currentUser._id.equals(user._id))){ %>
-
-          <div class="social-links">
-
-            <div class="social-icons">
-              <a href="/follow/<%= user._id %>">
-                <img src="/pics/bookmark.png">
-              </a>
-            </div>
-
-            <div class="social-icons">
-            <% var useree_reviews=[]%>
-                  <% review.forEach(function(review){ %>
-                  <% if(review.user.equals(user._id)){%>
-                  <% useree_reviews.push(review.author.username);%>
-                  <%} %>
-                  <% }); %>
-
-                  <% if(useree_reviews.includes(currentUser.username)){ %>
-                    <a id="toggle-edit-form">
-                    <img src="/pics/review.png">
-                  </a>
-                  <% } else {%>
-                  <% console.log("NONE");%>
-                  <%} %>
-
-                  
-
-
-                  <% var user_reviews=["2"];%>
-                  <% review.forEach(function(review){ %>
-                  <% if(review.user.equals(user._id)){%>
-                    <% user_reviews.push(review.author.username)%>
-                  <% } %>
-                  <% }); %>
-
-                  <% if(user_reviews.includes(currentUser.username)){ %>
-                  <% } else { %>
-                  <a id="leave_review">
-                    <img src="/pics/review.png">
-                  </a>
-                  <% } %>
-                </div>
-
-
-
-            <div class="social-icons">
-              <a href="/users/<%= user._id %>/messages/new">
-                <img src="/pics/new_message.png">
-              </a>
-            </div>
-
-          </div>
-
-      <% } %>
-
-      <div class="follow-details">
-
-        <div class="shots">
-          <p>
-            <a href="#">Favors<span class="count"><br/><%= user.posted_favors.length%></span></a>
-          </p>
         </div>
-  
-        <div class="Followers">
-          <p>
-            <a href="#">Followers<span class="count"><br/><%= user.followers.length%></span>
+
+        <% if(!(currentUser._id.equals(user._id))){ %>
+
+        <div class="social-links">
+
+          <div class="social-icons">
+            <a href="/follow/<%= user._id %>">
+              <img src="/pics/bookmark.png">
             </a>
-          </p>
+          </div>
+
+          <div class="social-icons">
+            <% var useree_reviews=[]%>
+            <% review.forEach(function(review){ %>
+            <% if(review.user.equals(user._id)){%>
+            <% useree_reviews.push(review.author.username);%>
+            <%} %>
+            <% }); %>
+
+            <% if(useree_reviews.includes(currentUser.username)){ %>
+            <a id="toggle-edit-form">
+              <img src="/pics/review.png">
+            </a>
+            <%} %>
+
+
+
+
+            <% var user_reviews=["2"];%>
+            <% review.forEach(function(review){ %>
+            <% if(review.user.equals(user._id)){%>
+            <% user_reviews.push(review.author.username)%>
+            <% } %>
+            <% }); %>
+
+            <% if(user_reviews.includes(currentUser.username)){ %>
+            <% } else { %>
+            <a id="leave_review">
+              <img src="/pics/review.png">
+            </a>
+            <% } %>
+          </div>
+
+
+
+          <div class="social-icons">
+            <a href="/users/<%= user._id %>/messages/new">
+              <img src="/pics/new_message.png">
+            </a>
+          </div>
+
         </div>
 
-      </div>
-
-      <div class="description">
-        <% if (user.rating === 0) { %>
-          <span id="no_reviews">No reviews yet.<span>
-        <% } else { %>
-        <p>Current user rating: <strong><%= user.rating.toFixed(2) %></strong></p>
-          <p>
-            <span class="fa fa-star checked"></span>
-            <span class="fa fa-star <% if (user.rating > 1.5) { %> checked <% } %>"></span>
-            <span class="fa fa-star <% if (user.rating > 2.5) { %> checked <% } %>"></span>
-            <span class="fa fa-star <% if (user.rating > 3.5) { %> checked <% } %>"></span>
-            <span class="fa fa-star <% if (user.rating > 4.5) { %> checked <% } %>"></span>
-            <em>(total reviews: <%= user.reviews.length %>)</em>
-          </p>
         <% } %>
-      </div>
-  </section>
-  
-  <% if(!(currentUser._id.equals(user._id))){ %>
-    
-  <% var fools = []; %>
+
+        <div class="follow-details">
+
+          <div class="shots">
+            <p>
+              <a href="#">Favors<span class="count"><br />
+                  <%= user.posted_favors.length%></span></a>
+            </p>
+          </div>
+
+          <div class="Followers">
+            <p>
+              <a href="#">Followers<span class="count"><br />
+                  <%= user.followers.length%></span>
+              </a>
+            </p>
+          </div>
+
+        </div>
+
+        <div class="description">
+          <% if (user.rating === 0) { %>
+          <span id="no_reviews">No reviews yet.<span>
+              <% } else { %>
+              <p>Current user rating: <strong>
+                  <%= user.rating.toFixed(2) %></strong></p>
+              <p>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star <% if (user.rating > 1.5) { %> checked <% } %>"></span>
+                <span class="fa fa-star <% if (user.rating > 2.5) { %> checked <% } %>"></span>
+                <span class="fa fa-star <% if (user.rating > 3.5) { %> checked <% } %>"></span>
+                <span class="fa fa-star <% if (user.rating > 4.5) { %> checked <% } %>"></span>
+                <em>(total reviews:
+                  <%= user.reviews.length %>)</em>
+              </p>
+              <% } %>
+        </div>
+    </section>
+
+    <% if(!(currentUser._id.equals(user._id))){ %>
+
+    <% var fools = []; %>
     <div class="connect-me">
       <% user.followers.forEach(function(follower){ %>
       <% fools.push(follower.username)%>
-        <% if(follower.username == currentUser.username){ %>
-        <div class="follow-me">
-          <a href="/unfollow/<%= user._id %>">
-            Unfollow Me
-          </a>
-        </div>
-        <% } %>
-        <% }); %>
-      
+      <% if(follower.username == currentUser.username){ %>
+      <div class="follow-me">
+        <a href="/unfollow/<%= user._id %>">
+          Unfollow Me
+        </a>
+      </div>
+      <% } %>
+      <% }); %>
+
       <% if (!(fools.includes(currentUser.username))){%>
       <div class="follow-me">
-          <a href="/follow/<%= user._id %>">
+        <a href="/follow/<%= user._id %>">
           Follow Me
-          </a>
-          </div>
+        </a>
+      </div>
       <% } %>
       <div class="hire-me">
         <p>
@@ -266,51 +299,89 @@
           </form>
         </p>
       </div>
-      
+
     </div>
     <% } %>
 
-</div>
-
-
-<div class="right-section">
-<div class="user_reviews">
-
-  <% user.reviews.slice(0, 5).forEach(function(review){ %>
-  <div class="row">
-    <div class="review_left_section">
-        <div class="stars">
-      <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
   </div>
-  <div class="review_left_text">Review by: <strong><a href="/users/<%= review.author.id %>"><%= review.author.username %></a></strong></div>
-  <div class="review_left_text"><span><%= review.updatedAt.toDateString() %></span></div>
-  </div>
-  <div class="review_middle_section">
-        <p>
-            <%= review.text %>
-        </p>
-    </div>
-</div>               
-    <div class="review_left_section">
-    </div>
-<% }); %>
-</div>
-<div id='map'></div>
-<div class="button_see_all">
-    <h4><a href="/users/<%= user._id %>/reviews">See all reviews</a></h4>
-</div>
-        </div>
-</div>
 
 
+  <div class="right-section">
+    <div class="user_reviews">
+
+      <% user.reviews.slice(0, 5).forEach(function(review){ %>
+      <div class="row">
+        <div class="review_left_section">
+          <div class="stars">
+            <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %>
+            <%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
           </div>
+          <div class="review_left_text">Review by: <strong><a href="/users/<%= review.author.id %>">
+                <%= review.author.username %></a></strong></div>
+          <div class="review_left_text"><span>
+              <%= review.updatedAt.toDateString() %></span></div>
+        </div>
+        <div class="review_middle_section">
+          <p>
+            <%= review.text %>
+          </p>
+        </div>
+      </div>
+      <div class="review_left_section">
+      </div>
+      <% }); %>
     </div>
-</div>
+    <div id='map'></div>
+    <div class="button_see_all">
+      <h4><a href="/users/<%= user._id %>/reviews">See all reviews</a></h4>
+    </div>
   </div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 
 
 <script>
+
+$('body').ready(function() {
+  var elem = document.getElementById("progress_bar_25");   
+  var width = 0;
+  var id = setInterval(frame, 10);
+  function frame() {
+    if (width >= 25) {
+      clearInterval(id);
+    } else {
+      width+=.5; 
+      elem.style.width = width + '%'; 
+    }
+  }
+});
+
+  $("#delete_user").click(function(event){
+    console.log("Happy");
+    $("#delete_guard").toggleClass('hide');
+    $(".blur").toggle('.review_form');
+    event.preventDefault();
+  });
+
+  $(".cancel").click(function(e){
+    $("#delete_guard").toggleClass('hide');
+    $(".blur").toggle('.review_form');
+
+  })
+
+  $("#submit_deletion").submit(function(event){
+    if ( $( "input:first" ).val() === <%- JSON.stringify(currentUser.username) %> ) {
+      $( "span" ).text( "Validated..." ).show();
+      return;
+    }
+    console.log(<%- JSON.stringify(currentUser.username) %>);
+    $( "#non_valid_submit" ).text( "Not valid!" ).show().fadeOut( 4000 );
+    event.preventDefault();
+  });
 
   var user = <%- JSON.stringify(user) %>;
   mapboxgl.accessToken = 'pk.eyJ1IjoiZHVnaXdhcmMiLCJhIjoiY2pydDdmdjFtMGZlNjRhdGNreWQ1aW5mZSJ9.IJrnij1QFJbk2r_618xlUg';
@@ -350,6 +421,9 @@
     }
     if($(".sibling").hasClass("review_form")){
       $(".sibling").is(':visible');
+    }
+    if($("#delete_guard").is(':visible')){
+      $("#delete_guard").toggleClass('hide');
     }
   });
 </script>

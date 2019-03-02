@@ -872,6 +872,65 @@ a img:hover {
   box-shadow: 0 8px 6px -6px black;
 }
 
+#profile_completion_span
+{
+  color: white;
+  font-family: 'montserrat';
+}
+
+#progress_bar
+{
+  margin: 10px;
+    width: 50%;
+    height: 50px;
+    background: #202020;
+    position: relative;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+#percentage_amount
+{
+      transform: translateY(10%);
+      text-align: center;
+      color: white;
+      font-family: monospace;
+}
+
+#progress_bar_base
+{
+      position: absolute;
+      background: #303030;
+      width: 97%;
+      height: 30%;
+      bottom: 14%;
+
+}
+
+#progress_bar_25
+{
+    position: absolute;
+    background: maroon;
+    width: 0%;
+    height: 30%;
+    bottom: 14%;
+
+}
+
+#delete_guard
+{
+    z-index: 10;
+    height: 40px;
+    text-align: center;
+    width: 25%;
+    min-width: 500px;
+    position: absolute;
+    transform: translate(0%, 50%);
+    background: white;
+    color: black;
+}
+
 
 #look_for_a_favor
 {
@@ -1339,8 +1398,7 @@ html {
 
 .middle-section {
   width: 550px;
-  /* margin-top: 30px; */
-  transform: translateY(20%);
+  /* transform: translateY(20%); */
   -webkit-box-shadow: 0 6px 6px -6px black;
   -moz-box-shadow: 0 6px 6px -6px black;
   box-shadow: 0 6px 6px -6px black;
@@ -1365,7 +1423,7 @@ textarea.text_area {
   font-family: "Open Sans", sans-serif;
   width: 100%;
   color: rgb(150, 150, 150);
-  transform: translateY(20%);
+  margin: 0 0 100px 0;
 }
 
 .mapboxgl-popup {
@@ -1462,7 +1520,7 @@ ul {
   height: 555px;
   background-color: rgb(37, 37, 37);
   margin: 0 10px;
-  transform: scale(.9);
+  transform: scale(.9) translateY(-31px);
 
 }
 
@@ -1913,7 +1971,6 @@ video
 
 
   .user_profile {
-    margin-top: -150px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -1925,7 +1982,7 @@ video
 
   .left-section {
     transform: rotate(90deg) scale(.7);
-    margin: -200px 0 -257px 0;
+    margin: -230px 0;
     transition: .5s ease;
   }
 
@@ -1936,13 +1993,23 @@ video
 
 
   .right-section {
-    margin-top: 100px;
+    margin-top: 15px;
   }
 
 }
 
 
 @media only screen and (max-width: 775px) {
+
+  #progress_bar
+  {
+    margin-top: 80px;
+  }
+
+  #progress_bar_base
+  {
+    width: 94%;
+  }
   #filter_video
   {
     background-size: 9%;
@@ -1990,6 +2057,28 @@ video
 
 
 @media only screen and (max-width: 500px) {
+
+  #profile_completion_span
+  {
+    font-size: .9rem;
+    text-align: center;
+  }
+
+  #progress_bar_base
+  {
+    width: 90%;
+  }
+
+  #progress_bar
+  {
+
+    margin-top: 115px;
+  }
+  .user_profile
+  {
+    transform: scale(.6);
+    margin-top: -200px;
+  }
 
   .form {
     transform: scale(.8);
