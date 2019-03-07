@@ -20,6 +20,7 @@ var userSchema = new mongoose.Schema({
   city: String,
   interested_city: String,
   imageId: String,
+  requests: Array,
   notifications: [
     {
       type: mongoose.Schema.Types.ObjectId,

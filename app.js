@@ -14,6 +14,7 @@ var User = require('./models/user');
 var Message = require('./models/message');
 var Review = require('./models/review');
 var Conversation = require('./models/conversation');
+var Request = require('./models/validation_request');
 var Notification = require('./models/notification');
 var flash = require('connect-flash');
 var keyPublishable = 'pk_test_K3VJ6ZLvLKdhLaJTglAd65Qk';

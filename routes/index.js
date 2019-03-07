@@ -46,9 +46,6 @@ router.post("/register",async function(req, res){
         })
         .send();
   var coordinates = response.body.features[0].geometry.coordinates;
-  console.log(coordinates);
-  console.log()
-  // res.send("Signing you up");
   var newUser = new User({
     name: req.body.name,
     surname: req.body.surname,
@@ -59,9 +56,10 @@ router.post("/register",async function(req, res){
     coordinates: coordinates,
     city: req.body.location
   });
-  // if(req.body.adminCode === '1111'){
-    //   newUser.isAdmin = true;
-    // }
+
+  if(req.body.adminCode === '1111'){
+      newUser.isAdmin = true;
+    }
 
   var newLocation = new Location({
     name: req.body.location,
@@ -89,7 +87,6 @@ router.post("/register",async function(req, res){
       else 
       {
         var newly_c = await Location.create(newLocation);
-        console.log("LOCATION CREATED");
         newly_c.followers.push(user);
         newly_c.save();
       }

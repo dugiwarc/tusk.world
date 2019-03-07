@@ -10,6 +10,7 @@ var Review        = require('../models/review');
 var Notification  = require('../models/notification');
 var Favor         = require('../models/favor');
 var Conversation  = require('../models/conversation');
+var Request       = require('../models/validation_request');
 var middleware    = require('../middleware');
 var router        = express.Router();
 
@@ -139,6 +140,30 @@ router.put("/users/:id", middleware.checkUserOwnership, upload.single('image'),f
           });
     }
 });
+
+router.put("/users/:id/validation", middleware.checkUserOwnership, upload.single('validation_paper'),async function (req, res) {
+  if(req.file)
+  {
+    try
+    {
+      let new_request = new Request({
+        author: req.user._id
+      })
+      let result = await cloudinary.uploader.upload(req.file.path);
+      console.log(result.secure_url);
+      let validation_request = await Request.create(new_request);
+      validation_request.image = result.secure_url;
+      validation_request.save();
+      res.end();
+    }
+    catch (err)
+    {
+      res.send("Error page");
+      console.log(err);
+    }
+  }
+});
+
 
 // show user profile
 router.get("/users/:id",async function(req, res){
