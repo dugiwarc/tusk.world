@@ -20,12 +20,8 @@
     </script>
 
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <link rel="stylesheet" href="/stylesheets/starability-basic.min.css">
-    <link rel="stylesheet" href="/stylesheets/drumkit.css">
-    <link rel="stylesheet" href="/stylesheets/new_favors.css">
-    <link rel="stylesheet" href="/stylesheets/login_page.css">
     <link rel="stylesheet" href="/stylesheets/master.css">
-    <link rel="stylesheet" href="/stylesheets/web_cam_fun.css">
+
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:800|Didact+Gothic|Lobster|Staatliches|Montserrat:900" rel="stylesheet">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -47,7 +43,12 @@
     
 
     <ul class="cool">
-
+<div id="welcome_video">
+    <!--<img src="pics/delete_account.png"-->
+    <video playsinline autoplay muted loop>
+        <source src="pics/wlcm.mp4" type="video/mp4">
+    </video>
+</div>
       <% if(!currentUser){ %>
 
       <li class="right_li">
