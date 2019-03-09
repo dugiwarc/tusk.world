@@ -11,7 +11,7 @@ var validationSchema = new mongoose.Schema({
             ref: "User"
         },
 
-        username: String,
+        username: String
     },
 
     image: {

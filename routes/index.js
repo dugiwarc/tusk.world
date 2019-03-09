@@ -38,14 +38,14 @@ router.get("/register", function(req, res){
 });
 
 router.post("/register",async function(req, res){
-
+    if(req.body.location){
       let response = await geocodingClient
         .forwardGeocode({
           query: req.body.location,
           limit: 1
         })
         .send();
-  var coordinates = response.body.features[0].geometry.coordinates;
+  var coordinates = response.body.features[0].geometry.coordinates;}
   var newUser = new User({
     name: req.body.name,
     surname: req.body.surname,

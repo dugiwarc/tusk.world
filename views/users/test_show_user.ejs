@@ -164,11 +164,18 @@
         <div class="tiny-details">
           <span id="profile_name">
             <%= user.name %>
-            <%= user.surname %></span>
-          <span><span id="name_username">
+            <%= user.surname %>
+            </span>
+            
+            <span>
+            <span id="name_username">
+            <% if(!(user.isVerified)){ %>
+              <img id="verified" src="/pics/ok.png">
+            <% } %>
               <%= user.status %></span><span class="hint_parent"><i class="fas fa-info-circle hint" /></i>
               <div class="hint_span">This user has not uploaded any certifications</div>
-            </span></span>
+            </span>
+          </span>
 
           <div class="location">
             <h6>

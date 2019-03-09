@@ -70,7 +70,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
 
   io.on('connection', function (socket) {
 
-    let chat = db.collection('chats');
+    // let chat = db.collection('chats');
 
     // Create function to send status 
     sendStatus = function (s) {
@@ -78,31 +78,35 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
     }
 
     // Get chats from mongo collection
-    chat.find().limit(100).sort({
-      _id: 1
-    }).toArray(function (err, res) {
-      if (err) {
-        throw err;
-      }
+    // chat.find().limit(100).sort({
+    //   _id: 1
+    // }).toArray(function (err, res) {
+    //   if (err) {
+    //     throw err;
+    //   }
 
-      // emit the messages
-      socket.emit('output', res);
-    });
+    //   // emit the messages
+    //   socket.emit('output', res);
+    // });
 
     User.find({}, function (err, res) {
       if (err) {
         throw err;
       } else {
-        console.log("users retrieved");
-        socket.emit('user_output', res);
+        Message.find({}, function(err, mes){
+          if(err){
+            throw err;
+          } else {
+          console.log("users retrieved");
+          socket.emit('user_output', mes, res);
+          }
+        });
       }
     });
 
 
     socket.on('input_user_search', async function (data) {
-      console.log("hello");
       let username = data.username;
-      console.log(username);
       const regex = new RegExp(escapeRegex(username), 'gi');
       var users = await User.find({
         "username": regex
@@ -113,37 +117,57 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
 
     // Handle input events
     socket.on('input',async function (data) {
-      let sender = data.sender;
-      let message = data.message;
-      let receiver = data.receiver;
-      let sender_id = data.sender_id;
-      let receiver_id = data.receiver_id;
+      try
+      {
+              let sender = data.sender;
+              let message = data.message;
+              let receiver = data.receiver;
+              let sender_id = data.sender_id;
+              let receiver_id = data.receiver_id;
 
 
-      // check for name and message
-      if (receiver == 'Filter for an user') {
-        // send error status 
-        sendStatus('Please make sure you have selected a receiver');
-      } else {
-        var newMessage = new Message({
-          sender: sender,
-          text: message,
-          receiver: receiver,
-          sender_id: sender_id,
-          receiver_id: receiver_id
-        });
-        // Insert message
-        var a = await Message.create(newMessage);
-        a.save();
-        // var all_messages = await Message.find({});
-        io.emit('output', [data]);
+              // check for name and message
+              if (receiver == 'Filter for an user' || receiver == '') {
+                // send error status 
+                sendStatus('Please make sure you have selected a receiver');
+              } else {
+                var newMessage = new Message({
+                  sender: sender,
+                  text: message,
+                  receiver: receiver,
+                  sender_id: sender_id,
+                  receiver_id: receiver_id
+                });
+                // Insert message
+                var user = await User.findOne({
+                  _id: newMessage.sender_id
+                });
+                var user_contact = await User.findOne({
+                  _id: newMessage.receiver_id
+                });
+                if(!(user.contacts.includes(user_contact.username))){
+                  user.contacts.push(user_contact.username);
+                }
+                var contacts = user.contacts;
+                var a = await Message.create(newMessage);
+                user.save();
+                a.save();
+                // var all_messages = await Message.find({});
+                io.emit('output', [data], contacts);
 
-            // sendStatus({
-            //   message: 'Message sent',
-            //   clear: true
-            // });
+                sendStatus({
+                  message: 'Message sent',
+                  clear: true
+                });
+              }
+      }
+      catch(err)
+      {
+        console.log(err);
       }
     });
+
+
     // Handle clear
     socket.on('clear', function (data) {
       // Remove all chats from collection
@@ -151,6 +175,11 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
         // Emit cleared
         socket.emit('cleared');
       });
+    });
+
+    socket.on('get_contacts',async function(data){
+      let users =  await User.findById(data.id);
+      socket.emit('get_contacts', users.contacts);
     });
   });
 });

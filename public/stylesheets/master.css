@@ -330,10 +330,15 @@ body {
   margin-bottom: 100px;
 }
 
+.favor_description_desc
+{
+  margin-top: 30px;
+}
 hr {
   border: 7px solid black;
   width: 85.5%;
-  margin-top: 25px;
+  align-self: center;
+  margin: 25px 0 5px 0;
 }
 
 .favor_image {
@@ -420,6 +425,7 @@ hr {
   font-family: 'Didact Gothic', sans-serif;
   color: goldenrod;
   margin-left: 10px;
+  position: relative;
 }
 
 .hint_span {
@@ -940,7 +946,7 @@ a img:hover {
     /* font-family: monospace; */
     box-shadow: 0 8px 6px -6px black;
     background: maroon;
-    padding: 12px 53px;
+    padding: 3px 53px;
 }
 
 h1 {
@@ -1631,6 +1637,7 @@ ul {
   font-family: 'Montserrat';
   font-size: 1.1em;
   padding: 10px;
+  position: relative;
   text-transform: uppercase;
   margin: 5px 0;
   background: darkred;
@@ -1639,6 +1646,14 @@ ul {
   -webkit-box-shadow: 0 6px 6px -6px black;
   -moz-box-shadow: 0 6px 6px -6px black;
   box-shadow: 0 6px 6px -6px black;
+}
+
+#verified
+{
+    position: absolute;
+    right: -80%;
+    transform: scale(.4);
+    top: -55%;
 }
 
 
@@ -1659,7 +1674,7 @@ ul {
 }
 
 #add_new_favor_info {
-  opacity: 0;
+  display: none;
   width: 150px;
   padding: 5px 10px;
   background: white;
@@ -1695,7 +1710,7 @@ video
 }
 
 #add_new_favor_info.show {
-  opacity: 1;
+  display: block;
   transition: .6s ease;
 }
 
@@ -1719,13 +1734,17 @@ video
     z-index: 3;
   }
 
+#mobile_chat
+{
+  display: block;
+}
+
 .chat_container {
   position: relative;
   display: flex;
   background: navajowhite;
   height: 400px;
   width: 600px;
-  margin-bottom: 200px;
 }
 
 .chat_container_contacts {
@@ -2001,9 +2020,13 @@ video
 
 @media only screen and (max-width: 775px) {
 
+    #show_messages_form {
+      transform: scale(.8) translate(-216px, -59px);
+    }
   #progress_bar
   {
     margin-top: 80px;
+    transform: scale(.8);
   }
 
   #progress_bar_base
@@ -2058,9 +2081,20 @@ video
 
 @media only screen and (max-width: 500px) {
 
+  .chat_container
+  {
+    width: 100%;
+  }
+
+
+  #show_messages_form
+  {
+    transform: scale(.6) translate(-293px, -59px);
+  }
+
   #profile_completion_span
   {
-    text-align: center;
+    display: none;
   }
 
   #progress_bar_base
@@ -2075,13 +2109,14 @@ video
 
   #progress_bar
   {
+    display: none;
     transform: scale(.7);
     margin-top: 115px;
   }
   .user_profile
   {
     transform: scale(.6);
-    margin-top: -220px;
+    margin-top: -100px;
   }
 
   .form {

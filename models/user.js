@@ -17,6 +17,7 @@ var userSchema = new mongoose.Schema({
     type: String,
     default: "/pics/default_pic.jpg"
   },
+  contacts: Array,
   city: String,
   interested_city: String,
   imageId: String,
@@ -39,19 +40,9 @@ var userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     }],
-  followers: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  ],
   message_notifications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notification'
-      }],
-      followers: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
       }],
   name: String,
   qualifications: String,

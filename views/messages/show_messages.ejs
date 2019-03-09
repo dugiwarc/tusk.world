@@ -5,26 +5,28 @@
     <form class="search-form" id="show_messages_form" action="/favors" method="get" autocomplete="off">
       <input type="search_all" id="input" value="" placeholder="Search for an user to start chatting" class="search-input"
         name="search">
-        <ul class="suggestions" id="search_results">
+      <ul class="suggestions" id="search_results">
         <li><span class="name">Filter for an user</span></li>
-        </ul>
-        </form>
-        <div id="status">
-        </div>
-        <div class="chat_container">
+      </ul>
+    </form>
+    <div id="status">
+    </div>
+    <div id="mobile_chat">
+      <div class="chat_container">
         <div class="chat_container_contacts" id="chat_container_contacts"></div>
         <div class="chat_container_window">
-        <div class="chat_header">
-        You are texting with: <span id="content"> </span>
-        </div>
+          <div class="chat_header">
+            You are texting with: <span id="content"> </span>
+          </div>
           <div id="messages">
           </div>
-        <div>
-        <textarea id="textarea" class="chat_textarea" placeholder="Enter message: "></textarea>
+          <div>
+            <textarea id="textarea" class="chat_textarea" placeholder="Enter message: "></textarea>
+          </div>
         </div>
-        </div>
-        </div>
-        </div>
+      </div>
+    </div>
+  </div>
         
         
         <script>
@@ -79,27 +81,21 @@
           if (socket !== undefined) {
             
             console.log('Connected to socket');
-            socket.on('user_output_search', function (data) {
-              
 
-              for (var i = 0; i < data.length; i++) {
-                var result = document.createElement('div');
-                result.setAttribute('class', 'user_select');
-                day.push(data[i].username);
-                result.textContent = data[i].username;
-                search_results.appendChild(result);
-                chat_container.appendChild(result);
+
+
+            socket.on('user_output', function (data, contacts){
+              for(var i = 0; i < contacts.length; i++){
+                  if(contacts[i].username === <%- JSON.stringify(currentUser.username)%>){
+                  var result = document.createElement('div');
+                  result.setAttribute('class', 'user_select');
+                  result.textContent = contacts[i].username;
+                  chat_container.appendChild(result);}
               }
-              
-            });
 
 
-
-            socket.on('output', function (data) {
-              console.log("data"+data);
               textarea.value = '';
               data.forEach(function (data) {
-
                 if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
                 (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)) {
                   var message = document.createElement('div'); 
@@ -109,9 +105,7 @@
                   messages.insertBefore(message, messages.firstChild);
                 }
               });
-
               var recipients = [];
-
               data.forEach(function (penpal) {
                 if (penpal.sender === <%- JSON.stringify(currentUser.username)%>) {
                   recipients.push(penpal.receiver);
@@ -119,10 +113,8 @@
                   recipients.push(penpal.sender);
                 }
               });
-              console.log(recipients);
               var unique = recipients.filter((v, i, a) => a.indexOf(v) === i);
               var contacts = document.getElementById('chat_container_contacts');
-
               contacts.innerHTML = "";
               for (var i = 0; i < unique.length; i++) {
                 var message = document.createElement('div');
@@ -130,7 +122,6 @@
                 message.textContent = unique[i];
                 contacts.appendChild(message);
               }
-
               $('.user_select').click(function () {
                 var a = $(this).text();
                 content.textContent = a;
@@ -140,16 +131,72 @@
 
             });
 
+            socket.on('user_output_search', function (data) {
+              
+              for (var i = 0; i < data.length; i++) {
+                var result = document.createElement('div');
+                result.setAttribute('class', 'user_select');
+                day.push(data[i].username);
+                result.textContent = data[i].username;
+                search_results.appendChild(result);
+
+              }
+              
+            });
+            socket.on('output', function (data, contacts) {
+              console.log(contacts);
+
+              chat_container.innerHTML = "";
+                  for(var i = 0; i < contacts.length; i++){
+                  var result = document.createElement('div');
+                  result.setAttribute('class', 'user_select');
+                  result.textContent = contacts[i];
+                  chat_container.appendChild(result);
+              }
+
+              textarea.value = '';
+              data.forEach(function (data) {
+                if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
+                (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)) {
+                  var message = document.createElement('div'); 
+                  message.setAttribute('class', 'chat-message');
+                  message.textContent = data.sender + ": " + data.message;
+                  messages.appendChild(message);
+                  messages.insertBefore(message, messages.firstChild);
+                }
+              });
+              // var recipients = [];
+              // data.forEach(function (penpal) {
+              //   if (penpal.sender === <%- JSON.stringify(currentUser.username)%>) {
+              //     recipients.push(penpal.receiver);
+              //   } else if (penpal.receiver === <%- JSON.stringify(currentUser.username)%>) {
+              //     recipients.push(penpal.sender);
+              //   }
+              // });
+              // var unique = recipients.filter((v, i, a) => a.indexOf(v) === i);
+              // var contacts = document.getElementById('chat_container_contacts');
+              contacts.innerHTML = "";
+                  for(var i = 0; i < contacts.length; i++){
+                  if(contacts[i].username === <%- JSON.stringify(currentUser.username)%>){
+                  var result = document.createElement('div');
+                  result.setAttribute('class', 'user_select');
+                  result.textContent = contacts[i].username;
+                  chat_container.appendChild(result);}
+              }
+              $('.user_select').click(function () {
+                var a = $(this).text();
+                content.textContent = a;
+                getMail(a, data);
+              });
+            });
             // Get status from server
             socket.on('status', function (data) {
               // get message status
               setStatus((typeof data === 'object') ? data.message : data);
-
               // If status is clear, clear text
               if (data.clear) {
                 textarea.value = '';
               }
-
             });
             
             // Handle Input 
@@ -161,7 +208,6 @@
                     var a = <%-JSON.stringify(dude._id)%>
                   }
                 <% }) %>
-                console.log(a);
                 socket.emit('input', {
                   sender: <%- JSON.stringify(currentUser.username)%>,
                   message: textarea.value,
@@ -169,36 +215,30 @@
                   sender_id: <%- JSON.stringify(currentUser._id)%>,
                   receiver_id: a
                 });
-
                 event.preventDefault();
               }
             });
-
-
-
             input.addEventListener('keydown', function (event) {
               if (event.which === 13 && event.shiftKey == false) {
                 socket.emit('input_user_search', {
                   username: this.value
                 })
-
                 event.preventDefault();
               }
             })
 
 
+            $( document ).ready(function() {
+                socket.emit('get_contacts', { id: <%- JSON.stringify(currentUser.id)%>});
+            });
             // clearBtn.addEventListener('click', function(){
             //     socket.emit('clear');
             // });
-
             // socket.on('cleared', function(){
             //     messages.textContent = '';
             // });
           }
-
         })();
-
-
 
         function getMail(a, data) {
           data = [];
@@ -206,7 +246,6 @@
             data.push(<%- JSON.stringify(message)%>)
           <% }) %>
           messages.innerText = "";
-
           if (data.length) {
             for (var x = 0; x < data.length; x++) {
               var message = document.createElement('div');
@@ -218,14 +257,10 @@
               }
             }
           }
-
         }
-
         $("#box_of_results").dblclick(function () {
           this.remove();
         });
-
-
         function findMatches(wordToMatch, day) {
           return day.filter(username => {
             // here we need to figure out if the city or state matches what was searched
@@ -233,7 +268,6 @@
             return username.match(regex);
           });
         }
-
         function displayMatches() {
           const matchArray = findMatches(input.value, day);
           const html = matchArray.map(username => {
@@ -247,11 +281,8 @@
           }).join('');
           suggestions.innerHTML = html;
         }
-
-
         const searchInput = document.querySelector('.search-input');
         const suggestions = document.querySelector('.suggestions');
-
         $('body').on('click', '.name', function (e) {
           var a = $(this).text();
           content.textContent = a;
@@ -259,10 +290,8 @@
           search_results.innerHTML = "";
           // alert("yeahhhh!!! but this doesn't work for me :(");
         });
-
         searchInput.addEventListener('click', displayMatches);
         searchInput.addEventListener('keyup', displayMatches);
-
 </script>
 
 

@@ -133,7 +133,7 @@ input.search {
     transform: translateY(40px);
     /* perspective: 20px; */
     overflow: auto;
-    height: 200px;
+    height: 50px;
 }
 
 .suggestions li {
