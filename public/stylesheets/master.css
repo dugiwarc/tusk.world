@@ -844,6 +844,7 @@ a img:hover {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
   font-size: 1.5rem;
+  width: 80%;
   height: 40px;
 }
 
@@ -873,7 +874,7 @@ a img:hover {
     font-family: monospace;
     transition: .4s;
     margin: 5px 0;
-    transform: translate(30px, 20px);
+    transform: translate(20px, 20px);
     max-width: 220px;
     box-shadow: 0 8px 6px -6px black;
     }
@@ -948,7 +949,7 @@ box-shadow: 0 8px 6px -6px black;
 background: maroon;
 display: flex;
 text-align: center;
-padding: 5px 53px;
+padding: 5px 40px;
 }
 
 h1 {
@@ -2200,6 +2201,10 @@ overflow: auto;
 
 @media only screen and (max-width: 500px) {
 
+  /* body
+  {
+    width: 50vh;
+  } */
 
   .contact_form
   {
@@ -2249,15 +2254,17 @@ overflow: auto;
 
   li.right_li {
     transition: .3s;
-    transform: scale(.7) translateY(135px) translateX(390px);
-    margin: 0 -35px;
+    transform: scale(.6) translateY(170px) translateX(274px);
+    margin-left: -90px;
+    margin-right: -120px;
     transition: .3s;
   }
 
   li.left_li {
     transition: .3s;
-    transform: scale(.7) translateY(205px) translateX(-390px);
-    margin: 0 -35px;
+    transform: scale(.6) translateY(170px) translateX(-305px);
+    margin-left: -90px;
+    margin-right: -120px;  
     transition: .3s;
   }
 
@@ -2599,7 +2606,6 @@ kbd {
   z-index: 1;
   background: #FFFFFF;
   max-width: 300px;
-  margin: 0 auto 100px;
   padding: 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
