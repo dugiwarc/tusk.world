@@ -114,6 +114,36 @@ body {
   height: 150px;
 }
 
+  #landing_buttons {
+    display: flex;
+    transform: translateY(5vh);
+  }
+
+  #join_now_button, #learn_more_button
+  {
+    background: #43A047;
+    padding: 2vh 2vh;
+    margin: .1vh;
+    font-family: monospace;
+    width: 15vh;
+    display: flex;
+    color: white;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    transition: 1s;
+    box-shadow: 0 8px 1px -8px black;
+
+  }
+
+  #join_now_button:hover,
+  #learn_more_button:hover
+  {
+    background-color: #4CAF50;
+    transition: 1s;
+  }
+
+
 .dropbtn {
   background-color: #FFB840;
   padding: 16px;
@@ -836,15 +866,15 @@ a img:hover {
     font-size: 137px;
     padding: 0 150px;
     background-color: #151515;
-    margin: -42px 0 77px 0;
+    margin: -60px 0 77px 0;
     box-shadow: 0 8px 6px -6px black;
 }
 
 #welcome_sub {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
+  margin-top: 5vh;
   font-size: 1.5rem;
-  width: 80%;
   height: 40px;
 }
 
@@ -855,7 +885,7 @@ a img:hover {
 
 #welcome_sub.active {
   /* height: 160px; */
-  transform: translateY(70px);
+  transform: translateY(50px);
   transition: 2s ease;
 }
 
@@ -874,7 +904,6 @@ a img:hover {
     font-family: monospace;
     transition: .4s;
     margin: 5px 0;
-    transform: translate(20px, 20px);
     max-width: 220px;
     box-shadow: 0 8px 6px -6px black;
     }
@@ -943,13 +972,13 @@ a img:hover {
 #look_for_a_favor
 {
 color: white;
-font-size: 1.5rem;
-font-family: monospace;
-box-shadow: 0 8px 6px -6px black;
+font-size: 1rem;
+box-shadow: 0 8px 1px -8px black;
 background: maroon;
+font-family: monospace;
 display: flex;
 text-align: center;
-padding: 5px 40px;
+padding: 10px 40px;
 }
 
 h1 {
@@ -2144,6 +2173,13 @@ overflow: auto;
     #show_messages_form {
       transform: scale(.8) translate(-216px, -59px);
     }
+
+
+    #learn_more_button,
+    #join_now_button
+    {
+      transform: translateY(2vh);
+    }
   #progress_bar
   {
     margin-top: 80px;
@@ -2167,6 +2203,7 @@ overflow: auto;
   }
 
   li.right_li {
+    display: none;
     transition: .3s;
     transform: scale(.7) translateY(145px) translateX(240px);
     margin: 0 -35px;
@@ -2174,6 +2211,7 @@ overflow: auto;
   }
 
   li.left_li {
+    display: none;
     transition: .3s;
     transform: scale(.7) translateY(145px) translateX(-240px);
     margin: 0 -35px;
@@ -2201,11 +2239,10 @@ overflow: auto;
 
 @media only screen and (max-width: 500px) {
 
-  /* body
+  body
   {
-    width: 50vh;
-  } */
-
+    width: 100%;
+  }
   .contact_form
   {
     transform: scale(.6);
@@ -2216,10 +2253,14 @@ overflow: auto;
     width: 100%;
   }
 
-
   #show_messages_form
   {
     transform: scale(.6) translate(-293px, -59px);
+  }
+
+  #landing-header
+  {
+    padding-top: 15vh;
   }
 
   #profile_completion_span
@@ -2245,14 +2286,15 @@ overflow: auto;
   }
 
   #welcome {
-    display: none;
-    font-size: 4rem;
-    overflow: auto;
-    padding: 10px;
-    margin: -20px 0 6px 0;
+font-size: 4rem;
+overflow: auto;
+min-width: 360px;
+padding: 10px;
+margin: -30px 0 28px 0;
   }
 
   li.right_li {
+    display: none;
     transition: .3s;
     transform: scale(.6) translateY(170px) translateX(274px);
     margin-left: -90px;
@@ -2261,6 +2303,7 @@ overflow: auto;
   }
 
   li.left_li {
+    display: none;
     transition: .3s;
     transform: scale(.6) translateY(170px) translateX(-305px);
     margin-left: -90px;
@@ -2303,6 +2346,21 @@ overflow: auto;
   display: block;
   clear: both;
 }
+.welcome_sub_suggestions
+{
+  transform: scale(.8);
+}
+
+.welcome_sub_suggestions:nth-child(2) 
+{
+  transform: scale(.8) translateY(-10px);
+}
+
+.welcome_sub_suggestions:nth-child(3) 
+{
+  transform: scale(.8) translateY(-20px);
+}
+
 
 .photo {
   width: 100%;

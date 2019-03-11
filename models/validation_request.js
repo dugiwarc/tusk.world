@@ -6,12 +6,8 @@ var validationSchema = new mongoose.Schema({
         default: false
     },
     author: {
-        id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
-        },
-
-        username: String
     },
 
     image: {

@@ -5,6 +5,9 @@
   <head>
 
     <meta charset="utf-8">
+    <meta name="description" content="Ask someone for a favor, anywhere in the world">
+    <meta name="keywords" content="favor, ask, earn, friends, ease, search, look, anyone">
+    <meta name="author" content="Gheorghe Botnaru">
 
     <title>Tusk</title>
 
@@ -146,14 +149,20 @@
         <li class="left_li">
           <a href="/logout"><img src="/pics/log_out.png"></a>
         </li>
+        <%if(currentUser.isAdmin){%>
+          <li class="left_li">
+            <a href="/dashboard"><img src="/pics/open_box.png"></a>
+          </li>
+        <% } else { %>
+          <li class="left_li">
+            <a href="/chat"><img src="/pics/support.png"></a>
+          </li>
+        <% } %>
+        <li class="left_li">
+        <a href="/faq"><img src="/pics/faq.png"></a>
+        </li>
+        <% } else { %>
         <li class="left_li">        
-          <a href="/chat"><img src="/pics/support.png"></a>
-        </li>
-        <li class="left_li">
-          <a href="/faq"><img src="/pics/faq.png"></a>
-        </li>
-      <% } else { %>
-        <li class="left_li">
           <a href="/chat"><img src="/pics/support.png"></a>
         </li>
         <li class="left_li">
