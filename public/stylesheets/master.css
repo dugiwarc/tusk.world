@@ -132,13 +132,15 @@ body {
     justify-content: center;
     align-items: center;
     transition: 1s;
-    box-shadow: 0 8px 1px -7px black;
+    box-shadow: 0 5px 10px -7px black;
 
   }
 
   #join_now_button:hover,
   #learn_more_button:hover
   {
+    box-shadow: 0 5px 10px -8px black;
+  
     background-color: #4CAF50;
     transition: 1s;
   }
@@ -973,7 +975,7 @@ a img:hover {
 {
 color: white;
 font-size: 1rem;
-box-shadow: 0 8px 1px -7px black;
+box-shadow: 0 5px 10px -7px black;
 background: maroon;
 font-family: monospace;
 display: flex;
