@@ -132,7 +132,7 @@ body {
     justify-content: center;
     align-items: center;
     transition: 1s;
-    box-shadow: 0 8px 1px -8px black;
+    box-shadow: 0 8px 1px -7px black;
 
   }
 
@@ -973,7 +973,7 @@ a img:hover {
 {
 color: white;
 font-size: 1rem;
-box-shadow: 0 8px 1px -8px black;
+box-shadow: 0 8px 1px -7px black;
 background: maroon;
 font-family: monospace;
 display: flex;
