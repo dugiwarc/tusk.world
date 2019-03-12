@@ -119,6 +119,69 @@ body {
     transform: translateY(5vh);
   }
 
+  #dashboard
+  {
+    position: relative;
+    display: flex;
+    width: 75%;
+    background: palegoldenrod;
+    margin: 5vh 0;
+    height: 75vh;
+  }
+
+  .sidebar_tab:hover
+  {
+    transform: scale(1.03);
+    margin: 1vh 0;
+    transition: .3s ease-in;
+  }
+
+  #dashboard_preview
+  {
+    position: absolute;
+    color: #4d4d4d;
+    width: 20%;
+    z-index: 1;
+    height: 100%;
+    box-shadow: 7px 2px 2px -6px black;
+    min-width: 200px;
+    background: tomato;
+    transition: .3s ease-in-out;
+  }
+
+
+.moving
+{
+        transform: translateX(230px);
+        transition: .3s ease-in-out;
+
+}
+
+  #dashboard_sidebar
+  {
+    width: 20%;
+    min-width: 200px;
+    background-color: #282828;
+    box-shadow: 7px 2px 2px -6px black;
+    z-index:2;
+  }
+
+  #dashboard_screen
+  {
+    width: 80%;
+    color: #98554F;
+  }
+
+  .sidebar_tab
+  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    background: #1a1a1a;
+    transition: .3s ease;
+  }
+
   #join_now_button, #learn_more_button
   {
     background: #43A047;

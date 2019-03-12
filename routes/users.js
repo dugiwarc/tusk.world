@@ -180,6 +180,11 @@ router.get("/users/:id",async function(req, res){
   }
 });
 
+router.get("/:id/dashboard", async function(req, res, next){
+  var requests = await Request.find({});
+  res.render('users/dashboard', { requests });
+});
+
 // event: follow_link
 router.get('/follow/:id', middleware.isLoggedIn, async function(req, res){
   try 

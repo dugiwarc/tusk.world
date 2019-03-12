@@ -151,7 +151,7 @@
         </li>
         <%if(currentUser.isAdmin){%>
           <li class="left_li">
-            <a href="/dashboard"><img src="/pics/open_box.png"></a>
+            <a href="/<%= currentUser.id %>/dashboard"><img src="/pics/open_box.png"></a>
           </li>
         <% } else { %>
           <li class="left_li">
