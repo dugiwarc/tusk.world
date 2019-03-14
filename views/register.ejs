@@ -1,42 +1,99 @@
 <% include ./partials/header %>
 
     
-<div class="login-page">
-  <div class="form">
-    <form class="login-form" action="/register" method="post">
-      <input type="name" name="name" placeholder="name">
-      <input type="surname" name="surname" placeholder="surname">
-      <input type="email" name="email" placeholder="email">
-      <input type="username" name="username" placeholder="username">
-      <input type="city" name="location" placeholder="location">
-      <input type="code" name="adminCode" placeholder="Referral Code">
-      <input type="password" name="password" placeholder="password">
-      <div class="radio">
-        <div>
-          <input type="radio" name="gender" value="F"><img src="/pics/user_female.png">
-        </div>
-        <div>
-          <input type="radio" name="gender" value="M"><img src="/pics/user_male.png">
-        </div>
-      </div>
-      <button>Create</button>
-      <p class="message">Already registered? <a href="#">Click here to sign in</a></p>
-    </form>
-
-    <form class="register-form" action="/login" method="post">
-      <input type="text" name="username" placeholder="username"/>
-      <input type="text" name="password" placeholder="password">  
-      <button>login</button>
-      <p class="message">Not registered yet?<a href="#">Click here to sign up</a></p>
-    </form>
-
-  </div>
-</div>
+<!-- multistep form -->
+<form class="msform" action="/register" method="post">
+  <!-- progressbar -->
+  <ul id="progressbar">
+    <li class="active">Account Setup</li>
+    <li>Social Profiles</li>
+    <li>Personal Details</li>
+  </ul>
+  <!-- fieldsets -->
+  <fieldset id="step_1">
+    <h2 class="fs-title">Create your account</h2>
+    <h3 class="fs-subtitle">Step 1</h3>
+    <input type="text" name="email" placeholder="Email" required/>
+    <input type="password" id="pass" name="pass" placeholder="Password" required/>
+    <input type="password" id="cpass" name="password" placeholder="Confirm Password" required/>
+    <input type="button" name="next" class="next action-button" value="Next" />
+  </fieldset>
+  <fieldset>
+    <h2 class="fs-title">Social Profiles</h2>
+    <h3 class="fs-subtitle">Add your presence on the social media</h3>
+    <input type="text" name="twitter" placeholder="Twitter" />
+    <input type="text" name="facebook" placeholder="Facebook" />
+    <input type="text" name="instagram" placeholder="Instagram" />
+    <input type="button" name="previous" class="previous action-button" value="Previous" />
+    <input type="button" name="next" class="next action-button" value="Next" />
+  </fieldset>
+  <fieldset>
+    <h2 class="fs-title">Personal Details</h2>
+    <h3 class="fs-subtitle" id="mother">We will never sell it</h3>
+    <input type="text" name="name" placeholder="First Name" required/>
+    <input type="text" name="surname" placeholder="Last Name" required/>
+    <input type="text" name="username" placeholder="Username" id="username_" onfocusout="check_availability()" required/>
+    <input type="text"  name="location" placeholder="City"required/>
+    <input type="button" name="previous" class="previous action-button" value="Previous" />
+    <button id="submit" class="action-button">Create</button>
+    </fieldset>
+</form>
 
 <script>
   $('.message a').click(function(){
     $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
   });
+
+
+  const   pass        = document.querySelector('#pass'),
+          cpass       = document.querySelector('#cpass'),
+          submit      = document.querySelector('#submit'),
+          display     = document.querySelector('#mother'),
+          step_1      = document.querySelector('#step_1'),
+          username    = document.querySelector('#username_');
+
+
+
+  var socket = io();
+  var usernames = [];
+  if(socket !== undefined)
+  {
+    console.log('Connected');
+    
+    socket.on('users', function(data){
+      data.forEach(function(data){
+        usernames.push(data.username);
+      })
+    })
+
+  }
+    function check_availability()
+    {
+          for(var i = 0; i < usernames.length; i++){
+            if(usernames[i] === username.value)
+            {
+              console.log('taken');
+              display.textContent = "Username already taken";
+              display.classList.add('red');
+              submit.setAttribute('disabled', 'disabled');
+              break;
+            }
+            else
+            {
+              display.textContent = "Username available";
+              display.classList.add('green');
+              submit.removeAttribute('disabled');
+            }
+            
+        }
+        }
+
+
+
+
+
+
+        
 </script>
 
 <% include ./partials/footer %>

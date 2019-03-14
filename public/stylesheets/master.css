@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
 * {
   margin: 0;
   padding: 0;
@@ -73,7 +75,35 @@ body {
   background: purple;
 }
 
+.invalid
+{
+  outline-color:red;
+  -webkit-animation: shake .5s linear;
+}
 
+@-webkit-keyframes shake 
+{
+  8%, 41% 
+  {
+    -webkit-transform: translateX(-10px);
+  }
+  25%, 58%
+  {
+    -webkit-transform: translateX(10px);
+  }
+  75%
+  {
+    -webkit-transform: translateX(-5px);
+  }
+  92%
+  {
+    -webkit-transform: translateX(5px);
+  }
+  0%, 100%
+  {
+    -webkit-transform: translateX(0);
+  }
+}
 
 
 
@@ -82,6 +112,8 @@ body {
   position: relative;
   height: 164px;
   padding: 38px;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+
   background-color: #202020;
   z-index: 4;
 }
@@ -986,6 +1018,7 @@ a img:hover {
 {
   display: flex;
     margin: 5vh;
+    font-family: monospace;
     width: 50%;
     height: 2vh;
     background: #202020;
@@ -1582,7 +1615,7 @@ html {
   overflow: scroll;
   overflow-x: hidden;
   -ms-overflow-style: -ms-autohiding-scrollbar;
-
+  height: 100%;
 }
 
 ::-webkit-scrollbar {
@@ -1644,13 +1677,15 @@ textarea.text_area {
 
 
 .user_profile {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  background-color: #FFB840;
-  font-family: monospace;
-  width: 100%;
-  color: rgb(150, 150, 150);
+display: flex;
+position: absolute;
+align-items: flex-start;
+justify-content: center;
+background-color: #FFB840;
+font-family: monospace;
+width: 100%;
+color: rgb(150, 150, 150);
+transform: translateY(50%);
 }
 
 .mapboxgl-popup {
@@ -1859,7 +1894,7 @@ ul {
   position: relative;
   text-transform: uppercase;
   margin: 5px 0;
-  background: darkred;
+  background: brown;
   color: white;
   font-weight: 600;
   -webkit-box-shadow: 0 6px 6px -6px black;
@@ -2725,14 +2760,12 @@ kbd {
 }
 
 .form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 300px;
-  padding: 45px;
-  text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+height: 100%;
+position: relative;
+width: 50%;
+
 }
+/* 
 
 .form input {
   font-family: "Roboto", sans-serif;
@@ -2747,24 +2780,23 @@ kbd {
 }
 
 .form button {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
+font-family: monospace;
+outline: 0;
+background: black;
+width: 50%;
+border: 0;
+padding: 15px;
+color: #FFFFFF;
+font-size: 14px;
+-webkit-transition: all 0.3 ease;
+transition: all 0.3 ease;
+cursor: pointer;
 }
 
 .form button:hover,
 .form button:active,
 .form button:focus {
-  background: #43A047;
+  background: #202020;
 }
 
 .form .message {
@@ -2776,9 +2808,14 @@ kbd {
 .form .message a {
   color: #4CAF50;
   text-decoration: none;
-}
+} */
 
-.form .register-form {
+/* .form .register-form {
+  display: none;
+} */
+
+.form #msform_register
+{
   display: none;
 }
 
@@ -2878,4 +2915,164 @@ input.search {
 
 span.population {
   font-size: 15px;
+}
+
+
+
+/*form styles*/
+.msform {
+  width: 400px;
+  margin: 50px auto;
+  text-align: center;
+  position: relative;
+  font-family: 'Montserrat';
+}
+
+.carcrash
+{
+    background: white;
+    border: 0 none;
+    border-radius: 3px;
+    box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+    padding: 20px 30px;
+    box-sizing: border-box;
+
+    /*stacking fieldsets above each other*/
+    position: relative;
+}
+
+.msform fieldset {
+  background: white;
+  border: 0 none;
+  border-radius: 3px;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+  padding: 20px 30px;
+  box-sizing: border-box;
+  width: 80%;
+
+  /*stacking fieldsets above each other*/
+  position: relative;
+}
+
+/*Hide all except first fieldset*/
+.msform fieldset:not(:first-of-type) {
+  display: none;
+}
+
+/*inputs*/
+.msform input,
+.msform textarea {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: montserrat;
+  color: #2c3e50;
+  font-size: 13px;
+}
+
+/*buttons*/
+.msform .action-button {
+  width: 100px;
+  background: #202020;
+  font-family: monospace;
+  font-weight: bold;
+  color: white;
+  border: 0 none;
+  border-radius: 1px;
+  cursor: pointer;
+  padding: 10px 5px;
+  margin: 10px 5px;
+}
+
+/* .msform .action-button:hover,
+.msform .action-button:focus {
+  box-shadow: 0 0 0 2px white, 0 0 0 3px #202020;
+} */
+
+/*headings*/
+.fs-title {
+  font-family: 'Lobster';
+  font-size: 3rem;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.fs-subtitle {
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/*progressbar*/
+#progressbar {
+  margin-bottom: 30px;
+  overflow: hidden;
+  /*CSS counters to number the steps*/
+  font-family: monospace;
+  counter-reset: step;
+}
+
+#progressbar li {
+    list-style-type: none;
+    color: black;
+    text-transform: uppercase;
+    font-size: .7rem;
+    width: 33.33%;
+    float: left;
+    position: relative;
+}
+
+
+
+#progressbar li:before {
+  content: counter(step);
+  counter-increment: step;
+  width: 20px;
+  line-height: 20px;
+  display: block;
+  font-size: 10px;
+  color: #333;
+  background: white;
+  border-radius: 3px;
+  margin: 0 auto 5px auto;
+}
+
+/*progressbar connectors*/
+#progressbar li:after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  background: white;
+  position: absolute;
+  left: -50%;
+  top: 9px;
+  z-index: -1;
+  /*put it behind the numbers*/
+}
+
+#progressbar li:first-child:after {
+  /*connector not needed before the first step*/
+  content: none;
+}
+
+/*marking active/completed steps green*/
+/*The number of the step and the connector before it = green*/
+#progressbar li.active:before,
+#progressbar li.active:after {
+  background: yellowgreen;
+  color: white;
+}
+
+.red
+{
+  color: red;
+}
+
+.green 
+{
+  color: green;
 }

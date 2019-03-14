@@ -54,7 +54,10 @@ router.post("/register",async function(req, res){
     image: '/pics/default_pic.jpg',
     gender: req.body.gender,
     coordinates: coordinates,
-    city: req.body.location
+    city: req.body.location,
+    twitter: req.body.twitter,
+    facebook: req.body.facebook,
+    instagram: req.body.instagram
   });
 
   if(req.body.adminCode === '1111'){

@@ -106,8 +106,8 @@
   <div id="progress_bar_base"></div>
   <div id="progress_bar_25"><div id="percentage_amount">25%</div></div>
 </div>
-<div class='user_profile'>
 <% } %>
+<div class='user_profile'>
 
   <% if((currentUser._id.equals(user._id))){ %>
 
@@ -187,14 +187,12 @@
 
         <div class="social-links">
 
-          <div class="social-icons">
-            <a href="/follow/<%= user._id %>">
-              <img src="/pics/bookmark.png">
-            </a>
-          </div>
 
           <div class="social-icons">
             <% var useree_reviews=[]%>
+            
+            
+            
             <% review.forEach(function(review){ %>
             <% if(review.user.equals(user._id)){%>
             <% useree_reviews.push(review.author.username);%>
@@ -224,15 +222,24 @@
             </a>
             <% } %>
           </div>
-
-
-
           <div class="social-icons">
-            <a href="/users/<%= user._id %>/messages/new">
-              <img src="/pics/new_message.png">
+            <a href="http://instagram.com/<%= user.instagram %>">
+              <img src="/pics/insta.png">
             </a>
           </div>
 
+          <div class="social-icons">
+            <a href="http://twitter.com/<%= user.twitter %>">
+              <img src="/pics/twitter.png">
+            </a>
+          </div>
+
+          <div class="social-icons">
+            <a href="http://<%= user.facebook %>">
+              <img src="/pics/fb.png">
+            </a>
+          </div>
+          
         </div>
 
         <% } %>
@@ -348,7 +355,6 @@
 </div>
 
 
-
 <script>
 
 $('body').ready(function() {
@@ -438,7 +444,5 @@ $('body').ready(function() {
     You need to log in to view this page
   </div>
 <% } %>
-</body>
-</html>
 
 <% include ../partials/footer %>

@@ -17,6 +17,9 @@ var userSchema = new mongoose.Schema({
     type: String,
     default: "/pics/default_pic.jpg"
   },
+  facebook: String,
+  instagram: String,
+  twitter: String,
   contacts: Array,
   city: String,
   interested_city: String,

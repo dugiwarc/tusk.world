@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var url = require('url');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
@@ -43,16 +44,11 @@ app.use(function (req, res, next) {
 
 var debug = require('debug')('tusk:server');
 var http = require('http');
-/**
- * Get port from environment and store in Express.
- */
 
-var server = http.createServer(app);
-
-/**
- * Create HTTP server.
- */
-
+var server = http.createServer(app, function(req, res){
+  res.send('Geo');
+  // Get the URL and parse it
+});
 
 var io = require('socket.io').listen(server).sockets;
 
@@ -66,7 +62,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
     throw err;
     console.log("Error");
   }
-  console.log("Connected!");
+  console.log("Mongoose conected...");
 
   io.on('connection', function (socket) {
 
@@ -88,6 +84,17 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
     //   // emit the messages
     //   socket.emit('output', res);
     // });
+    User.find({}, function(err, res){
+      if(err)
+      {
+        console.log(err);
+      }
+      else
+      {
+        socket.emit('users', res);
+      }
+    })
+
 
     User.find({}, function (err, res) {
       if (err) {
@@ -104,6 +111,9 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
       }
     });
 
+    // var users = await User.find({});
+    // var messages = await Message.find({});
+    // socket.emit('user_output', users, messages);
 
     socket.on('input_user_search', async function (data) {
       let username = data.username;
@@ -283,10 +293,9 @@ app.post('/charge', function (req, res) {
 });
 
 
-// catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -300,29 +309,9 @@ app.use(function (err, req, res, next) {
 });
 
 
-/**
- * Module dependencies.
- */
-
-// var debug = require('debug')('tusk:server');
-// var http = require('http');
-/**
- * Get port from environment and store in Express.
- */
-
-// var port = normalizePort(process.env.PORT);
-// app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || 3000, function(){
+  console.log("Tusk server has started...");
+});
 server.on('error', onError);
 server.on('listening', onListening);
 
