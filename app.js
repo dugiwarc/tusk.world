@@ -205,8 +205,9 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
     });
 
   });
-});
-
+},{useMongoClient:true});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Error cola'));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
