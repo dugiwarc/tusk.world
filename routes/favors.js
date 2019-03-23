@@ -54,20 +54,25 @@ router.get("/favors", async function (req, res) {
     {
       const regex_c = new RegExp(escapeRegex(input[0]), 'gi');
       var users = await User.find({$text: {$search: regex_c}});
+      var noMatch = "Nothing Found.";
       var favors = await Favor.find({});
-      res.render("users/users", { favors, users, query });
+      if(users.length)
+        res.render("users/users", { favors, users, query });
+      else
+        res.render("users/users", { users, noMatch });
     }
   } 
-  // else if (req.query.search_favors) {
-  //   const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-  //   var favors = await Favor.find({
-  //     $or: [{
-  //       task: regex
-  //     }]
-  //   });
-  //   res.render("favors/favors", {
-  //     favors
-  //   });
+  else if (req.query.search_all) {
+    console.log("here");
+    const regex = new RegExp(escapeRegex(req.query.search_all), 'gi');
+    var favors = await Favor.find({
+      $or: [{
+        location: regex
+      },{task: regex}]
+    });
+    res.render("favors/favors", {
+      favors
+    });
   // } else if (req.query.search_locations) {
   //   const regex = new RegExp(escapeRegex(req.query.search), 'gi');
   //   var favors = await Favor.find({
@@ -79,9 +84,14 @@ router.get("/favors", async function (req, res) {
   //     favors
   //   });
   // } 
+  }
   else {
     var favors = await Favor.find({});
-    res.render("favors/favors", {favors});
+    var noMatch = "No favors yet."
+    if(favors)
+      res.render("favors/favors", {favors});
+    else
+      res.render("favors/favors", {noMatch, favors});
   }
 });
 

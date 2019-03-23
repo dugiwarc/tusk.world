@@ -16,7 +16,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   /* background-color: #FFB840; */
-  background-color: firebrick;
+  background-color: papayawhip;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -870,7 +870,15 @@ hr {
   line-height: 0.9;
 }
 
+#noMatch {
+  transform: translateY(450%);
+    text-transform: uppercase;
+    font-size: 2em;
+    font-family: 'Open Sans';
+}
+
 .search_bar {
+  margin-top: 7vh;
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
@@ -2951,7 +2959,7 @@ overflow: auto;
   }
 
   .search_bar {
-    margin-top: 75px;
+    margin-top: 7vh;
     -webkit-transition: .3s;
     -o-transition: .3s;
     transition: .3s;

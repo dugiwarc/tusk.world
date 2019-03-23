@@ -4,8 +4,12 @@
             <form class="search-form" action="/favors" method="get" autocomplete="off">
               <input type="text" placeholder="e.g. parfumers in Paris" class="search-input" name="search">
             </form>
-    </div>
-<h1><%= query %></h1>
+            </div>
+            <% if(!(users)){%>
+            <div id="noMatch">
+              <%=noMatch%>
+            </div>
+            <%}%>
 <% users.forEach(function(user){ %>
 <div class="userBox">
   <h4>
