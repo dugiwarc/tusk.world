@@ -36,6 +36,7 @@
 
 <script>
 var textarea = document.querySelector('textarea');
+var description = document.querySelector('[name=location]');
 
 textarea.addEventListener('keydown', autosize);
 
@@ -48,6 +49,8 @@ function autosize(){
     el.style.cssText = 'height:' + el.scrollHeight + 'px';
   },0);
 }
+var btn = document.querySelector("#contact-submit");
+
 </script>
 
 <% include ../partials/footer %>

@@ -3,7 +3,7 @@
     <div class="form">
       <form class="msform" id="msform_login" action="/login" method="post">
       <div class="carcrash">
-        <h2 class="fs-title">Welcome back!</h2>
+        <h2 class="fs-title">LOGIN BOX</h2>
         <h3 class="fs-subtitle">Not registered yet? <a href="#" class="fs-subtitle">Click here to sign up</a></h3>
 
         <input type="text" name="username" placeholder="Username" required/>
@@ -45,7 +45,7 @@
     <input type="text" name="username" placeholder="Username" id="username_" onfocusout="check_availability()" required/>
     <input type="text"  name="location" placeholder="City"required/>
     <input type="button" name="previous" class="previous action-button" value="Previous" />
-    <button id="submit" class="action-button">Create</button>
+    <input type="submit" class="action-button">
     </fieldset>
 </form>
     </div>
@@ -55,6 +55,16 @@
 $('.fs-subtitle a').click(function(){
   $('form').animate({opacity: "toggle"}, 1);
 });
+
+
+document.body.onkeydown = function(e)
+{
+    console.log(e.keyCode);
+        if(e.keyCode == 13)
+    {
+        e.preventDefault();
+    }
+}
 </script>
 
 <% include partials/footer %>

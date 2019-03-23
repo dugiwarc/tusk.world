@@ -2,187 +2,206 @@
 
 <html lang="en" dir="ltr">
 
-  <head>
+<head>
 
-    <meta charset="utf-8">
+<meta charset="utf-8">
     <meta name="description" content="Ask someone for a favor, anywhere in the world">
     <meta name="keywords" content="favor, ask, earn, friends, ease, search, look, anyone">
     <meta name="author" content="Gheorghe Botnaru">
-
+    
     <title>Tusk</title>
-
+    
     <!-- Global site tag (gtag.js) - Google Analytics -->
-
+    
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133668550-2"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-133668550-2');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    
+    gtag('config', 'UA-133668550-2');
     </script>
-
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1'/>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/stylesheets/master.css">
-
+    
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:800|Didact+Gothic|Lobster|Staatliches|Montserrat:900" rel="stylesheet">
-
+    
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script src="/javascript/socket.io.js"></script>
     <script src="/javascript/jquery.min.js"></script>
     <script src="/javascript/jquery.easing.min.js"></script>
-
-
+    
+    
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
-
-  </head>
-  <nav class="nav">
+    
+    </head>
     <div class="dropdownBackground">
-      <span class="arrow"></span>
+    <span class="arrow"></span>
     </div>
     
-
-    <ul class="cool">
-<div id="welcome_video">
-    <!--<img src="pics/delete_account.png"-->
-    <video playsinline autoplay muted loop>
-        <source src="pics/wlcm.mp4" type="video/mp4">
-    </video>
-</div>
+    <nav class="nav">
+    
+    <!--
+      
+      <div id="welcome_video">
+      <video playsinline autoplay muted loop>
+      <source src="pics/wlcm.mp4" type="video/mp4">
+      </video>
+      </div>
+      -->
       <% if(!currentUser){ %>
-
-      <li class="right_li">
-        <a href="/register"><img src="/pics/sign_up.png"></a>
-      </li> 
-      <li class="right_li">
-        <a href="/login"><img src="/pics/login.png"></a>
-      </li>
-
-
+      
+      <div class="right_li">
+        <div>
+        <a href="/register">Register</a>
+        </div>
+        <div>
+        <a href="/login">Login</a>
+        </div>  
+        </div>
+        <div class="mid_nav">
+        <div id="home">
+        <a href="/">Tusk</a>
+        </div>
+        </div>
+        <div class="left_li">
+        <div>
+        <a href="/chat">Contact</a>
+        </div>
+        <div>
+        <a href="/faq">About</a>
+        </div>
+        </div>
+        
       <% } else { %>
+      
+      <% if(notifications.length > 0 || message_notifications.length > 0 || interest_notifications.length > 0 || follow_notifications.length > 0){ %>
+      
+          <!--
+            END NOTIFICATION LOGIC @TODO revisit
+          -->
 
-
-        <% if(notifications.length > 0 || message_notifications.length > 0 || interest_notifications.length > 0 || follow_notifications.length > 0){ %>
-          <li class="trig right_li"> 
-
-            <a><img src="/pics/full_inbox.png"></a>
-
-            <ul class="dropdown notifications">
+        <div class="trig right_li"> 
+      
+        <a><img src="/pics/full_inbox.png"></a>
+            <div class="dropdown notifications">
           <% notifications.forEach(function(notification) { %>
-              <li>
-                <a href="/notifications/<%= notification.id %>"><%= notification.username %> created a favor </a>
-              </li>          
+          <div>
+          <a href="/notifications/<%= notification.id %>"><%= notification.username %> created a favor </a>
+          </div>          
           <% }); %>
-
+          
           <% message_notifications.forEach(function(message_notification) { %>
-              <li>
-                <a href="/message_notifications/<%= message_notification.id %>"><%= message_notification.username %> messaged you</a>
-              </li>
+          <div>
+          <a href="/message_notifications/<%= message_notification.id %>"><%= message_notification.username %> messaged you</a>
+          </div>
           <% });%>
-
+          
           <% interest_notifications.forEach(function(interest_notification) { %>
-              <li>
-                <a href="/interest_notifications/<%= interest_notification.id %>"><%= interest_notification.username %> showed an interest</a>
-              </li>
+          <div>
+          <a href="/interest_notifications/<%= interest_notification.id %>"><%= interest_notification.username %> showed an interest</a>
+          </div>
           <% });%>
-
+          
           <% let follow_array = []; %>
           <% follow_notifications.forEach(function(follow_notification) { %>
           <% if(!(follow_array.includes(follow_notification.username))){ %>
-          <li>
+          <div>
           <a href="/follower_notifications/<%= follow_notification.id %>"><%= follow_notification.username %> followed you</a>
-          </li>
+          </div>
           <% } else { %>
           <% } %>
           <% follow_array.push(follow_notification.username);%>
           <% });%>
-
-            </ul>
-          </li>
-
-        <% } else { %>
-
-          <li class="trig right_li">
-            <a><img src="/pics/empty_inbox.png"></a>
-            <ul class="dropdown notifications">
-              <li>
-                <span class="code">No new notifications</span>
-                <a href="#"></a>
-              </li>
-              <li>
-                <a href="/notifications">View past notifications</a>
-              </li>          
-            </ul>
-          </li>
-
-        <% } %>
-            <li class="trig right_li">
+          
+          </div>
+          </div>
+          <% } else { %>
+          
+          <!--
+            END NOTIFICATION LOGIC @TODO revisit
+          -->
+          <div class="right_nav">
+            <div class="trig right_li">
+            <a>Inbox(<%=notifications.length%>)</a>
+            <div class="dropdown notifications">
+            <div>
+            <span class="code">No new notifications</span>
+            <a href="#"></a>
+            </div>
+            <div>
+            <a href="/notifications">View past notifications</a>
+            </div>          
+            </div>
+            </div>
+            
+            <% } %>
+            <div class="trig right_li">
             <% if(currentUser.gender == "M"){ %>
-                <a href="/users/<%= currentUser.id %>/"><img src="/pics/user_male.png"></a>
-              <% } else { %>
-                <a href="/users/<%= currentUser.id %>/"><img src="/pics/user_female.png"></a>
-              <% } %>
-                <ul class="dropdown profile">
-                  <li>
-                    <a href="">Edit Profile</a>
-                  </li>
-                  <li>
-                    <a href="">Posted Favors</a>
-                  </li>
-                </ul>
-            </li>
-        <% } %>
-      <li class="right_li">  
-        <a href="/favors"><img src="/pics/favors.png"></a>
-      </li>
-
-      <div id="home">
-        <a href="/">
-          Tusk
-        </a>
-      </div>
-
-      <%if(currentUser){%>
-        <li class="left_li">
-          <a href="/logout"><img src="/pics/log_out.png"></a>
-        </li>
-        <%if(currentUser.isAdmin){%>
-          <li class="left_li">
-            <a href="/<%= currentUser.id %>/dashboard"><img src="/pics/open_box.png"></a>
-          </li>
-        <% } else { %>
-          <li class="left_li">
-            <a href="/chat"><img src="/pics/support.png"></a>
-          </li>
-        <% } %>
-        <li class="left_li">
-        <a href="/faq"><img src="/pics/faq.png"></a>
-        </li>
-        <% } else { %>
-        <li class="left_li">        
-          <a href="/chat"><img src="/pics/support.png"></a>
-        </li>
-        <li class="left_li">
-          <a href="/faq"><img src="/pics/faq.png"></a>
-        </li>
-        <li class="left_li">
-          <a href="/faq"><img src="/pics/settings.png"></a>
-        </li>       
-      <% } %>
-        </ul>
-  </nav>  
-  <% if(error && error.length > 0){ %>
-    <div class="warning">
-      <%= error %>
-    </div> 
-    <% } %>
-  <% if(success && success.length > 0){ %>
-  <div class="success">
-    <%= success %>
+            <a href="/users/<%= currentUser.id %>/">Profile</a>
+            <% } else { %>
+            <a href="/users/<%= currentUser.id %>/">Profile</a>
+            <% } %>
+            <div class="dropdown profile">
+            <div>
+            <a href="">Edit Profile</a>
+            </div>
+            <div>
+            <a href="">Posted Favors</a>
+            </div>
+            </div>
+            </div>
+          </div>
+          <% } %>
+            <!--
+            <div class="right_li">  
+            <a href="/favors"><img src="/pics/favors.png"></a>
+            </div>
+            -->
+            
+            
+            <%if(currentUser){%>
+            <div class="mid_nav">
+  <div id="home">
+  <a href="/">Tusk</a>
   </div>
-  <% } %> 
-  <body>
-
+  </div>
+            <div class="left_nav">
+            <%if(currentUser.isAdmin){%>
+            <div class="left_li">
+            <a href="/<%= currentUser.id %>/dashboard">Dashboard</a>
+            </div>
+            <% } else { %>
+            <div class="left_li">
+            <a href="/chat">Support</a>
+            </div>
+            <% } %>
+            <div class="left_li">
+            <a href="/faq">FAQ</a>
+            </div>
+            <div class="left_li">
+            <a href="/logout">Log out</a>
+            </div>
+          </div>
+          <% } else { %>
+          
+          <% } %>
+          </div>       
+          </nav>  
+          <% if(error && error.length > 0){ %>
+          <div class="warning">
+          <%= error %>
+          </div> 
+          <% } %>
+          <% if(success && success.length > 0){ %>
+          <div class="success">
+          <%= success %>
+          </div>
+          <% } %> 
+          <body>
+          
+          

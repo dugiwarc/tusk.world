@@ -66,12 +66,14 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
 
   io.on('connection', function (socket) {
 
-    // let chat = db.collection('chats');
-
+    
     // Create function to send status 
     sendStatus = function (s) {
       socket.emit('status', s);
     }
+
+
+    // let chat = db.collection('chats');
 
     // Get chats from mongo collection
     // chat.find().limit(100).sort({
@@ -84,6 +86,10 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
     //   // emit the messages
     //   socket.emit('output', res);
     // });
+
+
+
+    // Retrieve all users
     User.find({}, function(err, res){
       if(err)
       {
@@ -95,7 +101,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
       }
     })
 
-
+    // Retrieve all users and messages
     User.find({}, function (err, res) {
       if (err) {
         throw err;
@@ -111,10 +117,8 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
       }
     });
 
-    // var users = await User.find({});
-    // var messages = await Message.find({});
-    // socket.emit('user_output', users, messages);
 
+    // Retrieve queried user 
     socket.on('input_user_search', async function (data) {
       let username = data.username;
       const regex = new RegExp(escapeRegex(username), 'gi');
@@ -136,7 +140,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
               let receiver_id = data.receiver_id;
 
 
-              // check for name and message
+              // Check for a receiver
               if (receiver == 'Filter for an user' || receiver == '') {
                 // send error status 
                 sendStatus('Please make sure you have selected a receiver');
@@ -176,7 +180,14 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
         console.log(err);
       }
     });
+    
 
+
+    socket.on('get_notifs', async function(data){
+      var user = await User.findOne({_id: data.loggedUser});
+      var notifications = user.notifications;
+      io.emit('receive_notifs', [notifications]);
+    });
 
     // Handle clear
     socket.on('clear', function (data) {
@@ -187,10 +198,12 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tusk_worl
       });
     });
 
+    
     socket.on('get_contacts',async function(data){
       let users =  await User.findById(data.id);
       socket.emit('get_contacts', users.contacts);
     });
+
   });
 });
 

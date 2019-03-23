@@ -1,15 +1,13 @@
 <% include ../partials/header %>
 
-<a href="/"><p>Main Page</p></a>
 		<div class="search_bar">
-            <form action="/users" method="get" class="">
-                <input type="text" name="search" placeholder="User search...">
-                <input type="submit" value="search" class="button">
+            <form class="search-form" action="/favors" method="get" autocomplete="off">
+              <input type="text" placeholder="e.g. parfumers in Paris" class="search-input" name="search">
             </form>
-        </div>
-<h1>This is the users catalog</h1>
+    </div>
+<h1><%= query %></h1>
 <% users.forEach(function(user){ %>
-<div class="">
+<div class="userBox">
   <h4>
     <%= user.name %>
   </h4>

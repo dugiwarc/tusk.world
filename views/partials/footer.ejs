@@ -202,18 +202,55 @@ $(".submit").click(function(){
 
 /////////////////////////
 
+// Preventing the Enter key from submiting the form
+
 /////////////////////////
 
-document.body.onkeydown = function(e)
+// document.body.onkeydown = function(e)
+// {
+//     console.log(e.keyCode);
+//         if(e.keyCode == 13)
+//     {
+//         e.preventDefault();
+//     }
+// }
+
+//////////////////////////
+
+// Logo Event
+
+//////////////////////////
+
+
+// var home = document.querySelector('#home');
+
+// home.addEventListener('click', rotateLogo);
+
+// function rotateLogo()
+// {
+//     this.classList.toggle('rotate');
+
+// }
+
+var dropdown = document.querySelector('body');
+var notifications = [];
+var socket = io();
+
+if(socket != undefined)
 {
-    console.log(e.keyCode);
-        if(e.keyCode == 13)
-    {
-        e.preventDefault();
-    }
+    <%if(currentUser){%>
+    socket.emit('get_notifs', { loggedUser : <%- JSON.stringify(currentUser._id)%>});
+    socket.on('receive_notifs', function(data){
+        
+    console.log(data);
+        data.forEach((notification)=>{
+            var li = document.createElement('li');
+            // li.textContent = "notification"; 
+            // dropdown.append(li);
+        });
+    });
+    <%}%>
 }
-
-
 </script>
 </body>
 </html>
