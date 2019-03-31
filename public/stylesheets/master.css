@@ -3197,6 +3197,10 @@ overflow: auto;
     transition: .3s;
   }
 
+  .search_bar {
+    margin-top: 10%;
+  }
+
   .search-form
   {
     position: relative;
