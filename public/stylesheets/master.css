@@ -16,7 +16,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   /* background-color: #FFB840; */
-  background-color: papayawhip;
+  background-color: #FFB840;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -32,7 +32,7 @@ body {
 
 #landing_search_div {
   min-width: 38%;
-  min-width: 15vw;
+  min-width: 18vw;
   margin-top: 10vh;
 }
 
@@ -3052,10 +3052,6 @@ overflow: auto;
             transform: scale(.8);
   }
 
-  .form {
-    margin-top: 50px;
-  }
-
   #welcome {
     font-size: 8em;
   }
@@ -3074,6 +3070,14 @@ overflow: auto;
         -ms-flex-direction: row;
             flex-direction: row;
     font-size: 1rem;
+  }
+
+  .form {
+    z-index: -100;
+  }
+
+  .msform {
+    transform: scale(.7);
   }
 
   #login_link{
@@ -3143,13 +3147,6 @@ overflow: auto;
         -ms-transform: scale(.6);
             transform: scale(.6);
     margin-top: -100px;
-  }
-
-  .form {
-    -webkit-transform: scale(.8);
-        -ms-transform: scale(.8);
-            transform: scale(.8);
-    margin-top: 70px;
   }
 
   #welcome {
@@ -3586,7 +3583,6 @@ kbd {
 .form {
 height: 100%;
 position: relative;
-width: 50%;
 
 }
 /* 
@@ -3763,7 +3759,6 @@ span.population {
 /*form styles*/
 .msform {
   width: 400px;
-  margin: 50px auto;
   text-align: center;
   position: relative;
   font-family: 'Montserrat';
