@@ -3754,6 +3754,9 @@ span.population {
   font-size: 15px;
 }
 
+.search-form {
+  margin-top: 50px;
+}
 
 
 /*form styles*/
@@ -3762,6 +3765,7 @@ span.population {
   text-align: center;
   position: relative;
   font-family: 'Montserrat';
+  margin-top: 50px;
 }
 
 .carcrash
