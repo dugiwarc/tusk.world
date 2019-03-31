@@ -4,8 +4,6 @@
 
 <% if(!(currentUser._id.equals(user._id))){ %>
 
-<div class="blur review_form">
-</div>
 <div class="sibling_1 review_form">
   <div class="form_container">
     <form class="form_flex" action="/users/<%= user._id %>/reviews" method="POST">
@@ -84,9 +82,9 @@
 </div>
 
 <% } %>
-<div class="blur review_form">
+<div class="blur">
 </div>
-<div id="delete_guard" class="hide">
+<div id="delete_guard">
   <div>
     <span>Type in your username to confirm deletion: </span>
     <span id="non_valid_submit"></span>
@@ -372,17 +370,24 @@ $('body').ready(function() {
 });
 
   $("#delete_user").click(function(event){
-    console.log("Happy");
-    $("#delete_guard").toggleClass('hide');
-    $(".blur").toggle('.review_form');
-    event.preventDefault();
+    $("#delete_guard").fadeIn()
+    $(".blur").fadeIn()
+    event.stopPropagation()  
+  })
+
+  $(document).click(function(event){
+    var current_height = $('.blur').outerHeight();
+    var current_width = $('.blur').outerWidth();
+
+    $(".blur").css("min-height", current_height);
+    $(".blur").css("min-width", '20000px');
+
+    $("#delete_guard").fadeOut()
+    $(".blur").fadeOut()
+    event.stopPropagation()
+
   });
 
-  $(".cancel").click(function(e){
-    $("#delete_guard").toggleClass('hide');
-    $(".blur").toggle('.review_form');
-
-  })
 
   $("#submit_deletion").submit(function(event){
     if ( $( "input:first" ).val() === <%- JSON.stringify(currentUser.username) %> ) {
@@ -432,9 +437,6 @@ $('body').ready(function() {
     }
     if($(".sibling").hasClass("review_form")){
       $(".sibling").is(':visible');
-    }
-    if($("#delete_guard").is(':visible')){
-      $("#delete_guard").toggleClass('hide');
     }
   });
 </script>

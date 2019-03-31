@@ -13,10 +13,18 @@
     </div>
     <div id="mobile_chat">
       <div class="chat_container">
+      <div id="chat_left_side">
+        <div>
+          <div id="chat_left_side_header">
+            Users
+          </div>
+          <input type="search_all" id="chat_container_search" value="" name="search"/>
+        </div>
         <div class="chat_container_contacts" id="chat_container_contacts"></div>
+      </div>
         <div class="chat_container_window">
           <div class="chat_header">
-            You are texting with: <span id="content"> </span>
+            Contact :  <span id="content"> </span>
           </div>
           <div id="messages">
           </div>
@@ -81,31 +89,26 @@
           if (socket !== undefined) {
             
             console.log('Connected to socket');
-
-
-
+            
+            
+            
             socket.on('user_output', function (data, contacts){
-              for(var i = 0; i < contacts.length; i++){
-                  if(contacts[i].username === <%- JSON.stringify(currentUser.username)%>){
-                  var result = document.createElement('div');
-                  result.setAttribute('class', 'user_select');
-                  result.textContent = contacts[i].username;
-                  chat_container.appendChild(result);}
-              }
-
-
-              textarea.value = '';
-              data.forEach(function (data) {
-                if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
-                (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)) {
-                  var message = document.createElement('div'); 
-                  message.setAttribute('class', 'chat-message');
-                  message.textContent = data.sender + ": " + data.message;
-                  messages.appendChild(message);
-                  messages.insertBefore(message, messages.firstChild);
-                }
-              });
-              var recipients = [];
+              // for(var i = 0; i < contacts.length; i++){
+                //     if(contacts[i].username === <%- JSON.stringify(currentUser.username)%>){
+                  //     var result = document.createElement('div');
+                  //     var name = document.createElement('div');
+                  //     name.textContent = "GB"
+                  //     name.setAttribute('class', 'chat_contact_card')
+                  //     result.setAttribute('class', 'user_select');
+                  //     result.appendChild(name)
+                  //     result.textContent = contacts[i].username;
+                  //     chat_container.appendChild(result);}
+                  // }
+                  
+                  
+                  
+                  var recipients = [];
+              // Collecting the contacts
               data.forEach(function (penpal) {
                 if (penpal.sender === <%- JSON.stringify(currentUser.username)%>) {
                   recipients.push(penpal.receiver);
@@ -115,19 +118,60 @@
               });
               var unique = recipients.filter((v, i, a) => a.indexOf(v) === i);
               var contacts = document.getElementById('chat_container_contacts');
+
+              // A list to hold all the user objects to extract info from
+              friends_with_objects = []
+
+              <% allusers.forEach(function(user){ %>
+                if(unique.includes(<%- JSON.stringify(user.username)%>)){
+                  friends_with_objects.push(<%- JSON.stringify(user)%>)
+                }
+                // day.push(<%- JSON.stringify(user.username)%>);
+              <% }); %>
+              // Populating the chat_container_contacts
+              console.log(friends_with_objects)
               contacts.innerHTML = "";
+              
               for (var i = 0; i < unique.length; i++) {
-                var message = document.createElement('div');
-                message.setAttribute('class', 'user_select');
+                
+                var message_box = document.createElement('div')
+                var message = document.createElement('div')
+                var name = document.createElement('div')
+                var message_box_right_section = document.createElement('div')
+                var last_line = document.createElement('div')
+
+                message_box_right_section.setAttribute('class', 'message_box_right_section')
+                message_box.setAttribute('class', 'user_select_box')
+                message.setAttribute('class', 'user_select')
+                name.setAttribute('class', 'chat_contact_card')
+                last_line.setAttribute('class', 'last_line')
+                contacts.appendChild(message_box);
+                
+                message_box.appendChild(message_box_right_section)
                 message.textContent = unique[i];
-                contacts.appendChild(message);
+                message_box_right_section.appendChild(message)
+                message_box_right_section.appendChild(last_line)
+                name.textContent = 'GB'
+                message_box.appendChild(name)
               }
+              
               $('.user_select').click(function () {
                 var a = $(this).text();
                 content.textContent = a;
                 getMail(a, data);
               });
-
+              
+              textarea.value = '';
+              data.forEach(function (data) {
+                if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
+                (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)) {
+              var message = document.createElement('div'); 
+              message.setAttribute('class', 'chat-message');
+              message.textContent = data.sender + ": " + data.message;
+              messages.appendChild(message);
+              messages.insertBefore(message, messages.firstChild);
+            }
+          });
 
             });
 
@@ -139,13 +183,12 @@
                 day.push(data[i].username);
                 result.textContent = data[i].username;
                 search_results.appendChild(result);
-
+                
               }
               
             });
             socket.on('output', function (data, contacts) {
-              console.log(contacts);
-
+              
               chat_container.innerHTML = "";
                   for(var i = 0; i < contacts.length; i++){
                   var result = document.createElement('div');
@@ -153,7 +196,7 @@
                   result.textContent = contacts[i];
                   chat_container.appendChild(result);
               }
-
+              
               textarea.value = '';
               data.forEach(function (data) {
                 if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
@@ -165,33 +208,24 @@
                   messages.insertBefore(message, messages.firstChild);
                 }
               });
-              // var recipients = [];
-              // data.forEach(function (penpal) {
-              //   if (penpal.sender === <%- JSON.stringify(currentUser.username)%>) {
-              //     recipients.push(penpal.receiver);
-              //   } else if (penpal.receiver === <%- JSON.stringify(currentUser.username)%>) {
-              //     recipients.push(penpal.sender);
-              //   }
-              // });
-              // var unique = recipients.filter((v, i, a) => a.indexOf(v) === i);
-              // var contacts = document.getElementById('chat_container_contacts');
+
               contacts.innerHTML = "";
-                  for(var i = 0; i < contacts.length; i++){
+              for(var i = 0; i < contacts.length; i++){
                   if(contacts[i].username === <%- JSON.stringify(currentUser.username)%>){
-                  var result = document.createElement('div');
-                  result.setAttribute('class', 'user_select');
-                  result.textContent = contacts[i].username;
-                  chat_container.appendChild(result);}
-              }
-              $('.user_select').click(function () {
-                var a = $(this).text();
-                content.textContent = a;
-                getMail(a, data);
-              });
-            });
-            // Get status from server
-            socket.on('status', function (data) {
-              // get message status
+                    var result = document.createElement('div');
+                    result.setAttribute('class', 'user_select');
+                    result.textContent = contacts[i].username;
+                    chat_container.appendChild(result);}
+                  }
+                  $('.user_select').click(function () {
+                    var a = $(this).text();
+                    content.textContent = a;
+                    getMail(a, data);
+                  });
+                });
+                // Get status from server
+                socket.on('status', function (data) {
+                  // get message status
               setStatus((typeof data === 'object') ? data.message : data);
               // If status is clear, clear text
               if (data.clear) {
