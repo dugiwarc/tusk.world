@@ -946,6 +946,16 @@ hr {
   margin-left: 15px;
 }
 
+#join_now {
+      margin: 20px 0 -30px 0;
+    align-self: center;
+    text-transform: uppercase;
+    font-family: 'Open Sans',sans-serif;
+    color: white;
+    background: black;
+    padding: 1vh 3vh;
+}
+
 .row {
   margin-top: 10px;
 }
@@ -3061,9 +3071,9 @@ overflow: auto;
 @media only screen and (max-width: 450px) {
 
   .right_li, .left_li {
+    display: none;
     font-family: 'Open Sans';
     color: black;
-    text-transform: uppercase;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
         -ms-flex-direction: row;
@@ -3071,16 +3081,8 @@ overflow: auto;
     font-size: 1rem;
   }
 
-  #home {
-        transform: translate(-40%,10%);
-  }
-
-  .left_li {
-    display: none;
-  }
-
-  .right_li {
-    transform: translate(60%, 85%);
+  .search-form {
+    margin: 80px 0 30px 0;
   }
 
   .msform {
@@ -3173,6 +3175,10 @@ overflow: auto;
     -webkit-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
+  }
+
+  nav {
+    flex-direction: column;
   }
 
   #filter_video
