@@ -885,7 +885,7 @@ hr {
 }
 
 .search_bar {
-  margin-top: 7vh;
+  margin-top: 50px;
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
@@ -3039,7 +3039,7 @@ overflow: auto;
   } */
 
   .search_bar {
-    margin-top: 7vh;
+    margin-top: 50px;
     -webkit-transition: .3s;
     -o-transition: .3s;
     transition: .3s;
@@ -3195,10 +3195,6 @@ overflow: auto;
     margin-left: -90px;
     margin-right: -120px;  
     transition: .3s;
-  }
-
-  .search_bar {
-    margin-top: 10%;
   }
 
   .search-form
