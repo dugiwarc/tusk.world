@@ -3063,7 +3063,6 @@ overflow: auto;
   .right_li, .left_li {
     font-family: 'Open Sans';
     color: black;
-    position: absolute;
     text-transform: uppercase;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
@@ -3072,30 +3071,20 @@ overflow: auto;
     font-size: 1rem;
   }
 
-  .form {
-    z-index: -100;
+  #home {
+        transform: translate(-40%,10%);
+  }
+
+  .left_li {
+    display: none;
+  }
+
+  .right_li {
+    transform: translate(60%, 85%);
   }
 
   .msform {
     transform: scale(.7);
-  }
-
-  #login_link{
-    margin-left: -55px;
-  }
-
-  .right_li {
-    -webkit-transform: translate(0%,620%);
-        -ms-transform: translate(0%,620%);
-            transform: translate(0%,620%);
-    width: 100%;
-  }
-
-  .left_li {
-    -webkit-transform: translate(-40%,620%);
-        -ms-transform: translate(-40%,620%);
-            transform: translate(-40%,620%);
-    display: none;
   }
 
   .mid_nav {
@@ -3166,32 +3155,6 @@ overflow: auto;
     font-size: 6px;
     letter-spacing: 0px;
     margin-top: 8vh;
-  }
-
-  li.right_li {
-    display: none;
-    -webkit-transition: .3s;
-    -o-transition: .3s;
-    transition: .3s;
-    -webkit-transform: scale(.6) translateY(170px) translateX(274px);
-        -ms-transform: scale(.6) translateY(170px) translateX(274px);
-            transform: scale(.6) translateY(170px) translateX(274px);
-    margin-left: -90px;
-    margin-right: -120px;
-    transition: .3s;
-  }
-
-  li.left_li {
-    display: none;
-    -webkit-transition: .3s;
-    -o-transition: .3s;
-    transition: .3s;
-    -webkit-transform: scale(.6) translateY(170px) translateX(-305px);
-        -ms-transform: scale(.6) translateY(170px) translateX(-305px);
-            transform: scale(.6) translateY(170px) translateX(-305px);
-    margin-left: -90px;
-    margin-right: -120px;  
-    transition: .3s;
   }
 
   .search-form
@@ -3754,18 +3717,12 @@ span.population {
   font-size: 15px;
 }
 
-.search-form {
-  margin-top: 50px;
-}
-
-
 /*form styles*/
 .msform {
   width: 400px;
   text-align: center;
   position: relative;
   font-family: 'Montserrat';
-  margin-top: 50px;
 }
 
 .carcrash
