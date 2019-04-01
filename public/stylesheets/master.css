@@ -3152,6 +3152,7 @@ overflow: auto;
 
   #welcome {
     font-size: 4rem;
+    text-transform: uppercase;
   }
 
   #landing_search_div {
