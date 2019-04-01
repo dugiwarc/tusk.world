@@ -24,7 +24,7 @@
       </div>
         <div class="chat_container_window">
           <div class="chat_header">
-            Contact :  <span id="content"> </span>
+            Contact :  <span id="contentBox"> </span>
           </div>
           <div id="messages">
           </div>
@@ -59,7 +59,7 @@
           username = element('username'),
           clearBtn = element('clear'),
           getM = element('getM'),
-          content = element('content'),
+          contentBox = element('contentBox'),
           input = element('input'),
           chat_container = element('chat_container_contacts'),
           search_results = element('search_results');
@@ -157,14 +157,14 @@
               
               $('.user_select').click(function () {
                 var a = $(this).text();
-                content.textContent = a;
+                contentBox.textContent = a;
                 getMail(a, data);
               });
               
               textarea.value = '';
               data.forEach(function (data) {
-                if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
-                (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)) {
+                if ((data.receiver === contentBox.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
+                (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === contentBox.textContent)) {
               var message = document.createElement('div'); 
               message.setAttribute('class', 'chat-message');
               message.textContent = data.sender + ": " + data.message;
@@ -199,8 +199,8 @@
               
               textarea.value = '';
               data.forEach(function (data) {
-                if ((data.receiver === content.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
-                (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === content.textContent)) {
+                if ((data.receiver === contentBox.textContent && data.sender === <%- JSON.stringify(currentUser.username)%>) ||
+                (data.receiver === <%- JSON.stringify(currentUser.username)%> && data.sender === contentBox.textContent)) {
                   var message = document.createElement('div'); 
                   message.setAttribute('class', 'chat-message');
                   message.textContent = data.sender + ": " + data.message;
@@ -219,7 +219,7 @@
                   }
                   $('.user_select').click(function () {
                     var a = $(this).text();
-                    content.textContent = a;
+                    contentBox.textContent = a;
                     getMail(a, data);
                   });
                 });
@@ -238,14 +238,14 @@
               if (event.which === 13 && event.shiftKey == false) {
                 // emit to server input
                 <% allusers.forEach(function(dude){%>
-                  if (<%-JSON.stringify(dude.username)%> === content.textContent){
+                  if (<%-JSON.stringify(dude.username)%> === contentBox.textContent){
                     var a = <%-JSON.stringify(dude._id)%>
                   }
                 <% }) %>
                 socket.emit('input', {
                   sender: <%- JSON.stringify(currentUser.username)%>,
                   message: textarea.value,
-                  receiver: content.textContent,
+                  receiver: contentBox.textContent,
                   sender_id: <%- JSON.stringify(currentUser._id)%>,
                   receiver_id: a
                 });
@@ -319,7 +319,7 @@
         const suggestions = document.querySelector('.suggestions');
         $('body').on('click', '.name', function (e) {
           var a = $(this).text();
-          content.textContent = a;
+          contentBox.textContent = a;
           getMail(a, day);
           search_results.innerHTML = "";
           // alert("yeahhhh!!! but this doesn't work for me :(");

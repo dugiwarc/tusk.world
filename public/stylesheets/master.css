@@ -11,6 +11,7 @@
 
 
 body {
+  z-index: -1000;
   height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1875,6 +1876,7 @@ nav ul {
       -ms-flex: 0 0 30%;
           flex: 0 0 30%;
   width: 30%;
+  overflow: auto;
 }
 
 .blur {
@@ -2687,8 +2689,10 @@ overflow: auto;
 .user_select {
   font-size: 1em;
   -webkit-box-flex: 50%;
-      -ms-flex: 50%;
-          flex: 50%;
+  -ms-flex: 50%;
+  flex: 50%;
+  background: gray;
+  height: 50px;
 }
 
 .user_select_box {
@@ -2926,6 +2930,10 @@ overflow: auto;
     margin-bottom: 5vh;
   }
 
+  .right_li, .left_li {
+    transform: scale(.8);
+  }
+
   #landing_search_div {
     min-width: 38%;
     transform: translateX(10%);
@@ -3074,25 +3082,13 @@ overflow: auto;
 
   .right_li, .left_li {
     font-family: 'Open Sans';
-    background: salmon;
-    flex: 0%;
-    margin: 10px 0 -20px 0;
+    flex: 50%;
     color: black;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
         -ms-flex-direction: row;
             flex-direction: row;
     font-size: 1rem;
-  }
-
-  .left_li {
-    display: none;
-  }
-
-
-  .right_li {
-    order: 2;
-    flex: 10% 0 0;
   }
 
   .search-form {
@@ -3156,16 +3152,11 @@ overflow: auto;
 
   #welcome {
     font-size: 4rem;
-    overflow: auto;
-    -webkit-transform: translateY(20%);
-        -ms-transform: translateY(20%);
-            transform: translateY(20%);
   }
 
   #landing_search_div {
     margin-right: -20vw;
     margin-top: 3vh;
-    transform: translateX(-20%);
   }
 
   #landing_search { 
