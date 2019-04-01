@@ -1093,7 +1093,7 @@ position: relative;
             perspective: 600px;
     width: 100vw;
     font-size: 2em;
-    flex: 20% 0 0;
+    /* flex: 20% 0 0; */
 }
 
 nav img {
@@ -2948,7 +2948,7 @@ overflow: auto;
     margin: -40px 0 40px 0;
   } */
 
-  li.right_li {
+  /* li.right_li {
     -webkit-transition: .3s;
     -o-transition: .3s;
     transition: .3s;
@@ -2968,7 +2968,7 @@ overflow: auto;
             transform: scale(.7);
     margin: 0 -35px;
     transition: .3s;
-  }
+  } */
 
 
   .user_profile {
@@ -3023,7 +3023,7 @@ overflow: auto;
       min-width: 38%;
     }
 
-    .left_li, .right_li {
+    /* .left_li, .right_li {
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
           -ms-flex-direction: column;
@@ -3034,7 +3034,7 @@ overflow: auto;
       -webkit-transform: scale(.8) translate(-216px, -59px);
           -ms-transform: scale(.8) translate(-216px, -59px);
               transform: scale(.8) translate(-216px, -59px);
-    }
+    } */
 
   #progress_bar
   {
@@ -3075,6 +3075,7 @@ overflow: auto;
   .right_li, .left_li {
     font-family: 'Open Sans';
     background: salmon;
+    flex: 0%;
     margin: 10px 0 -20px 0;
     color: black;
     -webkit-box-orient: horizontal;
@@ -3088,8 +3089,10 @@ overflow: auto;
     display: none;
   }
 
+
   .right_li {
     order: 2;
+    flex: 10% 0 0;
   }
 
   .search-form {
