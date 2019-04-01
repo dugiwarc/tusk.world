@@ -1093,6 +1093,7 @@ position: relative;
             perspective: 600px;
     width: 100vw;
     font-size: 2em;
+    flex: 20% 0 0;
 }
 
 nav img {
@@ -3562,9 +3563,7 @@ kbd {
 }
 
 .form {
-height: 100%;
 position: relative;
-
 }
 /* 
 
