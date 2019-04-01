@@ -3095,10 +3095,6 @@ overflow: auto;
     margin: 80px 0 30px 0;
   }
 
-  .msform {
-    transform: scale(.7);
-  }
-
   .mid_nav {
     -webkit-transform: scale(5%,5%);
         -ms-transform: scale(5%,5%);
