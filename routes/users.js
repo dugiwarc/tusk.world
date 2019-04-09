@@ -176,7 +176,7 @@ router.get("/users/:id",async function(req, res){
     res.render('users/test_show_user', { user, review });
   } catch(err) {
     req.flash('error', err.message);
-    return res.redirect('back');
+    res.redirect('back');
   }
 });
 

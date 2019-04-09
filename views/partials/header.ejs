@@ -44,14 +44,16 @@
     
     <nav class="nav">
     
-    <!--
-      
+    
+      <!--  
       <div id="welcome_video">
       <video playsinline autoplay muted loop>
       <source src="pics/wlcm.mp4" type="video/mp4">
       </video>
       </div>
       -->
+
+      
       <% if(!currentUser){ %>
       
       <div class="right_li">
@@ -83,84 +85,79 @@
           <!--
             END NOTIFICATION LOGIC @TODO revisit
           -->
+        <div class="right_nav">
+          
+          <div class="trig right_li"> 
+        
+          <a>INBOX(<%= notifications.length + message_notifications.length + interest_notifications.length + follow_notifications.length %>)</a>
+              <div class="dropdown notifications">
+              <% notifications.forEach(function(notification) { %>
+                <div>
+                  <a href="/notifications/<%= notification.id %>"><%= notification.username %> created a favor </a>
+                </div>          
+              <% }); %>
+            
+              <% message_notifications.forEach(function(message_notification) { %>
+                <div>
+                  <a href="/message_notifications/<%= message_notification.id %>"><%= message_notification.username %> messaged you</a>
+                </div>
+              <% });%>
+            
+              <% interest_notifications.forEach(function(interest_notification) { %>
+                <div>
+                  <a href="/interest_notifications/<%= interest_notification.id %>"><%= interest_notification.username %> showed an interest</a>
+                </div>
+              <% });%>
+            
+              <% let follow_array = []; %>
+              <% follow_notifications.forEach(function(follow_notification) { %>
+              <% if(!(follow_array.includes(follow_notification.username))){ %>
+              <div>
+              <a href="/follower_notifications/<%= follow_notification.id %>"><%= follow_notification.username %> followed you</a>
+              </div>
+              <% } else { %>
+              <% } %>
+              <% follow_array.push(follow_notification.username);%>
+              <% });%>
+            
+              </div>
+            </div>
+            
+            <div class="right_li">
+              <a href="/users/<%= currentUser.id %>/">Profile</a>
+            </div>
+        </div>
 
-        <div class="trig right_li"> 
-      
-        <a><img src="/pics/full_inbox.png"></a>
-            <div class="dropdown notifications">
-          <% notifications.forEach(function(notification) { %>
-          <div>
-          <a href="/notifications/<%= notification.id %>"><%= notification.username %> created a favor </a>
-          </div>          
-          <% }); %>
-          
-          <% message_notifications.forEach(function(message_notification) { %>
-          <div>
-          <a href="/message_notifications/<%= message_notification.id %>"><%= message_notification.username %> messaged you</a>
-          </div>
-          <% });%>
-          
-          <% interest_notifications.forEach(function(interest_notification) { %>
-          <div>
-          <a href="/interest_notifications/<%= interest_notification.id %>"><%= interest_notification.username %> showed an interest</a>
-          </div>
-          <% });%>
-          
-          <% let follow_array = []; %>
-          <% follow_notifications.forEach(function(follow_notification) { %>
-          <% if(!(follow_array.includes(follow_notification.username))){ %>
-          <div>
-          <a href="/follower_notifications/<%= follow_notification.id %>"><%= follow_notification.username %> followed you</a>
-          </div>
-          <% } else { %>
-          <% } %>
-          <% follow_array.push(follow_notification.username);%>
-          <% });%>
-          
-          </div>
-          </div>
           <% } else { %>
           
           <!--
             END NOTIFICATION LOGIC @TODO revisit
           -->
           <div class="right_nav">
-            <div class="trig right_li">
-            <a>Inbox(<%=notifications.length%>)</a>
-            <div class="dropdown notifications">
-            <div>
-            <span class="code">No new notifications</span>
-            <a href="#"></a>
+
+            <div class="right_li trig">
+              <a>Inbox(0)</a>
+              <div class="dropdown notifications">
+                <div>
+                  <a href="#">
+                      <span class="code">No new notifications</span>
+                  </a>
+                </div>
+                <div>
+                  <a href="/notifications">View past notifications</a>
+                </div>          
+              </div>
             </div>
-            <div>
-            <a href="/notifications">View past notifications</a>
-            </div>          
+
+            <div class="right_li">
+              <a href="/users/<%= currentUser.id %>/">Profile</a>
             </div>
-            </div>
-            
+          </div>            
             <% } %>
-            <div class="trig right_li">
-            <% if(currentUser.gender == "M"){ %>
-            <a href="/users/<%= currentUser.id %>/">Profile</a>
-            <% } else { %>
-            <a href="/users/<%= currentUser.id %>/">Profile</a>
-            <% } %>
-            <div class="dropdown profile">
-            <div>
-            <a href="">Edit Profile</a>
-            </div>
-            <div>
-            <a href="">Posted Favors</a>
-            </div>
             </div>
             </div>
           </div>
           <% } %>
-            <!--
-            <div class="right_li">  
-            <a href="/favors"><img src="/pics/favors.png"></a>
-            </div>
-            -->
             
             
             <%if(currentUser){%>

@@ -8,7 +8,15 @@
   padding: 0;
 }
 
-
+.favor_window {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 4000;
+  height: 40vh;
+  width: 30vw;
+  background-color: salmon;
+}
 
 body {
   z-index: -1000;
@@ -25,10 +33,6 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-}
-
-.review_form {
-  display: none;
 }
 
 #landing_search_div {
@@ -77,6 +81,19 @@ body {
 
 
 .sibling {
+  display: none;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  height: 82px;
+  position: absolute;
+  width: 530px;
+  top: 0;
+  margin: 10px 0;
+}
+
+.newFavorWindow {
+  display: none;
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
@@ -142,6 +159,7 @@ body {
 
 
 .sibling_1 {
+  display: none;
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
@@ -186,9 +204,11 @@ body {
 
 .review_header {
   color: white;
-  font-family: 'Lobster';
+  font-family: 'Open Sans';
   font-size: 25px;
-  margin-bottom: 30px;
+  text-transform: uppercase;
+  text-align: center;
+  color: goldenrod;
 }
 
 .square {
@@ -268,7 +288,7 @@ body {
   font-family: "Roboto", sans-serif;
   outline: 0;
   background: #f2f2f2;
-  width: -webkit-fill-available;
+  width: 92%;
   border: 0;
   margin: 0 0 15px;
   padding: 15px;
@@ -411,6 +431,21 @@ body {
     transition: 1s;
   }
 
+  .chat_search_form input {
+    border: 0;
+    width: 100%;
+    height: 40px;
+    padding: 0 15px;
+  }
+
+  #search_div
+  {
+    height: 10%;
+  }
+  .chat_search_input
+  {
+    height: 10%;
+  }
 
 .dropbtn {
   background-color: #FFB840;
@@ -884,6 +919,7 @@ hr {
     font-size: 2em;
     font-family: 'Open Sans';
 }
+
 
 .search_bar {
   margin-top: 50px;
@@ -1524,10 +1560,9 @@ h1 {
 
 
 .favor_container {
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
+  position: absolute;
+  display: none;
+  z-index: 200;
 }
 
 #favor_contact input[type="text"],
@@ -1872,11 +1907,8 @@ nav ul {
 }
 
 #chat_left_side {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 30%;
-          flex: 0 0 30%;
-  width: 30%;
-  overflow: auto;
+  flex: 40%;
+  overflow: hidden;
 }
 
 .blur {
@@ -1886,6 +1918,30 @@ nav ul {
   position: absolute;
   z-index: 3;
   background: rgba(98, 137, 148, 0.7);
+}
+
+.blur_review {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  z-index: 3;
+  background: rgba(98, 137, 148, 0.7);
+}
+
+#edit_modal {
+  display: none;
+  -webkit-transform: translateY(50%);
+  -ms-transform: translateY(50%);
+  transform: translateY(50%);
+  position: relative;
+  padding: 40px;
+  -webkit-box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+  background-color: #202020;
+  z-index: 4;
+  font-family: 'Open Sans',sans-serif;
+  color: white;
 }
 
 .dropdownBackground {
@@ -2177,6 +2233,8 @@ textarea.text_area {
   resize: none;
   width: 97%;
   margin: 5px 5px;
+  color: white;
+  background: #1B1C1E;
 }
 
 
@@ -2512,6 +2570,25 @@ ul {
   transition: .6s ease;
 }
 
+#new_favor {
+  -webkit-transform: translateY(50%);
+  -ms-transform: translateY(50%);
+  transform: translateY(50%);
+  position: relative;
+  padding: 40px;
+  -webkit-box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+  background-color: #202020;
+  z-index: 4;
+  font-family: 'Open Sans',sans-serif;
+  color: white;
+}
+
+#new_favor input {
+  left: 40px;
+  position: 
+}
+
 #add_new_favor_info {
   display: none;
   width: 150px;
@@ -2601,14 +2678,6 @@ overflow: auto;
     font-family: 'Open Sans', sans-serif;
 }
 
-#show_messages_form
-{
-    -webkit-transform: translate(-180px, -100px);
-        -ms-transform: translate(-180px, -100px);
-            transform: translate(-180px, -100px);
-    z-index: 3;
-  }
-
 #mobile_chat
 {
   display: block;
@@ -2637,7 +2706,7 @@ overflow: auto;
 #chat_left_side_header {
     background: palevioletred;
     font-size: 1.5em;
-    height: 5vh;
+    height: 10%;
     padding: 2vh;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
@@ -2660,7 +2729,7 @@ overflow: auto;
   -webkit-box-flex: 0;
       -ms-flex: 0 0 30%;
           flex: 0 0 30%;
-  height: 100%;
+  height: 80%;
   overflow: auto;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -2709,9 +2778,7 @@ overflow: auto;
 }
 
 .chat_container_window {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 70%;
-          flex: 0 0 70%;
+flex: 60%;
 }
 
 .chat_textarea {
@@ -2877,6 +2944,7 @@ overflow: auto;
   width: 50%;
   margin: 10px;
   font-size: .7em;
+  font-family: 'Times New Roman', Times, serif; 
 
 }
 
@@ -2906,7 +2974,7 @@ overflow: auto;
 
 #no_reviews {
   background: maroon;
-  color: white;
+  color: seashell;
   font-size: 12px;
   padding: 5px 10px;
 }
@@ -2918,6 +2986,7 @@ overflow: auto;
 .description {
   font-size: 10px;
   margin: 10px 0 20px 0;
+  font-family: 'Open Sans', sans-serif;
 }
 
 #landing_page
@@ -3345,7 +3414,8 @@ screen and (min-resolution:192dpi) {
   position: relative;
   width: 150px;
   padding: 0;
-  border: none
+  border: none;
+  margin-top: 8px;
 }
 
 .starability-basic>input {
@@ -3671,14 +3741,12 @@ input.search {
 }
 
 .suggestions {
-  padding: 0;
-  position: relative;
-  -webkit-transform: translateY(40px);
-      -ms-transform: translateY(40px);
-          transform: translateY(40px);
-  /* perspective: 20px; */
-  overflow: auto;
-  height: 50px;
+position: fixed;
+-webkit-transform: translateY(-3px);
+-ms-transform: translateY(-3px);
+transform: translateY(-3px);
+overflow: auto;
+height: 346px;
 }
 
 .suggestions li {
@@ -3730,6 +3798,7 @@ span.population {
   text-align: center;
   position: relative;
   font-family: 'Montserrat';
+  margin-top: 10vh;
 }
 
 .carcrash
@@ -3749,8 +3818,8 @@ span.population {
   background: white;
   border: 0 none;
   border-radius: 3px;
-  -webkit-box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
-          box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 8px 6px -6px black;
+          box-shadow: 0 8px 6px -6px black;
   padding: 20px 30px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -3764,6 +3833,21 @@ span.population {
 .msform fieldset:not(:first-of-type) {
   display: none;
 }
+
+.action-button {
+  width: 100px;
+      /* border-radius: 9px; */
+      background: saddlebrown;
+      /* font-family: monospace; */
+      font-weight: bold;
+      color: white;
+      border: 0 none;
+      border-radius: -4px;
+      cursor: pointer;
+      padding: 1vh;
+      margin: 2vh 0 1vh;
+  }
+  
 
 /*inputs*/
 .msform input,

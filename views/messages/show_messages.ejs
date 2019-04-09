@@ -2,24 +2,24 @@
 
 <div class="messages_page">
   <div>
-    <form class="search-form" id="show_messages_form" action="/favors" method="get" autocomplete="off">
-      <input type="search_all" id="input" value="" placeholder="Search for an user to start chatting" class="search-input"
-        name="search">
-      <ul class="suggestions" id="search_results">
-        <li><span class="name">Filter for an user</span></li>
-      </ul>
-    </form>
     <div id="status">
     </div>
     <div id="mobile_chat">
       <div class="chat_container">
       <div id="chat_left_side">
-        <div>
           <div id="chat_left_side_header">
             Users
           </div>
-          <input type="search_all" id="chat_container_search" value="" name="search"/>
-        </div>
+          <div id="search_div">
+            <form class="chat_search_form" id="show_messages_form" action="/favors" method="get" autocomplete="off">
+              <input type="search_all" id="input" id="chat_search_input" placeholder="Search for an user" class="chat_search_input"
+                name="search">
+              <ul class="suggestions" id="search_results">
+                <!-- <li></li> -->
+              </ul>
+            </form>
+          </div>
+
         <div class="chat_container_contacts" id="chat_container_contacts"></div>
       </div>
         <div class="chat_container_window">
@@ -44,10 +44,14 @@
         ////////////////////////////////////////////////////////////////////////////
         const day = [];
         
+
+        // Get users from db and add to a list to use user_search on it
+
         <% allusers.forEach(function(user){ %>
             day.push(<%- JSON.stringify(user.username)%>);
         <% }); %>
         
+
       (function () {
         var element = function (id) {
             return document.getElementById(id);
@@ -88,10 +92,7 @@
           
           if (socket !== undefined) {
             
-            console.log('Connected to socket');
-            
-            
-            
+            // Get messages and all users from db            
             socket.on('user_output', function (data, contacts){
               // for(var i = 0; i < contacts.length; i++){
                 //     if(contacts[i].username === <%- JSON.stringify(currentUser.username)%>){
@@ -156,6 +157,7 @@
               }
               
               $('.user_select').click(function () {
+                console.log(this)
                 var a = $(this).text();
                 contentBox.textContent = a;
                 getMail(a, data);
@@ -175,27 +177,31 @@
 
             });
 
+
+
             socket.on('user_output_search', function (data) {
               
               for (var i = 0; i < data.length; i++) {
-                var result = document.createElement('div');
-                result.setAttribute('class', 'user_select');
-                day.push(data[i].username);
-                result.textContent = data[i].username;
-                search_results.appendChild(result);
+                // var result = document.createElement('div');
+                // result.setAttribute('class', 'user_select');
+                // day.push(data[i].username);
+                // result.textContent = data[i].username;
+                // search_results.appendChild(result);
                 
               }
               
             });
+
+
             socket.on('output', function (data, contacts) {
               
-              chat_container.innerHTML = "";
-                  for(var i = 0; i < contacts.length; i++){
-                  var result = document.createElement('div');
-                  result.setAttribute('class', 'user_select');
-                  result.textContent = contacts[i];
-                  chat_container.appendChild(result);
-              }
+              // chat_container.innerHTML = "";
+              //     for(var i = 0; i < contacts.length; i++){
+              //     var result = document.createElement('div');
+              //     result.setAttribute('class', 'user_select');
+              //     result.textContent = contacts[i];
+              //     chat_container.appendChild(result);
+              // }
               
               textarea.value = '';
               data.forEach(function (data) {
@@ -218,6 +224,7 @@
                     chat_container.appendChild(result);}
                   }
                   $('.user_select').click(function () {
+                    console.log("over there")
                     var a = $(this).text();
                     contentBox.textContent = a;
                     getMail(a, data);
@@ -252,6 +259,7 @@
                 event.preventDefault();
               }
             });
+
             input.addEventListener('keydown', function (event) {
               if (event.which === 13 && event.shiftKey == false) {
                 socket.emit('input_user_search', {
@@ -292,9 +300,7 @@
             }
           }
         }
-        $("#box_of_results").dblclick(function () {
-          this.remove();
-        });
+
         function findMatches(wordToMatch, day) {
           return day.filter(username => {
             // here we need to figure out if the city or state matches what was searched
@@ -302,30 +308,44 @@
             return username.match(regex);
           });
         }
+
         function displayMatches() {
-          const matchArray = findMatches(input.value, day);
-          const html = matchArray.map(username => {
-            const regex = new RegExp(this.value, 'gi');
-            const cityName = username.replace(regex, `<span class="hl">${this.value}</span>`);
-            return `
-          <li>
-            <span class="name">${cityName}</span>
-          </li>
-        `;
-          }).join('');
-          suggestions.innerHTML = html;
+          if($('input').val() != "") {
+            const matchArray = findMatches(input.value, day);
+            const html = matchArray.map(username => {
+              const regex = new RegExp(this.value, 'gi');
+              const cityName = username.replace(regex, `${this.value}`);
+              return `
+            <li>
+              <div class="chat_result">${cityName}</div>
+            </li>
+          `;
+            }).join('');
+            console.log(html)
+            suggestions.innerHTML = html;
+          }
+          
+
         }
-        const searchInput = document.querySelector('.search-input');
+        const searchInput = document.querySelector('.chat_search_input');
         const suggestions = document.querySelector('.suggestions');
-        $('body').on('click', '.name', function (e) {
+
+        $('#search_results').on('click', '.chat_result',function () {
           var a = $(this).text();
           contentBox.textContent = a;
+          a = a.toLowerCase;
           getMail(a, day);
           search_results.innerHTML = "";
-          // alert("yeahhhh!!! but this doesn't work for me :(");
         });
         searchInput.addEventListener('click', displayMatches);
         searchInput.addEventListener('keyup', displayMatches);
+
+
+        $('input').focusout(function(){
+          $('body').click(function(){ 
+            $('#search_results').empty()
+          })
+        })
 </script>
 
 

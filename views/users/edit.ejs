@@ -13,7 +13,7 @@
 
 
 
-<form id="upload_form" action="/users/<%= user._id %>/validation?_method=PUT" method="post" enctype="multipart/form-data">
+<form >
   <input type="file" name="validation_paper" id="validation_paper" onchange="uploadFile()" accept="image/*"><br>
   <progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
   <h3 id="status"></h3>

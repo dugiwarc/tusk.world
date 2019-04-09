@@ -1,10 +1,13 @@
 <% include ../partials/header %>
 
+<!-- If current is logged in -->
 <% if(currentUser){%>
 
+<!-- If current user doesn't own the profile page he is on-->
 <% if(!(currentUser._id.equals(user._id))){ %>
 
-<div class="sibling_1 review_form">
+<div class="blur_review"></div>
+<div class="sibling_1">
   <div class="form_container">
     <form class="form_flex" action="/users/<%= user._id %>/reviews" method="POST">
       <span class="review_header">You are leaving a review for
@@ -30,7 +33,7 @@
           </fieldset>
         </div>
         <div>
-          <input type="submit">
+          <input class="action-button" type="submit" value="SUBMIT">
         </div>
       </div>
     </form>
@@ -38,7 +41,7 @@
 </div>
 
 
-<div class="sibling review_form">
+<div class="sibling">
   <div class="form_container">
     <span class="review_header">You are editing a review for
       <%= user.name %></span>
@@ -69,7 +72,7 @@
           </fieldset>
         </div>
         <div>
-          <input type="submit" class="button" value="Update">
+          <input type="submit" class="action-button" value="Update">
     </form>
     <form id="delete-form" action="/users/<%=user._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
       <input type="submit" class="button" value="Delete">
@@ -82,8 +85,51 @@
 </div>
 
 <% } %>
-<div class="blur">
+<!-- Background events -->
+<div class="blur_favor"></div>
+<div class="blur"></div>
+
+<!-- Edit user modal -->
+<div id="edit_modal">
+  <form action="/users/<%= user._id %>?_method=PUT" method="post" enctype="multipart/form-data">
+    <label for="user[name]">Name</label><br>
+      <input type="text" name="user[name]"  value="<%= user.name %>"><br>
+    <label for="user[username]">Surname</label><br>
+      <input type="text" name="user[surname]" value="<%= user.surname %>"><br>
+    <label for="user[username]">Username</label><br>
+      <input type="text" name="user[username]" value="<%= user.username %>"><br>
+    <label for="user[username]">Location</label><br>
+      <input type="text" name="user[city]" value="<%= user.city %>" placeholder="add a city where you live"><br>
+    <label for="user[username]">Upload a new profile picture</label><br>
+      <input type="file" id="image" name="image" accept="image/*">
+    <button class="action-button">Submit</button>
+  </form>
 </div>
+
+<!-- New favor modal -->
+<div class="favor_container">  
+    <form id="favor_contact" action="/users/<%= user._id %>/favors" method="post" enctype="multipart/form-data">
+      <h3 id="fav_h3">Quick Favor</h3>
+      <fieldset>
+        <input placeholder="Your Task" type="text" name="task" tabindex="1" required autofocus>
+      </fieldset>
+      <fieldset>
+        <input placeholder="Upload an image" type="file" id="image" name="image" accept="image/*">
+      </fieldset>
+      <fieldset>
+        <input placeholder="Your Price" type="text" name="price" min="0.0" tabindex="2" required>
+      </fieldset>
+      <fieldset>
+        <input placeholder="Location" type="text" name="location" required>
+      </fieldset>
+        <textarea class="favor_textarea" rows="2" name="description" placeholder="Auto expanding text area"></textarea>
+      <fieldset>
+        <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+      </fieldset>
+    </form>
+  </div>
+
+
 <div id="delete_guard">
   <div>
     <span>Type in your username to confirm deletion: </span>
@@ -118,9 +164,9 @@
     </span>
 
     <span id="add_new_favor">
-      <a href="/users/<%= user._id %>/favors/new">
+      <!-- <a href="/users/<%= user._id %>/favors/new"> -->
         <img src="/pics/new_favor.png">
-      </a>
+      <!-- </a> -->
       <div id="add_new_favor_info">Ask for a Favor</div>
     </span>
 
@@ -130,7 +176,7 @@
       </a>
     </span>
 
-    <a href="/users/<%= user._id %>/edit">
+    <a id="edit_user">
       <img src="/pics/edit.png">
     </a>
 
@@ -189,7 +235,7 @@
           <div class="social-icons">
             <% var useree_reviews=[]%>
             
-            
+            <%console.log("GELO",useree_reviews)%>
             
             <% review.forEach(function(review){ %>
             <% if(review.user.equals(user._id)){%>
@@ -369,13 +415,31 @@ $('body').ready(function() {
   }
 });
 
+  $("#leave_review").click(function(event){
+    $(".sibling_1").fadeIn(2)
+    $(".blur_review").fadeIn(200)
+    even.stopPropagation()
+  })
+
+  $("#toggle-edit-form").click(function(event){
+    $(".sibling").fadeIn(2)
+    $(".blur_review").fadeIn(200)
+    even.stopPropagation()
+  })
+
   $("#delete_user").click(function(event){
     $("#delete_guard").fadeIn()
     $(".blur").fadeIn()
     event.stopPropagation()  
   })
 
-  $(document).click(function(event){
+  $("#add_new_favor").click(function(event) {
+    $(".favor_container").fadeIn()
+    $(".blur").fadeIn()
+    event.stopPropagation()
+  })
+
+  $('.blur').click(function(event){
     var current_height = $('.blur').outerHeight();
     var current_width = $('.blur').outerWidth();
 
@@ -384,9 +448,30 @@ $('body').ready(function() {
 
     $("#delete_guard").fadeOut()
     $(".blur").fadeOut()
+    $("#edit_modal").fadeOut()
+    $(".favor_container").fadeOut()
     event.stopPropagation()
-
   });
+
+  $('.blur_review').click(function(event){
+    var current_height = $('.blur_review').outerHeight();
+    var current_width = $('.blur_review').outerWidth();
+
+    $(".blur_review").css("min-height", current_height);
+    $(".blur_review").css("min-width", '20000px');
+
+    $(".sibling_1").fadeOut()
+    $(".sibling").fadeOut()
+    $(".blur_review").fadeOut()
+    event.stopPropagation()
+  });
+
+  $("#edit_user").click(function(event) {
+    $("#edit_modal").fadeIn(2)
+    $(".blur").fadeIn(400)
+    event.stopPropagation()
+  })
+  
 
 
   $("#submit_deletion").submit(function(event){
@@ -417,28 +502,6 @@ $('body').ready(function() {
     .setHTML('<h3>' + user.username + '</h3></p>' + user.location + '</p>'))
     .addTo(map);
 
-</script>
-<script>
-  $("#leave_review").click(function(){
-    $(".sibling_1").toggle(".review_form");
-    $(".blur").toggle(".review_form");
-  });
-
-  $("#toggle-edit-form").click(function(){
-    $(".sibling").toggle(".review_form");
-    $(".blur").toggle(".review_form");
-
-  });
-
-  $(".blur").click(function(){
-    $(".blur").toggle(".review_form");
-    if($(".sibling_1").is(':visible')){
-      $(".sibling_1").toggle(".review_form");
-    }
-    if($(".sibling").hasClass("review_form")){
-      $(".sibling").is(':visible');
-    }
-  });
 </script>
 
 <% } else { %>
