@@ -180,7 +180,7 @@ router.get("/users/:id",async function(req, res){
   }
 });
 
-router.get("/:id/dashboard", async function(req, res, next){
+router.get("/dashboard", async function(req, res, next){
   var requests = await Request.find({});
   res.render('users/dashboard', { requests });
 });

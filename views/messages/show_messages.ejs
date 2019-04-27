@@ -8,7 +8,7 @@
       <div class="chat_container">
       <div id="chat_left_side">
           <div id="chat_left_side_header">
-            Users
+            Contacts
           </div>
           <div id="search_div">
             <form class="chat_search_form" id="show_messages_form" action="/favors" method="get" autocomplete="off">
@@ -330,13 +330,14 @@
         const searchInput = document.querySelector('.chat_search_input');
         const suggestions = document.querySelector('.suggestions');
 
-        $('#search_results').on('click', '.chat_result',function () {
+        $('#search_results').on('click', 'li',function () {
           var a = $(this).text();
-          contentBox.textContent = a;
-          a = a.toLowerCase;
-          getMail(a, day);
+          var query = a.trim().toLowerCase();
+          contentBox.textContent = query;
+          getMail(query, day);
           search_results.innerHTML = "";
         });
+
         searchInput.addEventListener('click', displayMatches);
         searchInput.addEventListener('keyup', displayMatches);
 
@@ -345,6 +346,13 @@
           $('body').click(function(){ 
             $('#search_results').empty()
           })
+        })
+
+        $('#chat_container_contacts').on('click','.user_select_box',function (e){
+          let a = e.currentTarget.innerText.split('\n')
+          contentBox.textContent = a[0]
+          getMail(a[0], day)
+
         })
 </script>
 

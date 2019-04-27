@@ -1898,7 +1898,9 @@ nav ul {
 }
 
 .notifications {
-  min-width: 150px;
+  padding: 10px;
+  max-width: 170px;
+  font-size: .7em;
   margin-top: 20px;
 }
 
@@ -1908,6 +1910,8 @@ nav ul {
 
 #chat_left_side {
   flex: 40%;
+  box-shadow: 7px 0px 5px -9px black;
+    z-index: 300;
   overflow: hidden;
 }
 
@@ -2640,27 +2644,25 @@ overflow: auto;
 }
 
 .chat_contact_card {
-    color: white;
-    font-size: 1.6em;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    color: black;
-    font-family: 'Open Sans', sans-serif;
-    background: white;
-    padding: .6vh;
+  display: inline-block;
+  background: #bfbfbf;
+  width: 50px;
+  margin: 0 15px 0 0;
+  color: #ffffff;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  -webkit-transition: background 0.3s linear 0s;
+  -moz-transition: background 0.3s linear 0s;
+  -ms-transition: background 0.3s linear 0s;
+  -o-transition: background 0.3s linear 0s;
+  transition: background 0.3s linear 0s
 }
 
 .chat_header
 {
     background: #303030;
-    height: 5vh;
+    height: 40px;
     padding: 0 18px;
     -webkit-box-pack: start;
     -ms-flex-pack: start;
@@ -2688,7 +2690,7 @@ overflow: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  background: navajowhite;
+  background: seashell;
   height: 400px;
   width: 600px;
 }
@@ -2737,14 +2739,16 @@ overflow: auto;
           flex-direction: column;
 }
 
+.user_select_box:nth-child(2)
+{
+  background: #f2f2f2;
+}
+
 .message_box_right_section {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
     -webkit-box-ordinal-group: 2;
         -ms-flex-order: 1;
             order: 1;
@@ -2756,21 +2760,15 @@ overflow: auto;
 }
 
 .user_select {
-  font-size: 1em;
-  -webkit-box-flex: 50%;
-  -ms-flex: 50%;
-  flex: 50%;
-  background: gray;
-  height: 50px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .user_select_box {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin-bottom: 1px;
+  padding: 10px;
   height: 50px;
-  background: mistyrose;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -2784,7 +2782,13 @@ flex: 60%;
 .chat_textarea {
   position: absolute;
   bottom: 0;
-  width: 70%;
+  width: 60%;
+  outline: 0;
+  border: 0;
+  resize: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 15px;
 }
 
 #messages {

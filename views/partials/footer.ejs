@@ -4,7 +4,7 @@
 <script>
 // navigation bar settings
 
-    const triggers = document.querySelectorAll('.cool > li.trig');
+    const trigger = document.querySelector('.trig.right_li');
     const background  = document.querySelector('.dropdownBackground');
     const nav  = document.querySelector('.nav');
 
@@ -23,8 +23,9 @@
         top: dropdownCoords.top - navCoords.top,
         left: dropdownCoords.left - navCoords.left
     };
+    console.log(coords)
 
-    background.style.setProperty('width', `${coords.width}px`);
+    background.style.setProperty('width', `200px`);
     background.style.setProperty('height', `${coords.height}px`);
     background.style.setProperty('transform', `translate(${coords.left}px, ${coords.top}px)`);
     }
@@ -34,8 +35,8 @@
     background.classList.remove('open');
     }
 
-    triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
-    triggers.forEach(trigger => trigger.addEventListener('mouseleave', handleLeave));
+    trigger.addEventListener('mouseenter', handleEnter);
+    trigger.addEventListener('mouseleave', handleLeave);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
