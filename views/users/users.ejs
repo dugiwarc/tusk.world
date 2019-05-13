@@ -10,19 +10,26 @@
               <%=noMatch%>
             </div>
             <%}%>
+<div class="motherOfUsers">
 <% users.forEach(function(user){ %>
 <div class="userBox">
-  <h4>
-    <%= user.name %>
-  </h4>
-  <h3>
-    <%= user.surname %>
-  </h3>
-  <p>
+  <div class="userBox-image">
+    <img src="<%= user.image %>" height="80%" alt="userProfile">
+  </div>
+  <div class="userBox-info">
+  <div class="userBox-info-name">
+    <a href="/users/<%= user._id %>"><%= user.name %> <%= user.surname %></a>
+  </div>
+  <div class="userBox-info-status">
+    <%= user.status%>
+  </div>
+    <div class="userBox-info-city">
+    <%= user.city%>
+  </div>
 
-    <a href="/users/<%= user._id %>">See User Profile</a>
-  </p>
+  </div>
 </div>
 <% }); %>
+</div>
 
 <% include ../partials/footer %>

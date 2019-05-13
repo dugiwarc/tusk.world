@@ -1,257 +1,253 @@
-
-
-
 <script>
-// navigation bar settings
+    // navigation bar settings
 
     const trigger = document.querySelector('.trig.right_li');
-    const background  = document.querySelector('.dropdownBackground');
-    const nav  = document.querySelector('.nav');
+    const background = document.querySelector('.dropdownBackground');
+    const nav = document.querySelector('.nav');
 
     function handleEnter() {
         this.classList.add('trigger-enter');
         setTimeout(() => this.classList.contains('trigger-enter') && this.classList.add('trigger-enter-active'), 150);
         background.classList.add('open');
 
-    const dropdown = this.querySelector('.dropdown');
-    const dropdownCoords = dropdown.getBoundingClientRect();
-    const navCoords = nav.getBoundingClientRect();
+        const dropdown = this.querySelector('.dropdown');
+        const dropdownCoords = dropdown.getBoundingClientRect();
+        const navCoords = nav.getBoundingClientRect();
 
-    const coords = {
-        height: dropdownCoords.height,
-        width: dropdownCoords.width,
-        top: dropdownCoords.top - navCoords.top,
-        left: dropdownCoords.left - navCoords.left
-    };
-    console.log(coords)
+        const coords = {
+            height: dropdownCoords.height,
+            width: dropdownCoords.width,
+            top: dropdownCoords.top - navCoords.top,
+            left: dropdownCoords.left - navCoords.left
+        };
+        console.log(coords)
 
-    background.style.setProperty('width', `200px`);
-    background.style.setProperty('height', `${coords.height}px`);
-    background.style.setProperty('transform', `translate(${coords.left}px, ${coords.top}px)`);
+        background.style.setProperty('width', `200px`);
+        background.style.setProperty('height', `${coords.height}px`);
+        background.style.setProperty('transform', `translate(${coords.left}px, ${coords.top}px)`);
     }
 
     function handleLeave() {
-    this.classList.remove('trigger-enter', 'trigger-enter-active');
-    background.classList.remove('open');
+        this.classList.remove('trigger-enter', 'trigger-enter-active');
+        background.classList.remove('open');
+    }
+    if(trigger != null){
+        trigger.addEventListener('mouseenter', handleEnter);
+        trigger.addEventListener('mouseleave', handleLeave);
     }
 
-    trigger.addEventListener('mouseenter', handleEnter);
-    trigger.addEventListener('mouseleave', handleLeave);
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// search bar settings
+    // search bar settings
 
-    $('input').dblclick(function(e){
+    $('input').dblclick(function (e) {
         if (e) {
             $(this).prop('checked', false);
         }
     });
 
-    $('.search-input').focus(function(){
+    $('.search-input').focus(function () {
         $(this).parent().addClass('focus');
-            }).blur(function(){
-                $(this).parent().removeClass('focus');
+    }).blur(function () {
+        $(this).parent().removeClass('focus');
     });
-////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// hint animation user status
+    // hint animation user status
 
-    $('.hint').hover(function(){
+    $('.hint').hover(function () {
         $('.hint_span').addClass('show');
-    },function(){
+    }, function () {
         $('.hint_span').removeClass('show');
     });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// hint animations sidebar
+    // hint animations sidebar
 
-    $('#ls_messages a').hover(function(){
+    $('#ls_messages a').hover(function () {
         $('#ls_messages_info').addClass('show');
-    },function(){
+    }, function () {
         $('#ls_messages_info').removeClass('show');
     });
 
-    $('#add_new_favor a').hover(function(){
+    $('#add_new_favor a').hover(function () {
         $('#add_new_favor_info').addClass('show');
-    },function(){
+    }, function () {
         $('#add_new_favor_info').removeClass('show');
     });
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-//jQuery time
-var current_fs, next_fs, previous_fs; //fieldsets
-var left, opacity, scale; //fieldset properties which we will animate
-var animating; //flag to prevent quick multi-click glitches
+    //jQuery time
+    var current_fs, next_fs, previous_fs; //fieldsets
+    var left, opacity, scale; //fieldset properties which we will animate
+    var animating; //flag to prevent quick multi-click glitches
 
-$(".next").click(function(){
-    console.log(pass.value);
-    if(pass.value === cpass.value)
-    {
-	if(animating) return false;
-	animating = true;
-	
-	current_fs = $(this).parent();
-	next_fs = $(this).parent().next();
-	
-	//activate next step on progressbar using the index of next_fs
-	$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-	
-	//show the next fieldset
-	next_fs.show(); 
-	//hide the current fieldset with style
-	current_fs.animate({opacity: 0}, {
-		step: function(now, mx) {
-			//as the opacity of current_fs reduces to 0 - stored in "now"
-			//1. scale current_fs down to 80%
-			scale = 1 - (1 - now) * 0.2;
-			//2. bring next_fs from the right(50%)
-			left = (now * 50)+"%";
-			//3. increase opacity of next_fs to 1 as it moves in
-			opacity = 1 - now;
-			current_fs.css({
-        'transform': 'scale('+scale+')',
-        'position': 'absolute'
+    $(".next").click(function () {
+        console.log(pass.value);
+        if (pass.value === cpass.value) {
+            if (animating) return false;
+            animating = true;
+
+            current_fs = $(this).parent();
+            next_fs = $(this).parent().next();
+
+            //activate next step on progressbar using the index of next_fs
+            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+            //show the next fieldset
+            next_fs.show();
+            //hide the current fieldset with style
+            current_fs.animate({ opacity: 0 }, {
+                step: function (now, mx) {
+                    //as the opacity of current_fs reduces to 0 - stored in "now"
+                    //1. scale current_fs down to 80%
+                    scale = 1 - (1 - now) * 0.2;
+                    //2. bring next_fs from the right(50%)
+                    left = (now * 50) + "%";
+                    //3. increase opacity of next_fs to 1 as it moves in
+                    opacity = 1 - now;
+                    current_fs.css({
+                        'transform': 'scale(' + scale + ')',
+                        'position': 'absolute'
+                    });
+                    next_fs.css({ 'left': left, 'opacity': opacity });
+                },
+                duration: 800,
+                complete: function () {
+                    current_fs.hide();
+                    animating = false;
+                },
+                //this comes from the custom easing plugin
+                easing: 'easeInOutBack'
+            });
+        }
+        else {
+            display.textContent = "Passwords don't match";
+            display.classList.add('red');
+            step_1.classList.add('invalid');
+            setTimeout(function () {
+                display.classList.remove('red');
+                display.textContent = "Step 1";
+            }, 4000);
+            setTimeout(function () {
+                step_1.classList.remove('invalid');
+            }, 500);
+        }
     });
-			next_fs.css({'left': left, 'opacity': opacity});
-		}, 
-		duration: 800, 
-		complete: function(){
-			current_fs.hide();
-			animating = false;
-		}, 
-		//this comes from the custom easing plugin
-		easing: 'easeInOutBack'
-	});
-    }
-    else 
-    {
-        display.textContent = "Passwords don't match";
-        display.classList.add('red');
-        step_1.classList.add('invalid');
-        setTimeout(function () {
-            display.classList.remove('red');
-            display.textContent = "Step 1";
-        }, 4000);
-        setTimeout(function(){
-            step_1.classList.remove('invalid');
-        }, 500);
-    }
-});
 
-$(".previous").click(function(){
-	if(animating) return false;
-	animating = true;
-	
-	current_fs = $(this).parent();
-	previous_fs = $(this).parent().prev();
-	
-	//de-activate current step on progressbar
-	$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-	
-	//show the previous fieldset
-	previous_fs.show(); 
-	//hide the current fieldset with style
-	current_fs.animate({opacity: 0}, {
-		step: function(now, mx) {
-			//as the opacity of current_fs reduces to 0 - stored in "now"
-			//1. scale previous_fs from 80% to 100%
-			scale = 0.8 + (1 - now) * 0.2;
-			//2. take current_fs to the right(50%) - from 0%
-			left = ((1-now) * 50)+"%";
-			//3. increase opacity of previous_fs to 1 as it moves in
-			opacity = 1 - now;
-			current_fs.css({'left': left});
-			previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
-		}, 
-		duration: 800, 
-		complete: function(){
-			current_fs.hide();
-			animating = false;
-		}, 
-		//this comes from the custom easing plugin
-		easing: 'easeInOutBack'
-	});
-});
+    $(".previous").click(function () {
+        if (animating) return false;
+        animating = true;
 
-$(".submit").click(function(){
-	return false;
-})
+        current_fs = $(this).parent();
+        previous_fs = $(this).parent().prev();
 
-/////////////////////////
+        //de-activate current step on progressbar
+        $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
 
-// Preventing the Enter key from submiting the form
-
-/////////////////////////
-
-// document.body.onkeydown = function(e)
-// {
-//     console.log(e.keyCode);
-//         if(e.keyCode == 13)
-//     {
-//         e.preventDefault();
-//     }
-// }
-
-//////////////////////////
-
-// Logo Event
-
-//////////////////////////
-
-
-// var home = document.querySelector('#home');
-
-// home.addEventListener('click', rotateLogo);
-
-// function rotateLogo()
-// {
-//     this.classList.toggle('rotate');
-
-// }
-
-var dropdown = document.querySelector('body');
-var notifications = [];
-var socket = io();
-
-if(socket != undefined)
-{
-    <%if(currentUser){%>
-    socket.emit('get_notifs', { loggedUser : <%- JSON.stringify(currentUser._id)%>});
-    socket.on('receive_notifs', function(data){
-        
-    console.log(data);
-        data.forEach((notification)=>{
-            var li = document.createElement('li');
-            // li.textContent = "notification"; 
-            // dropdown.append(li);
+        //show the previous fieldset
+        previous_fs.show();
+        //hide the current fieldset with style
+        current_fs.animate({ opacity: 0 }, {
+            step: function (now, mx) {
+                //as the opacity of current_fs reduces to 0 - stored in "now"
+                //1. scale previous_fs from 80% to 100%
+                scale = 0.8 + (1 - now) * 0.2;
+                //2. take current_fs to the right(50%) - from 0%
+                left = ((1 - now) * 50) + "%";
+                //3. increase opacity of previous_fs to 1 as it moves in
+                opacity = 1 - now;
+                current_fs.css({ 'left': left });
+                previous_fs.css({ 'transform': 'scale(' + scale + ')', 'opacity': opacity });
+            },
+            duration: 800,
+            complete: function () {
+                current_fs.hide();
+                animating = false;
+            },
+            //this comes from the custom easing plugin
+            easing: 'easeInOutBack'
         });
     });
+
+    $(".submit").click(function () {
+        return false;
+    })
+
+    /////////////////////////
+
+    // Preventing the Enter key from submiting the form
+
+    /////////////////////////
+
+    // document.body.onkeydown = function(e)
+    // {
+    //     console.log(e.keyCode);
+    //         if(e.keyCode == 13)
+    //     {
+    //         e.preventDefault();
+    //     }
+    // }
+
+    //////////////////////////
+
+    // Logo Event
+
+    //////////////////////////
+
+
+    // var home = document.querySelector('#home');
+
+    // home.addEventListener('click', rotateLogo);
+
+    // function rotateLogo()
+    // {
+    //     this.classList.toggle('rotate');
+
+    // }
+
+    var dropdown = document.querySelector('body');
+    var notifications = [];
+    var socket = io();
+
+    if (socket != undefined) {
+    <%if (currentUser) {%>
+            socket.emit('get_notifs', { loggedUser: <%- JSON.stringify(currentUser._id) %>});
+            socket.on('receive_notifs', function (data) {
+
+                console.log(data);
+                data.forEach((notification) => {
+                    var li = document.createElement('li');
+                    // li.textContent = "notification"; 
+                    // dropdown.append(li);
+                });
+            });
     <%}%>
 }
 </script>
 </body>
+
 </html>

@@ -4,196 +4,193 @@
 
 <head>
 
-<meta charset="utf-8">
-    <meta name="description" content="Ask someone for a favor, anywhere in the world">
-    <meta name="keywords" content="favor, ask, earn, friends, ease, search, look, anyone">
-    <meta name="author" content="Gheorghe Botnaru">
-    
-    <title>Tusk</title>
-    
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133668550-2"></script>
-    <script>
+  <meta charset="utf-8">
+  <meta name="description" content="Ask someone for a favor, anywhere in the world">
+  <meta name="keywords" content="favor, ask, earn, friends, ease, search, look, anyone">
+  <meta name="author" content="Gheorghe Botnaru">
+
+  <title>Tusk</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133668550-2"></script>
+  <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-    
+
     gtag('config', 'UA-133668550-2');
-    </script>
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="/stylesheets/master.css">
-    
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:800|Didact+Gothic|Lobster|Staatliches|Montserrat:900" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    <script src="/javascript/socket.io.js"></script>
-    <script src="/javascript/jquery.min.js"></script>
-    <script src="/javascript/jquery.easing.min.js"></script>
-    
-    
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
-    
-    </head>
-    
-    <nav class="nav">
-        <div class="dropdownBackground">
-          <span class="arrow"></span>
+  </script>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="/stylesheets/master.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:800|Didact+Gothic|Lobster|Staatliches|Montserrat:900"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"
+    async></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+  <script src="/javascript/socket.io.js"></script>
+  <script src="/javascript/jquery.min.js"></script>
+  <script src="/javascript/jquery.easing.min.js"></script>
+
+
+  <%# <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script> %>
+  <%# <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' /> %>
+
+</head>
+
+<nav class="nav">
+  <div class="dropdownBackground">
+    <span class="arrow"></span>
+  </div>
+
+
+  <% if(!currentUser){ %>
+
+  <div class="right_li">
+    <div id="register_link">
+      <a href="/login">Login</a>
+    </div>
+    <div id="login_link">
+      <a href="/register">Register</a>
+    </div>
+  </div>
+  <div class="mid_nav">
+    <div id="home">
+      <a href="/">Tusk</a>
+    </div>
+  </div>
+  <div class="left_li">
+    <div>
+      <a href="/chat">Contact</a>
+    </div>
+    <div>
+      <a href="/faq">About</a>
+    </div>
+  </div>
+
+  <% } else { %>
+
+  <% if(notifications.length > 0 || message_notifications.length > 0 || interest_notifications.length > 0 || follow_notifications.length > 0){ %>
+
+  <!--
+            END NOTIFICATION LOGIC @TODO revisit
+          -->
+  <div class="right_nav">
+
+    <div class="trig right_li">
+
+      <a>INBOX(<%= notifications.length + message_notifications.length + interest_notifications.length + follow_notifications.length %>)</a>
+      <div class="dropdown notifications">
+        <% notifications.forEach(function(notification) { %>
+        <div>
+          <a href="/notifications/<%= notification.id %>"><%= notification.username %> created a favor </a>
         </div>
-    
-      <!--  
-      <div id="welcome_video">
-      <video playsinline autoplay muted loop>
-      <source src="pics/wlcm.mp4" type="video/mp4">
-      </video>
+        <% }); %>
+
+        <% message_notifications.forEach(function(message_notification) { %>
+        <div>
+          <a href="/message_notifications/<%= message_notification.id %>"><%= message_notification.username %> messaged
+            you</a>
+        </div>
+        <% });%>
+
+        <% interest_notifications.forEach(function(interest_notification) { %>
+        <div>
+          <a href="/interest_notifications/<%= interest_notification.id %>"><%= interest_notification.username %> showed
+            an interest</a>
+        </div>
+        <% });%>
+
+        <% let follow_array = []; %>
+        <% follow_notifications.forEach(function(follow_notification) { %>
+        <% if(!(follow_array.includes(follow_notification.username))){ %>
+        <div>
+          <a href="/follower_notifications/<%= follow_notification.id %>"><%= follow_notification.username %> followed
+            you</a>
+        </div>
+        <% } else { %>
+        <% } %>
+        <% follow_array.push(follow_notification.username);%>
+        <% });%>
+
       </div>
-      -->
+    </div>
 
-      
-      <% if(!currentUser){ %>
-      
-      <div class="right_li">
-        <div id="register_link">
-        <a href="/login">Login</a>
-        </div>
-        <div id="login_link">
-        <a href="/register">Register</a>
-        </div>  
-        </div>
-        <div class="mid_nav">
-        <div id="home">
-        <a href="/">Tusk</a>
-        </div>
-        </div>
-        <div class="left_li">
-        <div>
-        <a href="/chat">Contact</a>
-        </div>
-        <div>
-        <a href="/faq">About</a>
-        </div>
-        </div>
-        
-      <% } else { %>
-      
-      <% if(notifications.length > 0 || message_notifications.length > 0 || interest_notifications.length > 0 || follow_notifications.length > 0){ %>
-      
-          <!--
+    <div class="right_li">
+      <a href="/users/<%= currentUser.id %>/">Profile</a>
+    </div>
+  </div>
+
+  <% } else { %>
+
+  <!--
             END NOTIFICATION LOGIC @TODO revisit
           -->
-        <div class="right_nav">
-          
-          <div class="trig right_li"> 
-        
-          <a>INBOX(<%= notifications.length + message_notifications.length + interest_notifications.length + follow_notifications.length %>)</a>
-              <div class="dropdown notifications">
-              <% notifications.forEach(function(notification) { %>
-                <div>
-                  <a href="/notifications/<%= notification.id %>"><%= notification.username %> created a favor </a>
-                </div>          
-              <% }); %>
-            
-              <% message_notifications.forEach(function(message_notification) { %>
-                <div>
-                  <a href="/message_notifications/<%= message_notification.id %>"><%= message_notification.username %> messaged you</a>
-                </div>
-              <% });%>
-            
-              <% interest_notifications.forEach(function(interest_notification) { %>
-                <div>
-                  <a href="/interest_notifications/<%= interest_notification.id %>"><%= interest_notification.username %> showed an interest</a>
-                </div>
-              <% });%>
-            
-              <% let follow_array = []; %>
-              <% follow_notifications.forEach(function(follow_notification) { %>
-              <% if(!(follow_array.includes(follow_notification.username))){ %>
-              <div>
-              <a href="/follower_notifications/<%= follow_notification.id %>"><%= follow_notification.username %> followed you</a>
-              </div>
-              <% } else { %>
-              <% } %>
-              <% follow_array.push(follow_notification.username);%>
-              <% });%>
-            
-              </div>
-            </div>
-            
-            <div class="right_li">
-              <a href="/users/<%= currentUser.id %>/">Profile</a>
-            </div>
+  <div class="right_nav">
+
+    <div class="trig right_li">
+      <a>Inbox(0)</a>
+      <div class="dropdown notifications">
+        <div>
+          <a href="#">
+            <span class="code">No new notifications</span>
+          </a>
         </div>
+        <div>
+          <a href="/notifications">View past notifications</a>
+        </div>
+      </div>
+    </div>
 
-          <% } else { %>
-          
-          <!--
-            END NOTIFICATION LOGIC @TODO revisit
-          -->
-          <div class="right_nav">
-
-            <div class="trig right_li">
-              <a>Inbox(0)</a>
-              <div class="dropdown notifications">
-                <div>
-                  <a href="#">
-                      <span class="code">No new notifications</span>
-                  </a>
-                </div>
-                <div>
-                  <a href="/notifications">View past notifications</a>
-                </div>          
-              </div>
-            </div>
-
-            <div class="right_li">
-              <a href="/users/<%= currentUser.id %>/">Profile</a>
-            </div>
-          </div>            
-            <% } %>
-            </div>
-            </div>
-          </div>
-          <% } %>
-            
-            
-            <%if(currentUser){%>
-            <div class="mid_nav">
-  <div id="home">
-  <a href="/">Tusk</a>
+    <div class="right_li">
+      <a href="/users/<%= currentUser.id %>/">Profile</a>
+    </div>
+  </div>
+  <% } %>
   </div>
   </div>
-            <div class="left_nav">
-            <%if(currentUser.isAdmin){%>
-            <div class="left_li">
-            <a href="/<%= currentUser.id %>/dashboard">Dashboard</a>
-            </div>
-            <% } else { %>
-            <div class="left_li">
-            <a href="/chat">Support</a>
-            </div>
-            <% } %>
-            <div class="left_li">
-            <a href="/logout">Log out</a>
-            </div>
-          </div>
-          <% } else { %>
+  </div>
+  <% } %>
 
-            <% } %>
-          </div>       
-          </nav>  
-          <% if(error && error.length > 0){ %>
-          <div class="warning">
-          <%= error %>
-          </div> 
-          <% } %>
-          <% if(success && success.length > 0){ %>
-          <div class="success">
-          <%= success %>
-          </div>
-          <% } %> 
-          <body>
-          
-          
+
+  <%if(currentUser){%>
+  <div class="mid_nav">
+    <div id="home">
+      <a href="/">Tusk</a>
+    </div>
+  </div>
+  <div class="left_nav">
+    <%if(currentUser.isAdmin){%>
+    <div class="left_li">
+      <a href="/<%= currentUser.id %>/dashboard">Dashboard</a>
+    </div>
+    <% } else { %>
+    <div class="left_li">
+      <a href="/chat">Support</a>
+    </div>
+    <% } %>
+    <div class="left_li">
+      <a href="/logout">Log out</a>
+    </div>
+  </div>
+  <% } else { %>
+
+  <% } %>
+  </div>
+</nav>
+<% if(error && error.length > 0){ %>
+<div class="warning">
+  <%= error %>
+</div>
+<% } %>
+<% if(success && success.length > 0){ %>
+<div class="success">
+  <%= success %>
+</div>
+<% } %>
+
+<body>
