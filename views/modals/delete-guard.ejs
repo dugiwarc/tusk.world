@@ -1,0 +1,21 @@
+<div id="delete_guard">
+  <div class="delete-guard-info">
+    <span>Deleting your user profile and its data is irreversible. Enter your username
+(<%= user.username %>) below to confirm you want to permanently delete it: </span>
+    <span id="non_valid_submit"></span>
+  </div>
+  <div class="delete-guard-input">
+    <form id="submit_deletion" action="/users/<%= user._id %>?_method=DELETE" method="post">
+      <div class="delete-guard-checkbox">
+        <input type="checkbox"/><div class="delete-guard-checkbox-text">I wish to terminate my account</div>
+      </div>
+      <div class="delete-guard-input-input">
+        <input type="text">
+      </div>
+      <div class="delete-guard-input-buttons">
+        <input class="delete-guard-input-buttons-submit" type="submit" value="Delete">
+        <div class="delete-guard-input-buttons-cancel">Cancel</div>
+      </div>
+    </form>
+  </div>
+</div>

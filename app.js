@@ -55,7 +55,8 @@ var io = require("socket.io").listen(server).sockets;
 
 mongoose.connect(
   process.env.MONGODB_URI ||
-    "mongodb+srv://tuskworld:486711@cluster0-jngbm.mongodb.net/test?retryWrites=true",
+    // "mongodb+srv://tuskworld:486711@cluster0-jngbm.mongodb.net/test?retryWrites=true",
+    "mongodb://localhost:27017/tusk_world",
   {
     useNewUrlParser: true
   },
@@ -104,7 +105,6 @@ mongoose.connect(
             if (err) {
               throw err;
             } else {
-              console.log("users retrieved");
               socket.emit("user_output", mes, res);
             }
           });
@@ -170,9 +170,33 @@ mongoose.connect(
       });
 
       socket.on("get_notifs", async function(data) {
-        var user = await User.findOne({ _id: data.loggedUser });
-        var notifications = user.notifications;
-        io.emit("receive_notifs", [notifications]);
+        try {
+          let loggedUser = data.loggedUser;
+          console.log(loggedUser);
+          var bankofNotes = [];
+          var collectiongData = [];
+          let notification;
+          var user = await User.findOne({ _id: data.loggedUser });
+          var notifications = [
+            ...user.notifications,
+            ...user.follow_notifications,
+            ...user.interest_notifications
+          ];
+          console.log(notifications);
+          var check = user.notifications.length;
+          notifications.forEach(async note => {
+            notification = await Notification.findOne({ _id: note });
+            if (notification) {
+              bankofNotes.push(notification);
+            }
+            if (bankofNotes.length === check) {
+              io.emit("receive_notifs", [data], bankofNotes, loggedUser);
+            }
+          });
+          io.emit("receive_notifs", [data], bankofNotes, loggedUser);
+        } catch (err) {
+          console.log(err);
+        }
       });
 
       // Handle clear

@@ -1,0 +1,24 @@
+<div id="edit_modal">
+  <form id="edit-modal-form" action="/users/<%= user._id %>?_method=PUT" method="post" enctype="multipart/form-data">
+    <div class="edit-modal-title">
+      Edit Details
+    </div>
+    <div id="edit-modal-left">
+      <label for="user[name]">Name</label><br>
+      <input type="text" name="user[name]"  value="<%= user.name %>"><br>
+    <label for="userSurname">Surname</label><br>
+      <input type="text" name="user[surname]" id="userSurname" value="<%= user.surname %>"><br>
+    <label for="user[username]">Username</label><br>
+      <input type="text" name="user[username]" value="<%= user.username %>"><br>
+    <label for="user[username]">Location</label><br>
+      <input type="text" name="user[city]" value="<%= user.city %>" placeholder="add a city where you live"><br>
+      <label for="user[birthdate]">Birthdate</label><br>
+      <input type="date" name="user[birthdate]"  value="<%= user.birthdate %>"><br>
+    </div>
+    <div id="edit-modal-right">
+      <label id="image-label" for="edit-modal-picture">Profile Picture</label><br>
+        <input type="file" id="edit-modal-picture" name="image" accept="image/*">
+      <button class="action-button">Submit</button>                                      
+    </div>
+  </form>
+</div>

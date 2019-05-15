@@ -1,0 +1,176 @@
+<script>
+
+let yoyo;
+$("#contact-submit").click(function (evt) {
+  // $("#favor_contact").html("");
+  evt.preventDefault();
+  var ajax = new XMLHttpRequest();
+  var myform = document.getElementById("favor_contact");
+  var fd = new FormData(myform);
+
+  $.ajax({
+    url: "/users/<%= user._id %>/favors",
+    data: fd,
+    cache: false,
+    processData: false,
+    contentType: false,
+    type: 'POST',
+    success: function (dataofconfirm) {
+      $("#favor_contact").hide();
+      $('.circle-loader').show();
+      setTimeout(() => {
+        $('.circle-loader').toggleClass('load-complete');
+        $('.checkmark').toggle();
+      }, 2000);
+    }
+  });
+})
+
+
+
+let overallProgress = 1;
+<% if(currentUser.verifiedPhone.isVerified){%>
+  overallProgress += 19;
+  document.querySelector("#pg-tel").style.color = "green";
+<% } %>
+<% if (currentUser.verifiedStay.isVerified) {%>
+  overallProgress += 20;
+  document.querySelector("#pg-home").style.color = "green";
+<% } %>
+<% if (currentUser.verifiedEmail.isVerified) {%>
+  overallProgress += 20;
+  document.querySelector("#pg-email").style.color = "green";
+<% } %>
+<% if (currentUser.verifiedID.isVerified){%>
+  overallProgress += 20;
+  document.querySelector("#pg-gov").style.color = "green";
+<% } %> 
+<% if (currentUser.verifiedPicture.isVerified) {%>
+  overallProgress += 20;
+  document.querySelector("#pg-pic").style.color = "green";
+<% } %> 
+
+
+
+
+$('body').ready(function () {
+  var elem = document.getElementById("progress-bar-25");
+  if (elem) {
+    var width = 0;
+    var id = setInterval(frame, 10);
+
+    function frame() {
+      if (width >= overallProgress) {
+        clearInterval(id);
+      } else {
+        width += .5;
+        elem.style.width = `${width}%`;
+      }
+    }
+  }
+});
+
+$("#leave_review").click(function (event) {
+  $(".leave-a-review-modal").fadeIn(2)
+  $(".leave-a-review-bookeh").fadeIn(200)
+  even.stopPropagation()
+})
+
+$("#toggle-edit-form").click(function (event) {
+  $(".edit-a-review-modal").fadeIn(2)
+  $(".leave-a-review-bookeh").fadeIn(200)
+  even.stopPropagation()
+})
+
+$("#delete_user").click(function (event) {
+  $("#delete_guard").css({
+    "opacity": "1",
+    "z-index": "10"
+  })
+  $(".blur").fadeIn()
+  event.stopPropagation()
+})
+
+
+
+$("#add_new_favor").click(function (event) {
+  $(".favor-container").fadeIn()
+  $(".blur").fadeIn()
+  event.stopPropagation()
+})
+
+$('.blur').click(function (event) {
+  var current_height = $('.blur').outerHeight();
+  var current_width = $('.blur').outerWidth();
+
+  $(".blur").css("min-height", current_height);
+  $(".blur").css("min-width", '20000px');
+
+  $("#delete_guard").css({
+    "opacity": "0",
+    "z-index": "-10"
+  })
+  $(".blur").fadeOut()
+  $("#edit_modal").css({"opacity": "0", "z-index":"-20"})
+  $(".favor-container").fadeOut()
+  event.stopPropagation()
+});
+
+$('.leave-a-review-bookeh').click(function (event) {
+  var current_height = $('.leave-a-review-bookeh').outerHeight();
+  var current_width = $('.leave-a-review-bookeh').outerWidth();
+
+  $(".leave-a-review-bookeh").css("min-height", current_height);
+  $(".leave-a-review-bookeh").css("min-width", '20000px');
+
+  $(".leave-a-review-modal").fadeOut()
+  $(".edit-a-review-modal").fadeOut()
+  $(".leave-a-review-bookeh").fadeOut()
+  event.stopPropagation()
+});
+
+$('.delete-guard-input-buttons-cancel').click(function () {
+  $("#delete_guard").css({
+    "opacity": "0",
+    "z-index": "-10"
+  })
+  $(".blur").fadeOut()
+
+})
+
+$("#edit_user").click(function (event) {
+  $("#edit_modal").css({"opacity":"1", "z-index":"3"})
+  $(".blur").fadeIn(400)
+  event.stopPropagation()
+})
+
+$("#submit_deletion").submit(function (event) {
+  if ($("input:first").val() === <%- JSON.stringify(currentUser.username) %> ) {
+    $("span").text("Validated...").show();
+    return;
+  }
+  $("#non_valid_submit").text("Not valid!").show().fadeOut(4000);
+  event.preventDefault();
+});
+
+var user = <%- JSON.stringify(user) %> ;
+mapboxgl.accessToken = 'pk.eyJ1IjoiZHVnaXdhcmMiLCJhIjoiY2pydDdmdjFtMGZlNjRhdGNreWQ1aW5mZSJ9.IJrnij1QFJbk2r_618xlUg';
+var map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/dugiwarc/cjrtac8pe410f2so52fsbumkh',
+  center: user.coordinates,
+  zoom: 12
+});
+
+var el = document.createElement('div');
+el.className = 'marker';
+
+new mapboxgl.Marker(el)
+  .setLngLat(user.coordinates)
+  .setPopup(new mapboxgl.Popup({
+      offset: 25
+    })
+    .setHTML('<h3>' + user.username + '</h3></p>' + user.location + '</p>'))
+  .addTo(map);
+
+</script>

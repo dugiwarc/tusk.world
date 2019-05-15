@@ -1,72 +1,82 @@
-
-var mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
-var geocodingClient = mbxGeocoding({ accessToken: 'pk.eyJ1IjoiZHVnaXdhcmMiLCJhIjoiY2pydDdmdjFtMGZlNjRhdGNreWQ1aW5mZSJ9.IJrnij1QFJbk2r_618xlUg' });
-var express       = require('express');
-var multer        = require('multer');
-var passport      = require('passport');
-var User          = require('../models/user');
-var Message       = require('../models/message');
-var Review        = require('../models/review');
-var Notification  = require('../models/notification');
-var Favor         = require('../models/favor');
-var Conversation  = require('../models/conversation');
-var Request       = require('../models/validation_request');
-var middleware    = require('../middleware');
-var router        = express.Router();
+var mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+var geocodingClient = mbxGeocoding({
+  accessToken:
+    "pk.eyJ1IjoiZHVnaXdhcmMiLCJhIjoiY2pydDdmdjFtMGZlNjRhdGNreWQ1aW5mZSJ9.IJrnij1QFJbk2r_618xlUg"
+});
+var express = require("express");
+var multer = require("multer");
+var passport = require("passport");
+var User = require("../models/user");
+var Message = require("../models/message");
+var Review = require("../models/review");
+var Notification = require("../models/notification");
+var Favor = require("../models/favor");
+var Conversation = require("../models/conversation");
+var Request = require("../models/validation_request");
+var middleware = require("../middleware");
+var router = express.Router();
 
 var storage = multer.diskStorage({
-  filename: function(req, file, callback){
+  filename: function(req, file, callback) {
     callback(null, Date.now() + file.originalname);
   }
 });
 
-var imageFilter = function(req, file, cb){
-  if(!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)){
-    return cb(new Error('Only image files are allowed!'), false);
+var imageFilter = function(req, file, cb) {
+  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+    return cb(new Error("Only image files are allowed!"), false);
   }
   cb(null, true);
 };
 
-var upload = multer({ storage: storage, fileFilter: imageFilter});
+var upload = multer({ storage: storage, fileFilter: imageFilter });
 
-var cloudinary = require('cloudinary');
+var cloudinary = require("cloudinary");
 cloudinary.config({
-  cloud_name: 'dugiwarc',
-  api_key: '266892371552875',
-  api_secret: 'KPuc3ggLVjzoQSQMAhgLxEt4p8k'
+  cloud_name: "dugiwarc",
+  api_key: "266892371552875",
+  api_secret: "KPuc3ggLVjzoQSQMAhgLxEt4p8k"
 });
 
 // finds all users and outputs them on the page
-router.get("/users", function(req, res){
-  if(req.query.search){
-    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-    User.find({$or:[{username: regex},{name: regex}, {surname: regex}, {city: regex}]}, function(err, allusers){
-      if(err){
-        console.log(err);
-      } else {
-        var noMatch;
-        if(allusers.length < 1){
-          noMatch = "No user matching that criterion";
+router.get("/users", function(req, res) {
+  if (req.query.search) {
+    const regex = new RegExp(escapeRegex(req.query.search), "gi");
+    User.find(
+      {
+        $or: [
+          { username: regex },
+          { name: regex },
+          { surname: regex },
+          { city: regex }
+        ]
+      },
+      function(err, allusers) {
+        if (err) {
+          console.log(err);
+        } else {
+          var noMatch;
+          if (allusers.length < 1) {
+            noMatch = "No user matching that criterion";
+          }
+          res.render("users/users", { users: allusers, noMatch: noMatch });
         }
-        res.render("users/users", {users: allusers, noMatch: noMatch});
       }
-    });
+    );
   } else {
-    User.find({}, function(err, allusers){
-      if(err){
+    User.find({}, function(err, allusers) {
+      if (err) {
         console.log(err);
       } else {
-        res.render("users/users",
-        {users: allusers});
+        res.render("users/users", { users: allusers });
       }
     });
   }
 });
 
-
-router.post("/users", function(req, res){
-  User.create(req.body.user, function(err, newlyCreated){
-    if(err){
+router.post("/users", function(req, res) {
+  User.create(req.body.user, function(err, newlyCreated) {
+    if (err) {
       console.log(err);
     } else {
       console.log("User created");
@@ -76,119 +86,128 @@ router.post("/users", function(req, res){
 });
 
 // show edit page
-router.get("/users/:id/edit", middleware.checkUserOwnership, function(req, res){
-  User.findById(req.params.id, function(err, foundUser){
-    if(err){
+router.get("/users/:id/edit", middleware.checkUserOwnership, function(
+  req,
+  res
+) {
+  User.findById(req.params.id, function(err, foundUser) {
+    if (err) {
       res.redirect("/users");
     } else {
-      res.render("users/edit", {user: foundUser});
+      res.render("users/edit", { user: foundUser });
     }
   });
 });
 
-
 // update user profile
-router.put("/users/:id", middleware.checkUserOwnership, upload.single('image'),function (req, res) {
-
-  if(req.file){
-    cloudinary.uploader.upload(req.file.path, function (result) {
-      // add cloudinary url for the image to the campground object under image property
-      req.body.user.image = result.secure_url;
-      // add author to campground
-      User.findById(req.params.id, async function(err, updateUser){
-      if(err){
-        res.redirect("/users");
-      } else {
-        let response = await geocodingClient
-          .forwardGeocode({
-            query: req.body.user.city,
-            limit: 1
-          })
-          .send();
-        var coordinates = response.body.features[0].geometry.coordinates;
-        updateUser.image = req.body.user.image;
-        updateUser.name = req.body.user.name;
-        updateUser.surname = req.body.user.surname;
-        updateUser.username = req.body.user.username;
-        updateUser.city = req.body.user.city;
-        updateUser.coordinates = coordinates;
-        updateUser.save();
-        res.redirect("/users/" + req.params.id);
-      }
-    });
-    });
-  } else {
-          User.findById(req.params.id,async function (err, updateUser) {
-            if (err) {
-              res.redirect("/users");
-            } else {
-              let response = await geocodingClient
-                .forwardGeocode({
-                  query: req.body.user.city,
-                  limit: 1
-                })
-                .send();
-              var coordinates = response.body.features[0].geometry.coordinates;
-              updateUser.name = req.body.user.name;
-              updateUser.surname = req.body.user.surname;
-              updateUser.username = req.body.user.username;  
-              updateUser.city = req.body.user.city;
-              updateUser.coordinates = coordinates;
-              updateUser.save();
-              res.redirect("/users/" + req.params.id);
-            }
-          });
-    }
-});
-
-router.put("/users/:id/validation", middleware.checkUserOwnership, upload.single('validation_paper'),async function (req, res) {
-  if(req.file)
-  {
-    try
-    {
-      let new_request = new Request({
-        author: req.user._id
-      })
-      let result = await cloudinary.uploader.upload(req.file.path);
-      console.log(result.secure_url);
-      let validation_request = await Request.create(new_request);
-      validation_request.image = result.secure_url;
-      validation_request.save();
-      res.end();
-    }
-    catch (err)
-    {
-      res.send("Error page");
-      console.log(err);
+router.put(
+  "/users/:id",
+  middleware.checkUserOwnership,
+  upload.single("image"),
+  function(req, res) {
+    if (req.file) {
+      cloudinary.uploader.upload(req.file.path, function(result) {
+        // add cloudinary url for the image to the campground object under image property
+        req.body.user.image = result.secure_url;
+        // add author to campground
+        User.findById(req.params.id, async function(err, updateUser) {
+          if (err) {
+            res.redirect("/users");
+          } else {
+            let response = await geocodingClient
+              .forwardGeocode({
+                query: req.body.user.city,
+                limit: 1
+              })
+              .send();
+            var coordinates = response.body.features[0].geometry.coordinates;
+            updateUser.image = req.body.user.image;
+            updateUser.name = req.body.user.name;
+            updateUser.surname = req.body.user.surname;
+            updateUser.username = req.body.user.username;
+            updateUser.city = req.body.user.city;
+            updateUser.coordinates = coordinates;
+            updateUser.save();
+            res.redirect("/users/" + req.params.id);
+          }
+        });
+      });
+    } else {
+      User.findById(req.params.id, async function(err, updateUser) {
+        if (err) {
+          res.redirect("/users");
+        } else {
+          let response = await geocodingClient
+            .forwardGeocode({
+              query: req.body.user.city,
+              limit: 1
+            })
+            .send();
+          var coordinates = response.body.features[0].geometry.coordinates;
+          updateUser.name = req.body.user.name;
+          updateUser.surname = req.body.user.surname;
+          updateUser.username = req.body.user.username;
+          updateUser.city = req.body.user.city;
+          updateUser.coordinates = coordinates;
+          updateUser.save();
+          res.redirect("/users/" + req.params.id);
+        }
+      });
     }
   }
-});
+);
 
+router.put(
+  "/users/:id/validation",
+  middleware.checkUserOwnership,
+  upload.single("validation_paper"),
+  async function(req, res) {
+    if (req.file) {
+      try {
+        let new_request = new Request({
+          author: req.user._id
+        });
+        let result = await cloudinary.uploader.upload(req.file.path);
+        console.log(result.secure_url);
+        let validation_request = await Request.create(new_request);
+        validation_request.image = result.secure_url;
+        validation_request.save();
+        res.end();
+      } catch (err) {
+        res.send("Error page");
+        console.log(err);
+      }
+    }
+  }
+);
 
 // show user profile
-router.get("/users/:id",async function(req, res){
+router.get("/users/:id", async function(req, res) {
   try {
     let review = await Review.find({});
-    let user = await User.findById(req.params.id).populate({
-      path: 'reviews',
-      options: {sort: {createdAt: -1}} // sorting the populated reviews array to show the latest first
-    }).populate('followers').populate('messages').exec();
-    res.render('users/test_show_user', { user, review });
-  } catch(err) {
-    req.flash('error', err.message);
-    res.redirect('back');
+    let user = await User.findById(req.params.id)
+      .populate({
+        path: "reviews",
+        options: { sort: { createdAt: -1 } } // sorting the populated reviews array to show the latest first
+      })
+      .populate("followers")
+      .populate("messages")
+      .exec();
+    res.render("users/user-profile", { user, review });
+  } catch (err) {
+    req.flash("error", err.message);
+    res.redirect("back");
   }
 });
 
-router.get("/dashboard", async function(req, res, next){
+router.get("/dashboard", async function(req, res, next) {
   var requests = await Request.find({});
-  res.render('users/dashboard', { requests });
+  res.render("users/dashboard", { requests });
 });
 
 // event: follow_link
-router.get('/follow/:id', middleware.isLoggedIn, async function(req, res){
-  try 
-  {
+router.get("/follow/:id", middleware.isLoggedIn, async function(req, res) {
+  try {
     let user = await User.findById(req.params.id);
     user.followers.push(req.user._id);
     let newNotification = {
@@ -198,17 +217,15 @@ router.get('/follow/:id', middleware.isLoggedIn, async function(req, res){
     let notification = await Notification.create(newNotification);
     user.follow_notifications.push(notification);
     user.save();
-    req.flash('success', 'Successfully followed ' + user.username + '!');
-    res.redirect('back');
-  } 
-  catch(err) 
-  {
-    req.flash('error', err.message);
-    res.redirect('back');
+    req.flash("success", "Successfully followed " + user.username + "!");
+    res.redirect("back");
+  } catch (err) {
+    req.flash("error", err.message);
+    res.redirect("back");
   }
 });
 
-router.get('/unfollow/:id', middleware.isLoggedIn, async function (req, res) {
+router.get("/unfollow/:id", middleware.isLoggedIn, async function(req, res) {
   try {
     let user = await User.findById(req.params.id);
 
@@ -219,133 +236,141 @@ router.get('/unfollow/:id', middleware.isLoggedIn, async function (req, res) {
     }
     console.log(user.followers.length);
     user.save();
-    req.flash('success', 'Successfully unfollowed ' + user.username + '!');
-    res.redirect('back');
+    req.flash("success", "Successfully unfollowed " + user.username + "!");
+    res.redirect("back");
   } catch (err) {
-    req.flash('error', err.message);
-    res.redirect('back');
+    req.flash("error", err.message);
+    res.redirect("back");
   }
 });
 
-router.get('/notifications', middleware.isLoggedIn, async function(req, res){
-  try 
-  {
-    let user = await User.findById(req.user._id).populate({
-      path: 'notifications',
-      options: {
-        sort: {
-          "_id": -1
+router.get("/notifications", middleware.isLoggedIn, async function(req, res) {
+  try {
+    let user = await User.findById(req.user._id)
+      .populate({
+        path: "notifications",
+        options: {
+          sort: {
+            _id: -1
+          }
         }
-      }
-    }).populate({
-      path: 'message_notifications',
-      options: {
-        sort: {
-          "_id": -1
+      })
+      .populate({
+        path: "message_notifications",
+        options: {
+          sort: {
+            _id: -1
+          }
         }
-      }
-    }).exec();
+      })
+      .exec();
     let allNotifications = user.notifications;
     let allmessageNotifications = user.message_notifications;
-    res.render('notifications/index', {
+    res.render("notifications/index", {
       allNotifications,
       allmessageNotifications
     });
-  } 
-  catch (err) 
-  {
-    req.flash('error', err.message);
-    res.redirect('back');
+  } catch (err) {
+    req.flash("error", err.message);
+    res.redirect("back");
   }
 });
 
 // handle notifications
-router.get('/notifications/:id', middleware.isLoggedIn, async function(req, res){
-  try 
-  {
+router.get("/notifications/:id", middleware.isLoggedIn, async function(
+  req,
+  res
+) {
+  try {
     let notification = await Notification.findById(req.params.id);
     notification.isRead = true;
     notification.save();
     res.redirect(`/favors/${notification.favorId}`);
-  } 
-  catch(err) 
-  { 
-    req.flash('error', err.message);
-    res.redirect('back');
+  } catch (err) {
+    req.flash("error", err.message);
+    res.redirect("back");
   }
 });
 
-router.get('/message_notifications/:id', middleware.isLoggedIn, async function (req, res) {
+router.get("/message_notifications/:id", middleware.isLoggedIn, async function(
+  req,
+  res
+) {
   try {
     let notification = await Notification.findById(req.params.id);
     notification.isRead = true;
     notification.save();
     res.redirect(`/users/${notification.messageId}/messages`);
   } catch (err) {
-    req.flash('error', err.message);
-    res.redirect('back');
+    req.flash("error", err.message);
+    res.redirect("back");
   }
 });
 
-router.get('/interest_notifications/:id', middleware.isLoggedIn, async function (req, res) {
+router.get("/interest_notifications/:id", middleware.isLoggedIn, async function(
+  req,
+  res
+) {
   try {
+    console.log("Receiving");
+    console.log(req.params.id);
     let notification = await Notification.findById(req.params.id);
     notification.isRead = true;
     notification.save();
     res.redirect(`/favors/${notification.interestId}`);
   } catch (err) {
-    req.flash('error', err.message);
-    res.redirect('back');
+    req.flash("error", err.message);
+    res.redirect("back");
   }
 });
 
-router.get('/follower_notifications/:id', middleware.isLoggedIn, async function (req, res) {
+router.get("/follower_notifications/:id", middleware.isLoggedIn, async function(
+  req,
+  res
+) {
   try {
     let notification = await Notification.findById(req.params.id);
     notification.isRead = true;
     notification.save();
     res.redirect(`/users/${notification.followerId}`);
   } catch (err) {
-    req.flash('error', err.message);
-    res.redirect('back');
+    req.flash("error", err.message);
+    res.redirect("back");
   }
 });
-
 
 // user profile delete
-router.delete("/users/:id", middleware.checkUserOwnership, async function(req, res){
-  try 
-  {
-      let user = await User.findByIdAndRemove(req.params.id);
-      Message.remove({
-        "_id": {
-          $in: user.messages
-        }
-      });
-      Review.remove({
-        "_id": {
-          $in: user.reviews
-        }
-      });
-      user.remove();
-      req.flash("success", "User deleted successfully!");
-      res.redirect("/favors");
-  }
-  catch (err)
-  {
+router.delete("/users/:id", middleware.checkUserOwnership, async function(
+  req,
+  res
+) {
+  try {
+    let user = await User.findByIdAndRemove(req.params.id);
+    Message.remove({
+      _id: {
+        $in: user.messages
+      }
+    });
+    Review.remove({
+      _id: {
+        $in: user.reviews
+      }
+    });
+    user.remove();
+    req.flash("success", "User deleted successfully!");
+    res.redirect("/favors");
+  } catch (err) {
     req.flash("error", "Something went wrong!");
-    res.redirect('back');
+    res.redirect("back");
   }
 });
-
-
 
 function calculateAverage(reviews) {
   if (reviews.length === 0) {
     return 0;
   }
   var sum = 0;
-  reviews.forEach(function (element) {
+  reviews.forEach(function(element) {
     sum += element.rating;
   });
   return sum / reviews.length;
@@ -353,6 +378,6 @@ function calculateAverage(reviews) {
 
 function escapeRegex(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-};
+}
 
 module.exports = router;

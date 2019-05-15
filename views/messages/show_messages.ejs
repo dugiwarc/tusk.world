@@ -193,8 +193,8 @@
             });
 
 
-            socket.on('output', function (data, contacts) {
-              
+            socket.on('output', function (data, contactss) {
+              console.log(contactss,"sdfsdFSDf")
               // chat_container.innerHTML = "";
               //     for(var i = 0; i < contacts.length; i++){
               //     var result = document.createElement('div');
@@ -223,13 +223,15 @@
                     result.textContent = contacts[i].username;
                     chat_container.appendChild(result);}
                   }
-                  $('.user_select').click(function () {
-                    console.log("over there")
-                    var a = $(this).text();
-                    contentBox.textContent = a;
-                    getMail(a, data);
-                  });
+                  // $('.user_select').click(function () {
+                  //   console.log("over there")
+                  //   var a = $(this).text();
+                  //   contentBox.textContent = a;
+                  //   getMail(a, data);
+                  // });
                 });
+
+                
                 // Get status from server
                 socket.on('status', function (data) {
                   // get message status

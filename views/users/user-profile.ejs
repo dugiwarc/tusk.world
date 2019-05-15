@@ -1,0 +1,49 @@
+<% include ../partials/header %>
+
+  <% if(currentUser){ %>
+
+    <% if(!(currentUser._id.equals(user._id))){ %>
+
+      <% include ../modals/leave-a-review %> 
+      <% include ../modals/edit-a-review %> 
+
+    <% } %>
+
+    <% if((currentUser._id.equals(user._id))){ %>
+
+      <% include ../modals/background-events %>     
+
+      <% include ../modals/edit-user %> 
+
+      <% include ../modals/add-favor %> 
+      
+      <% include ../modals/delete-guard %> 
+
+      <div class='user-profile'>
+
+        <% include ../components/user-profile/user-profile-progress-bar %> 
+        <div class="user-profile-lmr-section">
+          <div class="user-profile-left-and-middle-section">
+            <% include ../components/user-profile/user-profile-left-section %> 
+
+    <% } %>
+
+            <% include ../components/user-profile/user-profile-middle-section %>
+          </div>
+
+          <% include ../components/user-profile/user-profile-right-section %> 
+        </div>
+    
+      </div>
+
+    <% include ../../public/javascript/user-profile %>
+
+  <% } else { %>
+
+    <div class="success">
+      You need to log in to view this page
+    </div>
+  
+  <% } %>
+
+<% include ../partials/footer %>

@@ -1,0 +1,23 @@
+<div class="favor-container">
+  <div class="circle-loader">
+    <div class="checkmark draw"></div>
+  </div>
+  <div class="favor-container-title">New Favor</div>
+  <form id="favor-contact" action="/users/<%= user._id %>/favors" method="post" enctype="multipart/form-data">
+      <div class="favor-container-left">
+        <label for="favorTitle">Title</label><br>
+        <input id="favorTitle" type="text" name="task" tabindex="1" required autofocus>
+        <label for="favorPrice">Price</label><br>
+        <input id="favorPrice" type="text" name="price" min="0.0" tabindex="2" required>
+        <label for="favorLocation">Location</label><br>
+        <input id="favorLocation" type="text" name="location" required>
+        <label for="favorDescription">Description</label><br>
+        <textarea id="favorDescription" class="favor_textarea" rows="2" name="description"></textarea>
+      </div>
+      <div class="favor-container-right">
+        <label for="favor-image" id="favor-image-label">Upload an image</label><br>
+        <input id="favor-image" type="file" id="image" name="image" accept="image/*">
+        <button name="submit" type="submit" class="favorSubmit">Submit</button>
+      </div>
+  </form>
+</div>

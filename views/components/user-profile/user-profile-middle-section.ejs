@@ -1,0 +1,172 @@
+  <div class='middle-section'>
+
+
+    <section class="bio">
+
+      <div class="profile-photo">
+
+        <div class='profile_img'>
+          <img src="<%= user.image %>" alt="prem" />
+        </div>
+
+      </div>
+
+      <div class="details">
+        <div class="tiny-details">
+          <span id="profile_name">
+            <%= user.name %>
+            <%= user.surname %>
+            </span>
+            
+            <span>
+            <span id="name_username">
+            <% if(!(user.isVerified)){ %>
+              <img id="verified" src="/pics/ok.png">
+            <% } %>
+              <%= user.status %></span><span class="hint_parent"><i class="fas fa-info-circle hint" /></i>
+              <div class="hint_span">This user has not uploaded any certifications</div>
+            </span>
+          </span>
+
+          <div class="location">
+            <h6>
+              <%= user.city %>
+            </h6>
+          </div>
+
+        </div>
+
+        <% if(!(currentUser._id.equals(user._id))){ %>
+
+        <div class="social-links">
+
+
+          <div class="social-icons">
+            <% var useree_reviews=[]%>
+            
+            <% review.forEach(function(review){ %>
+            <% if(review.user.equals(user._id)){%>
+            <% useree_reviews.push(review.author.username);%>
+            <%} %>
+            <% }); %>
+
+            <% if(useree_reviews.includes(currentUser.username)){ %>
+            <a id="toggle-edit-form">
+              <img src="/pics/review.png">
+            </a>
+            <%} %>
+
+
+
+
+            <% var user_reviews=[];%>
+            <% review.forEach(function(review){ %>
+            <% if(review.user.equals(user._id)){%>
+            <% user_reviews.push(review.author.username)%>
+            <% } %>
+            <% }); %>
+
+            <% if(user_reviews.includes(currentUser.username)){ %>
+            <% } else { %>
+            <a id="leave_review">
+              <img src="/pics/review.png">
+            </a>
+            <% } %>
+          </div>
+          <div class="social-icons">
+            <a href="http://instagram.com/<%= user.instagram %>">
+              <img src="/pics/insta.png">
+            </a>
+          </div>
+
+          <div class="social-icons">
+            <a href="http://twitter.com/<%= user.twitter %>">
+              <img src="/pics/twitter.png">
+            </a>
+          </div>
+
+          <div class="social-icons">
+            <a href="http://<%= user.facebook %>">
+              <img src="/pics/fb.png">
+            </a>
+          </div>
+          
+        </div>
+
+        <% } %>
+
+        <div class="follow-details">
+
+          <div class="shots">
+            <p>
+              <a href="#">Favors<span class="count"><br />
+                  <%= user.posted_favors.length%></span></a>
+            </p>
+          </div>
+
+          <div class="Followers">
+            <p>
+              <a href="#">Followers<span class="count"><br />
+                  <%= user.followers.length%></span>
+              </a>
+            </p>
+          </div>
+
+        </div>
+
+        <div class="description">
+          <% if (user.rating === 0) { %>
+          <span id="no_reviews">No reviews yet.<span>
+              <% } else { %>
+              <p>Current user rating: <strong>
+                  <%= user.rating.toFixed(2) %></strong></p>
+              <p>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star <% if (user.rating > 1.5) { %> checked <% } %>"></span>
+                <span class="fa fa-star <% if (user.rating > 2.5) { %> checked <% } %>"></span>
+                <span class="fa fa-star <% if (user.rating > 3.5) { %> checked <% } %>"></span>
+                <span class="fa fa-star <% if (user.rating > 4.5) { %> checked <% } %>"></span>
+                <em>(total reviews:
+                  <%= user.reviews.length %>)</em>
+              </p>
+              <% } %>
+        </div>
+    </section>
+
+    <% if(!(currentUser._id.equals(user._id))){ %>
+
+    <% var fools = []; %>
+    <div class="connect-me">
+      <% user.followers.forEach(function(follower){ %>
+      <% fools.push(follower.username)%>
+      <% if(follower.username == currentUser.username){ %>
+      <div class="follow-me">
+        <a href="/unfollow/<%= user._id %>">
+          Unfollow Me
+        </a>
+      </div>
+      <% } %>
+      <% }); %>
+
+      <% if (!(fools.includes(currentUser.username))){%>
+      <div class="follow-me">
+        <a href="/follow/<%= user._id %>">
+          Follow Me
+        </a>
+      </div>
+      <% } %>
+      <div class="hire-me">
+        <p>
+          <form action="/users/<%= user._id %>/conversation/..." method="get">
+            <button class="btn-link">Message</button>
+          </form>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+
+
+    <% } %>
+    </div>

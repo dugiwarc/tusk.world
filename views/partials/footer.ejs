@@ -1,11 +1,25 @@
 <script>
+
+var socket = io();
+          
+          if (socket !== undefined) {
+        socket.on('user_output', (data, contacts)=>{
+            // console.log(data, "data")
+            // console.log(contacts)
+        })
+}
+
     // navigation bar settings
 
     const trigger = document.querySelector('.trig.right_li');
     const background = document.querySelector('.dropdownBackground');
+    const motheroffavors = document.querySelector('.mother_of_favors')
     const nav = document.querySelector('.nav');
 
     function handleEnter() {
+        if(motheroffavors)
+            motheroffavors.style.zIndex = -3;
+
         this.classList.add('trigger-enter');
         setTimeout(() => this.classList.contains('trigger-enter') && this.classList.add('trigger-enter-active'), 150);
         background.classList.add('open');
@@ -20,7 +34,6 @@
             top: dropdownCoords.top - navCoords.top,
             left: dropdownCoords.left - navCoords.left
         };
-        console.log(coords)
 
         background.style.setProperty('width', `200px`);
         background.style.setProperty('height', `${coords.height}px`);
@@ -28,6 +41,8 @@
     }
 
     function handleLeave() {
+        if(motheroffavors)
+            motheroffavors.style.zIndex = 3;
         this.classList.remove('trigger-enter', 'trigger-enter-active');
         background.classList.remove('open');
     }
@@ -106,7 +121,6 @@
     var animating; //flag to prevent quick multi-click glitches
 
     $(".next").click(function () {
-        console.log(pass.value);
         if (pass.value === cpass.value) {
             if (animating) return false;
             animating = true;
@@ -229,20 +243,60 @@
 
     // }
 
+    // numberofnotifications.textContent = "INBOX"
+
+    <%if (currentUser) {%>
     var dropdown = document.querySelector('body');
     var notifications = [];
     var socket = io();
-
-    if (socket != undefined) {
-    <%if (currentUser) {%>
+    let numberofnotifications = document.querySelector(".trig a");
+        if (socket != undefined) {
             socket.emit('get_notifs', { loggedUser: <%- JSON.stringify(currentUser._id) %>});
-            socket.on('receive_notifs', function (data) {
+            socket.on('receive_notifs', function (data, info, userInfo) {
+                console.log(info,"Notifications array")
 
-                console.log(data);
-                data.forEach((notification) => {
-                    var li = document.createElement('li');
-                    // li.textContent = "notification"; 
-                    // dropdown.append(li);
+                    if(info.length === 0){
+                    var li = document.createElement('a')
+                    li.href="/notifications/"
+                    li.textContent="No new notifications"
+                    var divNote = document.createElement('div')
+                    divNote.append(li)
+                    $(".dropdown").append(divNote)
+                }
+                numberofnotifications.textContent =`INBOX (${info.length})`;
+                info.forEach((notification) => {
+                        if(notification.favorId){
+                            var li = document.createElement('a');
+                            li.href = `/favors/${notification.favorId}`
+                            li.textContent = `${notification.username} created a favor`
+                            var divNote = document.createElement('div')
+                            divNote.append(li)
+                            $(".dropdown").append(divNote)
+                        }
+                        else if(notification.reviewId){
+                            var li = document.createElement('a');
+                            li.href = `/users/${userInfo}`
+                            li.textContent = `${notification.username} has left you a review`
+                            var divNote = document.createElement('div')
+                            divNote.append(li)
+                            $(".dropdown").append(divNote)
+                        }
+                        else if(notification.interestId){
+                            var li = document.createElement('a');
+                            li.href = `/interest_notifications/${notification._id}`
+                            li.textContent = `${notification.username} showed an interest`
+                            var divNote = document.createElement('div')
+                            divNote.append(li)
+                            $(".dropdown").append(divNote)
+                        }
+                        else if(notification.followerId){
+                            var li = document.createElement('a');
+                            li.href = `/follower_notifications/${notification._id}`
+                            li.textContent = `${notification.username} followed you`
+                            var divNote = document.createElement('div')
+                            divNote.append(li)
+                            $(".dropdown").append(divNote)
+                        }
                 });
             });
     <%}%>

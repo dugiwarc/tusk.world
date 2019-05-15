@@ -134,7 +134,7 @@ router.post(
             if (err) {
               console.log(err);
             } else {
-              console.log("====FAVOR====", favor);
+              console.log("====FAVOR====\n", favor);
               // define newNotification with an username and a favorID
               let newNotification = {
                 username: req.user.username,
@@ -152,13 +152,9 @@ router.post(
               location = await Location.findOne({
                 name: req.body.location
               });
-              console.log("LOCATION" + location);
               if (location) {
                 location.followers.forEach(async function(follower) {
-                  console.log("=======");
-                  console.log("FOLLOWER" + follower);
                   let follo = await User.findById(follower);
-                  console.log("FOLLO" + follo);
                   let notification = await Notification.create(newNotification);
                   follo.notifications.push(notification);
                   follo.save();
@@ -241,10 +237,27 @@ router.get("/users/:id/favors", middleware.isLoggedIn, function(req, res) {
     });
 });
 
-router.delete("/favors/:id", middleware.checkFavorOwnership, function(
+router.delete("/favors/:id", middleware.checkFavorOwnership, async function(
   req,
   res
 ) {
+  let foundFavor = await Favor.findById(req.params.id);
+  console.log(foundFavor);
+  let foundAuthor = await User.findById(foundFavor.author.id);
+  console.log(foundAuthor);
+  if (
+    foundAuthor.posted_favors.some(
+      favor => favor.toString() === req.params.id
+    ) &&
+    foundAuthor.favors.some(favor => favor.toString() === req.params.id)
+  ) {
+    let arrayFavors = foundAuthor.favors.filter(
+      favor => favor.toString() !== req.params.id
+    );
+    foundAuthor.favors = arrayFavors;
+    foundAuthor.posted_favors = arrayFavors;
+    foundAuthor.save();
+  }
   Favor.findOneAndDelete(req.params.id, function(err) {
     if (err) {
       res.redirect("/favors");
